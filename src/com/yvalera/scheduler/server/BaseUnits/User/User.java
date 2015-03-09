@@ -1,7 +1,10 @@
 package com.yvalera.scheduler.server.BaseUnits.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.joda.time.LocalDate;
 
 import com.yvalera.scheduler.server.BaseUnits.Day.SpecialDay;
 import com.yvalera.scheduler.server.BaseUnits.Day.TemplateDay;
@@ -13,20 +16,22 @@ public class User {
 	//TODO id
 	//private int id;
 	private String name;
-	private LimitedTermPoint[] limitedPoints = new LimitedTermPoint[24];
-	private FlexibleTermPoint[] flexPoints = new FlexibleTermPoint[24];
+	private List<LimitedTermPoint> limitedPoints = 
+			new ArrayList<LimitedTermPoint>();
+	private List<FlexibleTermPoint> flexPoints = 
+			new ArrayList<FlexibleTermPoint>();
 	//TODO make lazy initialization
 	private HashMap<Integer, List<TemplateDay>> templateDays = 
 			new HashMap<Integer, List<TemplateDay>>();
 	//TODO make lazy initialization
-	private HashMap<Integer, List<SpecialDay>> specialDays = 
-			new HashMap<Integer, List<SpecialDay>>();
+	private HashMap<LocalDate, SpecialDay> specialDays = 
+			new HashMap<LocalDate, SpecialDay>();
 	
-	public LimitedTermPoint[] getLimitedPoints() {
+	public List<LimitedTermPoint> getLimitedPoints() {
 		return limitedPoints;
 	}
 	
-	public FlexibleTermPoint[] getFlexPoints() {
+	public List<FlexibleTermPoint> getFlexPoints() {
 		return flexPoints;
 	}
 
@@ -34,7 +39,7 @@ public class User {
 		return templateDays;
 	}
 
-	public HashMap<Integer, List<SpecialDay>> getSpecialDays() {
+	public HashMap<LocalDate, SpecialDay> getSpecialDays() {
 		return specialDays;
 	}
 

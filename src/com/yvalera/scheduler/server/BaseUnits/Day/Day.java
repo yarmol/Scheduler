@@ -9,7 +9,7 @@ import com.yvalera.scheduler.server.BaseUnits.Point.RigidTimePoint;
 abstract public class Day {
 	private String nameOfTemplate;
 	private RigidTimePoint[] rigidPoints = new RigidTimePoint[24];
-	private int dayOfWeek;
+	
 	
 	//getters and setters
 	public String getNameOfTemplate() {
@@ -26,13 +26,5 @@ abstract public class Day {
 	
 	public void setRigidPoints(RigidTimePoint[] rigidPoints) {
 		this.rigidPoints = rigidPoints;
-	}
-	
-	public int getDayOfWeek() {
-		return dayOfWeek;
-	}
-	
-	public void setDayOfWeek(int dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
 	}
 }

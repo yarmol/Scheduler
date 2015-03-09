@@ -1,6 +1,7 @@
 package com.yvalera.scheduler.server.ScheduleProcessors.simpleRealization;
 
 import java.util.HashMap;
+import java.util.function.UnaryOperator;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -39,9 +40,9 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 		//System.out.println("here 2");
 		fillWithTemplateDays();
 		//System.out.println("here 3");
-		fillWithLimitedPoints();
+		System.out.println("Limited points located: " + fillWithLimitedPoints());
 		//System.out.println("here 4");
-		fillWithFlexiblePoints();
+		System.out.println("Flexible points located: " + fillWithFlexiblePoints());
 		//System.out.println("here 5");
 		reduceToRequestedInterval();
 		//System.out.println("here 6");
@@ -91,8 +92,8 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 	/*
 	 * Fills CountedDays with points with flexible terms
 	 */
-	private void fillWithFlexiblePoints(){
-		
+	private boolean fillWithFlexiblePoints(){
+		int totalUnalocatedTime = 0;
 		//for every Flexible point
 		for(FlexibleTermPoint point: user.getFlexPoints()){
 			
@@ -104,8 +105,11 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 			PointImpl p = new PointImpl(point.getTitle(), point.getDescription(),
 					"TODO", "TODO");
 			
-			Interval desiredInterval = IntervalToCount.overlap(
-					point.getStartDate().toInterval());
+			Interval desiredInterval = 
+					new Interval(point.getStartDate().toDate().
+							getTime(), requestedInterval.getEndMillis());
+					//IntervalToCount.overlap(
+					//point.getStartDate().toInterval());
 			
 			LocalDate pointer = desiredInterval.getStart().toLocalDate();
 			
@@ -121,22 +125,35 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 				int freeTime = cDay.getFreeTime();
 				
 				if(freeTime == 0){//busy day
+					pointer = pointer.plusDays(1);
 					continue;
 				}
-				
+				//System.out.println(unallocatedTime);
 				//adds point to day
 				if(unallocatedTime >= freeTime){
+					//System.out.println("1: " + freeTime);
 					for(int i=0; i<freeTime; i++){
 						cDay.addPoint(p);
 						unallocatedTime--;
 					}
 				}else{
-					for(int i=0; i<unallocatedTime; i++){
+					while(unallocatedTime > 0){
+						//System.out.println("2: " + freeTime);
 						cDay.addPoint(p);
 						unallocatedTime--;
 					}
 				}
+				
+				pointer = pointer.plusDays(1);
 			}
+			
+			totalUnalocatedTime += unallocatedTime;
+		}
+		
+		if(totalUnalocatedTime > 0){
+			return false;
+		}else{
+			return true;
 		}
 	}
 	
@@ -156,40 +173,49 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 					"TODO", "TODO");
 			//counts counted days with free time
 			Interval pointInterval = point.getInterval();
-			LocalDate pointer;// = pointInterval.getStart().toLocalDate();
-			//it float to avoid cutting fraction part
-			/*float numberOfDays = 0;//days with free time
-			
-			while(pointInterval.contains(pointer.toInterval()));{
-				if(countedDays.get(pointer).getFreeTime() != 0){
-					numberOfDays ++;
-				}
-			}
-			
-			int timePerDay = (int) Math.ceil(point.getNecessaryTime() / numberOfDays);
-			
-			int transfer = 0;*/
+			//System.out.println(pointInterval);
+			LocalDate pointer = null;
+
 			int unallocatedTime = point.getNecessaryTime();
 			
 			//TODO make it work quicker
 			//fills free time
+			//System.out.println(unallocatedTime);
 			while(unallocatedTime != 0){//while all the point time isn't located
+				//System.out.println("unt: " + unallocatedTime + " " + (unallocatedTime != 0));
+				//System.out.println("here");
 				boolean change = false;
 				pointer = pointInterval.getStart().toLocalDate();
-				//trying to fill time
+				
+				//trying to fill time for all period of point
 				while(pointInterval.contains(pointer.toInterval())){
+					//System.out.println("pointer: " + pointer);
+					//System.out.println("contains: " + pointInterval.contains(pointer.toInterval()));
+					//System.out.println("counted: " + countedDays.get(pointer).getDate());
+					//System.out.println();
+					//break the loop if point is located
+					if(unallocatedTime == 0){
+						break;
+					}
+					
+					
+					//System.out.println(pointer);
 					int freeTimeOnDay = countedDays.get(pointer).getFreeTime();
 					
 					if(freeTimeOnDay == 0){
+						pointer = pointer.plusDays(1);//
 						continue;//skips busy day 
 					}
 					
 					countedDays.get(pointer).addPoint(p);
 					unallocatedTime--;
-					pointer = pointer.plusDays(1);
+					//System.out.println("unt: " + unallocatedTime);
+					
 					change = true;
+					pointer = pointer.plusDays(1);
 				}
 				
+				//that means that it's impossible locate point to exist time
 				if(!change){
 					return false;
 				}
@@ -207,7 +233,7 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 		//System.out.println(pointer);
 		//while in interval
 		while(existInterval.contains(pointer.toInterval())){
-			countedDays.put(pointer, new CountedDayImpl());
+			countedDays.put(pointer, new CountedDayImpl(new LocalDate(pointer)));
 			pointer = pointer.plusDays(1);
 		}
 	}
@@ -222,17 +248,15 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 		//while in interval
 		while(existInterval.contains(pointer.toInterval())){
 			CountedDay countedDay = countedDays.get(pointer);
-			//System.out.println("here!!");
-			//takes certain type of day on pointer
-			int dayOfWeek = pointer.getDayOfWeek();
 			
 			//if there is special day for this date
-			if(getSpecialDayForDate(pointer) != null){
+			if(user.getSpecialDays().get(pointer) != null){
 				//System.out.println(getSpecialDayForDate(pointer));
-				fillCountedDayWithRigidDay(getSpecialDayForDate(pointer), countedDay);
+				fillCountedDayWithRigidDay(user.getSpecialDays().
+						get(pointer), countedDay);
 			}else{//if there is not special day for this date
-				//System.out.println(getTemplateDayForDate(pointer));
-				fillCountedDayWithRigidDay(getTemplateDayForDate(pointer), countedDay);
+				fillCountedDayWithRigidDay(getTemplateDayForDate(pointer),
+						countedDay);
 			}
 			
 			countedDays.put(pointer, countedDay);
@@ -262,29 +286,6 @@ public class ScheduleProcessorSimpleImpl implements ScheduleProcessor{
 			
 			cDay.setPointAt(point, i);
 		}
-	}
-	
-	/*
-	 * Returns SpecialDay for certain date
-	 */
-	private SpecialDay getSpecialDayForDate(LocalDate date){
-		//SpecialDay dayToReturn = null;
-		
-		//takes certain type of day on pointer
-		int dayOfWeek = date.getDayOfWeek();
-		
-		if(user.getSpecialDays().get(dayOfWeek) == null){
-			return null;
-		}
-		
-		for(SpecialDay spDay: user.getSpecialDays().get(dayOfWeek)){
-			if(spDay.getDate().equals(date)){
-				//System.out.println("here");
-				return spDay;
-			}
-		}
-		
-		return null;
 	}
 	
 	/*

@@ -13,7 +13,7 @@ public class View_1 {
 		
 		//through all day in interval
 		while(interval.contains(pointer.toInterval())){
-			System.out.println(pointer);
+			System.out.println("view pointer: " + pointer);
 			
 			for(int i=0; i<24; i++){
 				System.out.println("for " + i + " to " + (i+1) + 

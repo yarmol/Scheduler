@@ -9,6 +9,7 @@ import org.joda.time.LocalDate;
  */
 public class TemplateDay extends Day{
 	private Interval interval;
+	private int dayOfWeek;
 	
 	//getters and setters
 	public Interval getInterval() {
@@ -28,6 +29,12 @@ public class TemplateDay extends Day{
 		long startDate = interval.getStartMillis();
 		interval = new Interval(startDate, endDate.toDate().getTime());
 	}
-
 	
+	public int getDayOfWeek() {
+		return dayOfWeek;
+	}
+	
+	public void setDayOfWeek(int dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
 }

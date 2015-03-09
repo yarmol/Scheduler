@@ -13,7 +13,10 @@ class CountedDayImpl implements CountedDay{
 	private Point[] points = new PointImpl[24];
 	private LocalDate date;
 	
-	//MAke it safe
+	public CountedDayImpl(LocalDate date) {
+		this.date = date;
+	}
+	
 	@Override
 	public LocalDate getDate() {
 		return date;
