@@ -322,10 +322,8 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			}
 		}
 		
-		breakHere://braks locate all the tasks if there isn't any free time
-		for(int i=0; i<limitedTasks.size(); i++){//for every task
+		for(Task task: limitedTasks){//for every task
 			//if there is no point
-			Task task = limitedTasks.get(i);
 			if(task == null){
 				continue;
 			}
@@ -371,19 +369,15 @@ public class ScheduleProcessorSimpleImpl implements Model{
 				
 				//that means that it's impossible locate point to exist time
 				if(!change){
-					//fills error with all task since current to last
-					//scheduled to locate because loop will be braked
-					for(int j=i; j<limitedTasks.size(); j++){
-						String error = "No enought time for " + limitedTasks.
-								get(j).getTitle(); 
-								/*+ ". It's necessary " + unallocatedTime  + 
-								" hour(s) to" + "complete it.";*/
+					String error = "There isn't enought time to complete " + 
+						task.getTitle() +
+						". It's necessary " + unallocatedTime  + 
+						" hour(s) to complete it.";
 					
 						tasksErrors.add(error);
-					}
 					
 					//if there isn't any places - method must be break
-					break breakHere;
+					break;
 				}
 			}
 		}
