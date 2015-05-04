@@ -2,7 +2,9 @@ package main.java.com.yvalera.scheduler.Test.Server.ScheduleProcessor.SimpleReal
 
 import java.util.ArrayList;
 
-import main.java.com.yvalera.scheduler.Views.TextView.View_1;
+
+
+
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.Day;
@@ -13,8 +15,15 @@ import main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealizatio
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EntryPoint {
+	
+	//to avoi making more than one limited task with web testing
+	//private boolean first = true;
+	private int times = 0;
+	
 	private User user = new User();
 	private LocalDate startDate = new LocalDate(2000, 1, 1);
 	private LocalDate endDate = new LocalDate(2000, 1, 7);
@@ -24,18 +33,38 @@ public class EntryPoint {
 	Interval interval = new Interval(startDate.toDate().getTime(),
 			endDate.toDate().getTime());
 	
-	private void go(){
+	public synchronized Schedule getSchedule(){
 		fillTemplateDays();
 		fillSpecialDays();
-		addLimitedTimePoint();
+		
+		//if(first){
+			addLimitedTimePoint(++times);
+			//first = false;
+		//}
+		
 		addFlexiblePoint();
 		makeDaysAndTasksActive();
 		
 		Model pr = new ScheduleProcessorSimpleImpl();
-		Schedule sch = pr.calculateSchedule(user, interval);
 		
-		View_1 view = new View_1();
-		view.printView(sch, interval);
+		return pr.calculateSchedule(user, interval);
+	}
+	
+	private void go(){
+		
+		for(int i=0; i<10; i++){
+			fillTemplateDays();
+			fillSpecialDays();
+			addLimitedTimePoint(i+1);
+			addFlexiblePoint();
+			makeDaysAndTasksActive();
+			
+			Model pr = new ScheduleProcessorSimpleImpl();
+			Schedule sch = pr.calculateSchedule(user, interval);
+			
+			View_1 view = new View_1();
+			view.printView(sch, interval);
+		}
 	}
 	
 	private void addFlexiblePoint(){
@@ -48,7 +77,7 @@ public class EntryPoint {
 		user.getTasks().add(task);
 	}
 	
-	private void addLimitedTimePoint(){
+	private void addLimitedTimePoint(int i){
 		LocalDate startPoint = new LocalDate(2000, 1, 2);
 		LocalDate endPoint = new LocalDate(2000, 1, 5);
 		
@@ -56,7 +85,7 @@ public class EntryPoint {
 		task.setInterval(new Interval(startPoint.toDate().getTime(),
 				endPoint.toDate().getTime()));
 		
-		task.setTitle("Limited terms point_1");
+		task.setTitle("Limited terms point_" + i);
 		task.setNecessaryTime(7);
 		task.setType(TypeOfTask.LimitedTerm);
 		user.getTasks().add(task);
@@ -127,7 +156,12 @@ public class EntryPoint {
 		}
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		new EntryPoint().go();
+	}*/
+	
+	//for web testing
+	public Interval getInterval(){
+		return interval;
 	}
 }

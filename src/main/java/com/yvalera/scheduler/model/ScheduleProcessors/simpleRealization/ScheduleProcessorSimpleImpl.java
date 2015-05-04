@@ -51,9 +51,6 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		this.user = user;
 		requestedInterval = interval;
 		
-		//clears object variables of prevision calculations
-		//clearVariables();
-		
 		//Calculate necessary interval fo further calculations
 		calculateIntervalToCount();
 		//System.out.println("interval calculated");
@@ -89,7 +86,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		
 		//counts free time for requested period
 		fillFreeTime();
-		System.out.println("Model: OK" + "\n");
+		//System.out.println("Model: OK" + "\n");
 		
 		return new ScheduleImpl(countedDays, absentDayErrors,
 				tasksErrors, totalFreeTime);
@@ -110,8 +107,6 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		//while in interval
 		while(intervalToCount.contains(pointer.toInterval())){
 			for(Day day: user.getDays()){//for all days in array
-				//System.out.println("special day loop: " 
-				//		+ day.getSpecialDate());
 				if(day.isActive() && day.isSpecial()){
 					if(day.getSpecialDate().equals(pointer)){
 						necessaryRealDays.put(pointer, day);
@@ -132,8 +127,6 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			//if this day already filled by special day
 			if(necessaryRealDays.get(pointer) == null){
 				for(Day day: user.getDays()){//for all days in array
-					//System.out.println("template dayOfWeek: " 
-					//		+ day.getDayOfWeek());
 					if(day.isActive() && !day.isSpecial() && 
 							day.getInterval().contains(pointer.toInterval())){
 						//if it is necessary day of week
@@ -294,14 +287,12 @@ public class ScheduleProcessorSimpleImpl implements Model{
 				if(freeTime == 0){
 					//just go to pointer.plusDays(1);
 				}else if(unallocatedTime > freeTime){
-					//System.out.println("1: " + freeTime);
 					for(int i=0; i<freeTime; i++){
 						cDay.addPoint(p);
 						unallocatedTime--;
 					}
 				}else{
 					while(unallocatedTime > 0){
-						//System.out.println("2: " + freeTime);
 						cDay.addPoint(p);
 						unallocatedTime--;
 					}
@@ -319,6 +310,9 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	 */
 	//TODO make quicker algorithm
 	private void fillWithLimitedTasks(){
+		//clears task errors
+		tasksErrors.clear();
+		
 		//for every limited point
 		ArrayList<Task> limitedTasks = new ArrayList<Task>();
 		
@@ -328,8 +322,10 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			}
 		}
 		
-		for(Task task: limitedTasks){//for every task
+		breakHere://braks locate all the tasks if there isn't any free time
+		for(int i=0; i<limitedTasks.size(); i++){//for every task
 			//if there is no point
+			Task task = limitedTasks.get(i);
 			if(task == null){
 				continue;
 			}
@@ -340,35 +336,24 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			
 			//counts counted days with free time
 			Interval pointInterval = task.getInterval();
-			//System.out.println(pointInterval);
 			LocalDate pointer = null;
 
 			int unallocatedTime = task.getNecessaryTime();
 			
 			//fills free time
-			//System.out.println(unallocatedTime);
 			while(unallocatedTime != 0){//while all the point time isn't located
-				//System.out.println("unt: " + unallocatedTime + " " +
-				//	(unallocatedTime != 0));
-				//System.out.println("here");
+				
 				boolean change = false;
 				pointer = pointInterval.getStart().toLocalDate();
 				
 				//trying to fill time evenly for all period of task
 				while(pointInterval.contains(pointer.toInterval())){
-					//System.out.println("pointer: " + pointer);
-					//System.out.println("contains: " + pointInterval.contains(
-					//	pointer.toInterval()));
-					//System.out.println("counted: " + countedDays.get(
-					//	pointer).getDate());
-					//System.out.println();
+					
 					//break the loop if point is located
 					if(unallocatedTime == 0){
 						break;
 					}
 					
-					
-					//System.out.println(pointer);
 					int freeTimeOnDay = countedDays.get(pointer).getFreeTime();
 					
 					if(freeTimeOnDay == 0){
@@ -377,8 +362,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 					}
 					
 					countedDays.get(pointer).addPoint(p);
-					unallocatedTime--;
-					//System.out.println("unt: " + unallocatedTime);
+					unallocatedTime--;;
 					
 					//task was pasted at least in one day
 					change = true;
@@ -387,11 +371,19 @@ public class ScheduleProcessorSimpleImpl implements Model{
 				
 				//that means that it's impossible locate point to exist time
 				if(!change){
-					String error = "No enought time for " + task.getTitle() 
-							+ ". It's necessary " + unallocatedTime  + 
-							" hour(s) to" + "complete it.";
+					//fills error with all task since current to last
+					//scheduled to locate because loop will be braked
+					for(int j=i; j<limitedTasks.size(); j++){
+						String error = "No enought time for " + limitedTasks.
+								get(j).getTitle(); 
+								/*+ ". It's necessary " + unallocatedTime  + 
+								" hour(s) to" + "complete it.";*/
 					
-					tasksErrors.add(error);
+						tasksErrors.add(error);
+					}
+					
+					//if there isn't any places - method must be break
+					break breakHere;
 				}
 			}
 		}
@@ -404,7 +396,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		countedDays = new HashMap<LocalDate, CountedDay>();
 		
 		LocalDate pointer = intervalToCount.getStart().toLocalDate();
-		//System.out.println(pointer);
+
 		//while in interval
 		while(intervalToCount.contains(pointer.toInterval())){
 			countedDays.put(pointer, new CountedDay(new LocalDate(pointer)));

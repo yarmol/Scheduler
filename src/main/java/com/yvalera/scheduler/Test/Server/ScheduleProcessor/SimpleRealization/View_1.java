@@ -1,4 +1,4 @@
-package main.java.com.yvalera.scheduler.Views.TextView;
+package main.java.com.yvalera.scheduler.Test.Server.ScheduleProcessor.SimpleRealization;
 
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 
