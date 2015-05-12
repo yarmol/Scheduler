@@ -1,0 +1,40 @@
+.main{
+    min-height: 100px;
+	min-width: 100px;
+	float: left;
+}
+.label1{
+    /*min-height: 100px;*/
+	min-width: 100px;
+	float: top;
+	text-align: center;
+	font: bold italic 150% serif; 
+}
+.label2{
+    /*min-height: 100px;*/
+	min-width: 100px;
+	float: top;
+	text-align: left;
+	padding: 15px 0px 10px 8px;
+}
+.inputContainer1{
+    /*min-height: 100px;*/
+	/*min-width: 100px;*/
+	float: bottom;
+}
+.bigContainer1{
+    /*min-height: 100px;*/
+	/*min-width: 100px;*/
+	float: bottom;
+}
+.tables{
+    /*min-height: 100px;*/
+	/*min-width: 100px;*/
+	float: bottom;
+}
+.buttons{
+    /*min-height: 100px;*/
+	min-width: 200px;
+	float: left;
+	padding: 10px 0px 5px 20px;
+}
