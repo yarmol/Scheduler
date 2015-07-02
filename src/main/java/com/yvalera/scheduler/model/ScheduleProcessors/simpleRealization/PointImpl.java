@@ -29,14 +29,14 @@ class PointImpl implements Point{
 	public String getDescription() {
 		return description;
 	}
-	
+
 	@Override
 	public String getStartDay() {
-		return "startDay";
+		return startDay;
 	}
 	
 	@Override
 	public String getEndDay() {
-		return "endDay";
+		return endDay;
 	}
 }

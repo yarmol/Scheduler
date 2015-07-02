@@ -4,9 +4,19 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
 /*
- * This point doesn't have stricted finish date, but 
- * possibly it have the date? earlier that it can't start 
- * or / and previous points
+ * Tasks keep title, description, start and and dates
+ * and other information about their selves.
+ * Tasks can be three types: Routine, FlexibleTerm,
+ * LimitedTerm. Routine task repeats all the time without
+ * start and end period. This is a sleep, cooking food and etc.
+ * Limited term point has start and and date and must be 
+ * completed until end date, so for examle to study subject to 
+ * exam date, complete project on work and etc. Flexible task
+ * means task, which mustn't be finished to certain date.
+ * The main idea of this program is to count free time for this
+ * type of tasks. For example: when I'll complete to study
+ * something for my self-education if I have certain day schedule
+ * and accordingly some free time.
  */
 //TODO Make predecessors
 public class Task{

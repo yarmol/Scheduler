@@ -20,5 +20,5 @@ public class HelloController {
 
         model.addAttribute("toPrint", scheduleService.getDaysSchedule());
         return "hello";
-    } 
+    }
 }

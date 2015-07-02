@@ -7,9 +7,13 @@ import org.joda.time.Interval;
 
 /*
  * This interface for classes which will be 
- * calculation schedules.
+ * calculate schedules.
  */
 
 public interface Model{
+	
+	/**
+	 * Returns a calculated Schedule
+	 */
 	public Schedule calculateSchedule(User user,Interval interval);
 }

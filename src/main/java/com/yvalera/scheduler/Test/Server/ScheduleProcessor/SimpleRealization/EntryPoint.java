@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntryPoint {
 	
-	//to avoi making more than one limited task with web testing
+	//to avoid making more than one limited task with web testing
 	//private boolean first = true;
 	private int times = 0;
 	
@@ -156,9 +156,9 @@ public class EntryPoint {
 		}
 	}
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		new EntryPoint().go();
-	}*/
+	}
 	
 	//for web testing
 	public Interval getInterval(){

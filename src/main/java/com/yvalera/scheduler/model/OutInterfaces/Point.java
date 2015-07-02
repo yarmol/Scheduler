@@ -1,6 +1,6 @@
 package main.java.com.yvalera.scheduler.model.OutInterfaces;
 
-/*
+/**
  * This is the outer interface to read Tasks
  * Point means one indivisible cell on
  * schedule

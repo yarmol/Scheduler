@@ -13,8 +13,6 @@ import org.joda.time.LocalDate;
  * This class represents schedule for passing
  * to View
  */
-
-//TODO make interface for schedule
 class ScheduleImpl implements Schedule{
 
 	private HashMap<LocalDate, CountedDay> days;

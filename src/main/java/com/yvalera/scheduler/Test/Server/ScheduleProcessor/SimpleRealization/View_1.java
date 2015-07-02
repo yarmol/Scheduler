@@ -5,7 +5,9 @@ import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
-
+/*
+ * This is the text view
+ */
 public class View_1 {
 	
 	public void printView(Schedule sch, Interval interval){

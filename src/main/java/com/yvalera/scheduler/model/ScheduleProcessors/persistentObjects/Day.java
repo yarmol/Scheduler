@@ -6,7 +6,10 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
 /*
- * Object of this class represents Template for days 
+ * Object of this class represents Template for days.
+ * Days can be templated with certain schedule for
+ * all period of days and Special, with special
+ * schedule for certain date.
  */
 public class Day{
 

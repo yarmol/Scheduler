@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @Configuration//makes this class configurations
-@EnableWebMvc//is used to enable Spring MVC
+@EnableWebMvc//it used to enable Spring MVC
 @ComponentScan("main.java.com.yvalera.scheduler")
 public class WebConfig extends WebMvcConfigurerAdapter{
 

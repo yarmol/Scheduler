@@ -2,7 +2,6 @@ package main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealizati
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
@@ -41,8 +40,13 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	//considering limited terms tasks
 	private Interval intervalToCount;//resets by method
 	
-	//synchronized for model, maybe it is a reason to makes 
-	//it prototype
+	/* 
+	 * It synchronized because it has state
+	 * To think: is it a reason to makes it prototype (but it will
+	 * stop all other request while one task will be calculating)
+	 * or create new instance for every session (but in one 
+	 * session can be few requsts at the same time)
+	 */
 	@Override
 	public synchronized Schedule calculateSchedule(User user,
 			Interval interval){
