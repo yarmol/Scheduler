@@ -2,10 +2,14 @@
     min-height: 100px;
 	min-width: 100px;
 	float: left;
+	min-width: 300px;
+}
+.leftContainer{
+	width: 180px;
+	float: left;
 }
 .label1{
     /*min-height: 100px;*/
-	min-width: 100px;
 	float: top;
 	text-align: center;
 	font: bold italic 150% serif; 
@@ -17,6 +21,11 @@
 	text-align: left;
 	padding: 15px 0px 10px 8px;
 }
+.commonInputContainer{
+	width: 250px;
+	padding-left: 10px;
+	padding-top: 10px;
+}
 .inputContainer1{
     /*min-height: 100px;*/
 	/*min-width: 100px;*/
@@ -26,7 +35,8 @@
     /*min-height: 100px;*/
 	/*min-width: 100px;*/
 	float: left;
-	padding: 10px 0px 15px 20px;
+	padding-right: 5px;
+	/*padding: 10px 0px 15px 20px;*/
 }
 .label3{
     /*min-height: 100px;*/
@@ -37,6 +47,19 @@
 .buttons{
     min-height: 100px;
 	min-width: 100px;
-	float: top;
-	padding: 0px 0px 5px 20px;
+	float: left;
+	padding: 10px 0px 5px 10px;
 }
+.descriptionContainer{
+	width: 150px;
+	height: 100px;
+	float:left;
+	/*padding-left: 10px;*/
+	resize: none;
+	text-align: center;
+}
+.textarea {
+    width: 130px; /* Ширина поля в процентах */
+    height: 132px; /* Высота поля в пикселах */
+    resize: none; /* Запрещаем изменять размер */
+  } 

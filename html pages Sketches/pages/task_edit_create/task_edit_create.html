@@ -7,32 +7,40 @@
 	<body>
 		<div class="main">
 			<div class="label1">
-				create new task
+				!create/edit new task!
 			</div>	
-			<div class="label2">
-				choose type of task:
-			</div>
-			<div class="inputContainer1">
-				<input type="radio" name="taskType" value="flexible">start date only<Br>
-				<input type="radio" name="taskType" value="strict">start date, end date<Br>
-				<input type="radio" name="taskType" value="routine">routine<Br>
-			</div>
-			<div class="inputContainer2">
-				<div class="label3">
-					start date<br>
+			<div class = "leftContainer">
+				<div class="label2">
+					choose type of task:
 				</div>
-				<input type="text" name="calendar" size="10">
-			</div>
-			<div class="inputContainer2">
-				<div class="label3">
-					end date<br>
+				<div class="inputContainer1">
+					<input type="radio" name="taskType" value="flexible">start date only<Br>
+					<input type="radio" name="taskType" value="strict">start date, end date<Br>
+					<input type="radio" name="taskType" value="routine">routine<Br>
 				</div>
-				<input type="text" name="calendar" size="10">
+				<div class= "commonInputContainer">
+					<div class="inputContainer2">
+						<div class="label3">
+							start date<br>
+						</div>
+						<input type="text" name="calendar" size="10">
+					</div>
+					<div class="inputContainer2">
+						<div class="label3">
+							end date<br>
+						</div>
+						<input type="text" name="calendar" size="10">
+					</div>
+				</div>
+				<div class="buttons">
+					<input type="submit" value="save">
+					<input type="submit" value="cancel">
+				</div>
 			</div>
-			<div class="buttons">
-				<input type="submit" value="save">
-				<input type="submit" value="cancel">
-			</div>	
+			<div class = "descriptionContainer">
+				Description <br>
+				<textarea name="description" class ="textarea"></textarea>
+			</div>
 		</div>	
 	</body>
 </html>
