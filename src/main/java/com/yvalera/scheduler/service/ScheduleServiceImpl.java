@@ -1,14 +1,15 @@
-package main.java.com.yvalera.scheduler.service;
+/*package main.java.com.yvalera.scheduler.service;
 
 import java.util.ArrayList;
 
-import main.java.com.yvalera.scheduler.Test.Server.ScheduleProcessor.SimpleRealization.EntryPoint;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import Test.Server.ScheduleProcessor.SimpleRealization.EntryPoint;
 
 @Component
 public class ScheduleServiceImpl implements ScheduleService{
@@ -59,5 +60,4 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 		return list;
 	}
-
-}
+}*/

@@ -6,10 +6,12 @@ import java.util.HashMap;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.Day;
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.User;
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.Task.Task;
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.Task.TypeOfTask;
+
+
+import main.java.com.yvalera.scheduler.model.persistentObjects.Day;
+import main.java.com.yvalera.scheduler.model.persistentObjects.User;
+import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
+import main.java.com.yvalera.scheduler.model.persistentObjects.Task.TypeOfTask;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;

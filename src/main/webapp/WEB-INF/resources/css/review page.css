@@ -1,0 +1,44 @@
+.main{
+    min-height: 100px;
+	min-width: 300;
+	float: left;
+}
+.dataSelect{
+	/*width: 200px;*/
+	/*padding-left: 10px;*/
+	padding-top: 10px;
+	text-align: center;
+	float: top;
+	Clear: both;
+}
+.inputContainer1{
+    /*min-height: 100px;*/
+	/*min-width: 100px;*/
+	float: left;
+	padding-right: 5px;
+}
+.mainData{
+padding-top: 10px;
+	min-width: 300px;
+	background-color: #66CCFF;
+	float: left;
+	text-align: center;
+}
+.mainHeader{
+	float: left;
+}
+.mainView{
+	min-width: 250;
+	float: left;
+}
+.label1{
+	min-width: 100px;
+	text-indent: 30px;
+	text-align: left;
+}
+.legend{
+	min-width: 100px;
+	float: left;
+	background-color: #66FFCC;
+	
+}

@@ -1,6 +1,7 @@
 package main.java.com.yvalera.scheduler.model.OutInterfaces;
 
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.User;
+
+import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 
 import org.joda.time.Interval;
 

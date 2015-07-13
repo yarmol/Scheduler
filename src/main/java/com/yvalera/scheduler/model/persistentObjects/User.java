@@ -1,9 +1,9 @@
-package main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects;
+package main.java.com.yvalera.scheduler.model.persistentObjects;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.Task.Task;
+import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 
 /*
  * It represents users with their schedulled days and

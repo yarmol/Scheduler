@@ -1,6 +1,6 @@
-package main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects;
+package main.java.com.yvalera.scheduler.model.persistentObjects;
 
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.Task.Task;
+import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;

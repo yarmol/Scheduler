@@ -1,4 +1,4 @@
-package main.java.com.yvalera.scheduler.model.ScheduleProcessors.persistentObjects.Task;
+package main.java.com.yvalera.scheduler.model.persistentObjects.Task;
 
 /*
  * This is types of tasks.

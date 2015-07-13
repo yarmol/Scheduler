@@ -3,19 +3,19 @@ package main.java.com.yvalera.scheduler.config;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class AppInititialization extends AbstractAnnotationConfigDispatcherServletInitializer {
-    // Этот метод должен содержать конфигурации которые инициализируют Beans
-    // для инициализации бинов у нас использовалась аннотация @Bean
+	
+	//Application context configuration
     @Override
-    protected Class<?>[] getRootConfigClasses() {
+    protected Class<?>[] getRootConfigClasses(){
         return new Class<?>[]{
-                WebConfig.class
+        		//Empty class, without it application doesn't start
+                RootConfig.class
         };
     }
 
-    // Тут добавляем конфигурацию, в которой инициализируем ViewResolver
+    //Servlet context configuration
     @Override
     protected Class<?>[] getServletConfigClasses() {
-
         return new Class<?>[]{
                 WebConfig.class
         };

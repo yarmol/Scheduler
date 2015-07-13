@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="task_edit_create.css">
+	</head>
+	<body>
+		<div class="main">
+			<div class="label1">
+				!create/edit new task!
+			</div>	
+			<div class = "leftContainer">
+				<div class="label2">
+					choose type of task:
+				</div>
+				<div class="inputContainer1">
+					<input type="radio" name="taskType" value="flexible">start date only<Br>
+					<input type="radio" name="taskType" value="strict">start date, end date<Br>
+					<input type="radio" name="taskType" value="routine">routine<Br>
+				</div>
+				<div class= "commonInputContainer">
+					<div class="inputContainer2">
+						<div class="label3">
+							start date<br>
+						</div>
+						<input type="text" name="calendar" size="10">
+					</div>
+					<div class="inputContainer2">
+						<div class="label3">
+							end date<br>
+						</div>
+						<input type="text" name="calendar" size="10">
+					</div>
+				</div>
+				<div class="buttons">
+					<input type="submit" value="save">
+					<input type="submit" value="cancel">
+				</div>
+			</div>
+			<div class = "descriptionContainer">
+				Description <br>
+				<textarea name="description" class ="textarea"></textarea>
+			</div>
+		</div>	
+	</body>
+</html>
+				

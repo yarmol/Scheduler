@@ -1,4 +1,4 @@
-package main.java.com.yvalera.scheduler.Test.Server.ScheduleProcessor.SimpleRealization;
+package Test.Server.ScheduleProcessor.SimpleRealization;
 
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 
