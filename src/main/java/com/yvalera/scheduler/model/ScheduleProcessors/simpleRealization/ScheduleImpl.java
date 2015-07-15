@@ -18,19 +18,23 @@ class ScheduleImpl implements Schedule{
 	private HashMap<LocalDate, CountedDay> days;
 	private ArrayList<String> absentDayErrors;
 	private ArrayList<String> tasksErrors;
+	private ArrayList<String> tasksNames;
 	private int totalFreeTime;
 	//private Interval interval;
 	//for test only
 	//private int times = 0;
 	
-	ScheduleImpl(/*Interval interval, */HashMap<LocalDate, CountedDay> days, 
-			ArrayList<String> absentDayErrors, 
-			ArrayList<String> tasksErrors, int totalFreeTime){
+	ScheduleImpl(HashMap<LocalDate,	CountedDay> days, 
+				ArrayList<String> absentDayErrors, 
+				ArrayList<String> tasksErrors,
+				int totalFreeTime, 
+				ArrayList<String> nonRoutineTasksNames){
 		//this.interval = interval;
 		this.days = days;
 		this.absentDayErrors = absentDayErrors;
 		this.tasksErrors = tasksErrors;
 		this.totalFreeTime = totalFreeTime;
+		this.tasksNames = nonRoutineTasksNames;
 	}
 
 	@Override
@@ -63,6 +67,12 @@ class ScheduleImpl implements Schedule{
 	@Override
 	public int getTotalFreeTime() {
 		return totalFreeTime;
+	}
+
+	@Override
+	public ArrayList<String> getTasksNames() {
+		// TODO Auto-generated method stub
+		return tasksNames;
 	}
 	
 	/*@Override

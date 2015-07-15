@@ -2,7 +2,7 @@ package main.java.com.yvalera.scheduler.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class AppInititialization extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 	
 	//Application context configuration
     @Override

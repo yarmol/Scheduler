@@ -6,8 +6,6 @@ import java.util.HashMap;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
-
-
 import main.java.com.yvalera.scheduler.model.persistentObjects.Day;
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
@@ -17,13 +15,16 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
+import org.springframework.stereotype.Component;
+
 /*
  * Object of this class calculates and returns schedule. 
  */
 
+@Component
 public class ScheduleProcessorSimpleImpl implements Model{
 
-	//injects by constructor
+	//injects by calculateScheduleMethod
 	private Interval requestedInterval;
 	private User user;
 	
@@ -31,6 +32,10 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	private ArrayList<String> absentDayErrors = new ArrayList<String>();
 	private ArrayList<String> tasksErrors = new ArrayList<String>();
 	private int totalFreeTime;//total free time in requested interval
+	
+	//I added it to simplify view rendering 
+	private ArrayList<String> tasksNamesInRequesteInterval = 
+			new ArrayList<String>();
 	
 	//result of calculations
 	private HashMap<LocalDate, CountedDay> countedDays;
@@ -57,6 +62,9 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		this.user = user;
 		requestedInterval = interval;
 		
+		//resets this object state from prevision calculation
+		resetState();
+		
 		//Calculate necessary interval fo further calculations
 		calculateIntervalToCount();
 		//System.out.println("interval calculated");
@@ -65,9 +73,9 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		findNecessaryDays();
 		//System.out.println("necessary days found");
 		
-		//if there is not all days, it's no reso to continue calculating
+		//if there is not all days, it's no reson to continue calculating
 		if(absentDayErrors.size() != 0){
-			return new ScheduleImpl(null, absentDayErrors, null, 0);
+			return new ScheduleImpl(null, absentDayErrors, null, 0, null);
 		}
 		
 		//makes empty days for calculating schedule
@@ -95,7 +103,8 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		//System.out.println("Model: OK" + "\n");
 		
 		return new ScheduleImpl(countedDays, absentDayErrors,
-				tasksErrors, totalFreeTime);
+				tasksErrors, totalFreeTime, 
+				tasksNamesInRequesteInterval);
 	}
 	
 	/*
@@ -128,6 +137,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		
 		pointer = intervalToCount.getStart().toLocalDate();
 		
+		//finds not special days
 		//while in interval
 		while(intervalToCount.contains(pointer.toInterval())){
 			//if this day already filled by special day
@@ -149,7 +159,6 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		}
 				
 		//finds absent day templates
-		absentDayErrors.clear();//clears errors from prevision equations
 		pointer = intervalToCount.getStart().toLocalDate();
 		
 		//while in interval
@@ -251,7 +260,8 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		
 		//for every Flexible point
 		ArrayList<Task> flexibleTasks = new ArrayList<Task>();
-				
+		
+		//adds all active Flexible tasks to proceccing
 		for(Task task: user.getTasks()){
 			if(task.isActive() && task.getType() == TypeOfTask.FlexibleTerm){
 				flexibleTasks.add(task);
@@ -270,9 +280,10 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			PointImpl p = new PointImpl(task.getTitle(), task.getDescription(),
 					task.getStartDate().toString(), "");
 			
-			Interval desiredInterval = 
-					new Interval(task.getStartDate().toDate().
-							getTime(), requestedInterval.getEndMillis());
+			//Interval in which task must be complete
+			Interval desiredInterval = new Interval(
+					task.getStartDate().toDate().getTime(),
+						requestedInterval.getEndMillis());
 					//IntervalToCount.overlap(
 					//point.getStartDate().toInterval());
 			
@@ -280,9 +291,9 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			
 			int unallocatedTime = task.getNecessaryTime();
 			
-			//while in interval
+			//while pointer in desired interval
 			while(desiredInterval.contains(pointer.toInterval())){
-				if(unallocatedTime == 0){//point located
+				if(unallocatedTime == 0){//Task located
 					break;
 				}
 				
@@ -316,8 +327,6 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	 */
 	//TODO make quicker algorithm
 	private void fillWithLimitedTasks(){
-		//clears task errors
-		tasksErrors.clear();
 		
 		//for every limited point
 		ArrayList<Task> limitedTasks = new ArrayList<Task>();
@@ -424,5 +433,31 @@ public class ScheduleProcessorSimpleImpl implements Model{
 				}
 			}
 		}
+	}
+	
+	//clears state of object from prevision invokation
+	private void resetState(){
+		//clears ArrayLists with errors and tasks
+		absentDayErrors.clear();
+		tasksErrors.clear();
+		tasksNamesInRequesteInterval.clear();	
+	}
+	
+	/*
+	 * returns all the tasks titles whuch will be on 
+	 * requested interval except routine tasks;
+	 */
+	private ArrayList<String> getNonRoutineTasksNames(){
+
+		ArrayList<String> tasks = new ArrayList<String>();
+		
+		for(Task task: user.getTasks()){
+			if(task.isActive() && requestedInterval.
+					contains(task.getInterval())){
+				tasks.add(task.getTitle());
+			}
+		}
+		
+		return tasks;
 	}
 }

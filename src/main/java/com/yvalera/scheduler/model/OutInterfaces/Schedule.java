@@ -1,5 +1,6 @@
 package main.java.com.yvalera.scheduler.model.OutInterfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -29,7 +30,28 @@ public interface Schedule {
 	 * will be having errors. Displayed or no?
 	 */
 
+	/**
+	 * If user doesn't have all days in requested interval
+	 * returned List must keep absent days
+	 */
 	public List<String> getAbsentDayErrors();
+	
+	/**
+	 * If it's impossible to locate task in specifies
+	 * interval of time returned List must keep names
+	 * of problem tasks
+	 */
 	public List<String> getTasksErrors();
+	
+	/**
+	 * Returns free time in requested time interval
+	 */
 	public int getTotalFreeTime();
+	
+	/**
+	 * Returns List<String> names of all tasks which are
+	 * in the interval
+	 */
+	public ArrayList<String> getTasksNames();
+	
 }

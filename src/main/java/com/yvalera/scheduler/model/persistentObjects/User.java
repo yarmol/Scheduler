@@ -3,12 +3,15 @@ package main.java.com.yvalera.scheduler.model.persistentObjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 
 /*
  * It represents users with their schedulled days and
  * tasks
  */
+//@Entity
 public class User {
 	
 	private String name;//username

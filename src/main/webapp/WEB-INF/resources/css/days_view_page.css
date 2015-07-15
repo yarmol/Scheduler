@@ -1,0 +1,45 @@
+.DVP_dataSelect{
+	/*width: 200px;*/
+	/*padding-left: 10px;*/
+	padding-top: 10px;
+	text-align: center;
+	float: top;
+	Clear: both;
+}
+.DVP_inputContainer1{
+    /*min-height: 100px;*/
+	/*min-width: 100px;*/
+	float: left;
+	padding-right: 5px;
+}
+.DVP_square{
+	height: 18px;
+	width: 18px;
+	float: left;
+	margin: 2px;
+	background-color: #33ffff;
+}
+.DVP_number_square{
+	height: 18px;
+	width: 18px;
+	float: left;
+	margin: 2px;
+	background-color: #AABBCC;
+	text-align: center;
+}
+.DVP_hour_label{
+	height: 18px;
+	width: 90px;
+	float: left;
+	margin: 2px;
+	background-color: #EEEEEE;
+	text-align: center;
+}
+.DVP_hour_empty_label{
+	height: 18px;
+	width: 90px;
+	float: left;
+	margin: 2px;
+	/*background-color: #EEEEEE;*/
+	/*text-align: center;*/
+}

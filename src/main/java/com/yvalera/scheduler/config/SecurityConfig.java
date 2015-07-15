@@ -22,8 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-			.antMatchers("/user/**").access("hasRole('USER')").and()
-			.formLogin().defaultSuccessUrl("/user/temp", false).and()
+			.antMatchers("/app/**").access("hasRole('USER')").and()
+			.formLogin().defaultSuccessUrl("/app/days", false).and()
 			//link on logout
 			.logout().logoutUrl("/j_spring_security_logout")
 			.logoutSuccessUrl("/login").and()

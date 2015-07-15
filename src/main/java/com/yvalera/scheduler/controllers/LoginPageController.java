@@ -14,7 +14,7 @@ public class LoginPageController {
 	//private ScheduleService scheduleService;
 	
     @RequestMapping(method = RequestMethod.GET)
-    public String printWelcome(/*ModelMap model*/) {
+    public String printWelcome() {
     	
         return "login";
     }

@@ -34,12 +34,14 @@
         	<artifactId>spring-webmvc</artifactId>
        		<version>${spring.version}</version>
     	</dependency>
+    	
     	<!--dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 			<version>${spring.version}</version>
 		</dependency-->
-				<dependency>
+		
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>${spring.version}</version>
@@ -54,8 +56,35 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>		
  	
     	
+    	<!-- Hibernate, persistence, JDBC connector -->
+ 
+    	<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+   		<dependency>  
+        	<groupId>org.hibernate</groupId>  
+        	<artifactId>hibernate-core</artifactId>  
+        	<version>4.3.9.Final</version>  
+    	</dependency>
+
+    	<dependency>  
+        	<groupId>mysql</groupId>  
+       		<artifactId>mysql-connector-java</artifactId>  
+        	<version>5.1.35</version>  
+    	</dependency>
+
+   	
     	<!-- other dependencies -->
     	<dependency>
    			<groupId>javax.servlet</groupId>

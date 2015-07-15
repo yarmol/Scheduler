@@ -3,8 +3,16 @@ package main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealizati
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
 
 /*
- * it necessary for View, this objects will be pass
- * to View from CountedDay
+ * Point means one indivisible cell on
+ * schedule, but it keeps start and end date
+ * for whole Task.
+ *
+ * It necessary for View, this objects will be pass
+ * to View to draw schedule
+ * 
+ * Object which counts schedule fills all the
+ * fields of this class while it counting schedule.
+ * It takes data from task objects.
  */
 class PointImpl implements Point{
 	private String title;
