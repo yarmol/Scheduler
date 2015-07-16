@@ -2,19 +2,22 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ page import="org.joda.time.LocalDate, org.joda.time.Period,
-			 org.joda.time.PeriodType,  org.joda.time.Interval,
-			 org.joda.time.Days,
-			java.util.Map, java.util.LinkedHashMap,
-			java.util.Locale,
-			main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule"
-			 %>
+			 	org.joda.time.PeriodType,  org.joda.time.Interval,
+			 	org.joda.time.Days,
+				java.util.Map, java.util.LinkedHashMap, java.util.HashMap,
+				java.util.Locale,
+				main.java.com.yvalera.scheduler.model.OutInterfaces.Point,
+				main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule,
+				java.util.ArrayList, java.util.Collections,
+				java.lang.String, java.lang.Integer"
+%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
 	/*
-	* this code parses schedule to mark months boundaries
-	* for nice representing
-	*/
+	 * this code parses schedule to mark months boundaries
+	 * for nice representing
+	 */
 
 	//these two values must be equal to values in "days_view_page.css"
 	int sqSize = 18;//size of every square element
@@ -37,6 +40,14 @@
 	//days in certain months in interval
 	//keeps insertion order
 	Map<String, Integer> daysInMonthes = null;
+	
+	//TODO think how to do it more correctly
+	//This map necessary to retrieve Point object from schedule
+	Map<String, Point> points;
+	
+	Schedule schedule = (Schedule)request.getAttribute("schedule");//schedule
+	
+	
 	
 	//how days in period
 	totalDays = Days.daysBetween(interval.getStart(), interval.getEnd())
@@ -84,12 +95,39 @@
 	}
 	
 	//necessary days in last months
+	//-1 because interval excludes end date
 	lastDayOfLastMonth = new LocalDate(interval.getEndMillis()).
-			getDayOfMonth();
+			getDayOfMonth() - 1;
 	lastMonthName = new LocalDate(interval.getEndMillis()).
 			monthOfYear().getAsText(new Locale("en")) + " " +
 			new LocalDate(interval.getEndMillis()).getYear();
 	daysInMonthes.put(lastMonthName, lastDayOfLastMonth);
+	
+	
+	
+	//fills the points Map with point with certain date and hour
+	points = new HashMap<String, Point>();
+	
+	LocalDate pointer = interval.getStart().toLocalDate();
+		
+	//while in interval
+	while(interval.contains(pointer.toInterval())){
+		//for each hour in day
+		for(int i = 0; i < 24; i++){
+			Point point = schedule.getPointAt(pointer, i);
+		
+			String fullDate = pointer.monthOfYear().
+					getAsText(new Locale("en")) + " " +
+					pointer.getYear() + " " + pointer.getDayOfMonth() + 
+					" " + new Integer(i);
+			
+			//points.put(fullDate, point);
+			points.put(fullDate, point);
+		}
+		
+		pointer = pointer.plusDays(1);
+	}
+	
 	
 	//makes variable avaible with JSP EL and JSTL 
 	request.setAttribute("sqSize", sqSize);
@@ -104,13 +142,73 @@
 	request.setAttribute("lastMonthName", lastMonthName);
 	request.setAttribute("daysInMonthes", daysInMonthes);
 	request.setAttribute("totalDays", totalDays);
+	request.setAttribute("points", points);
 	
+	
+	
+   /*
+	* This code generates different colors for different task
+	*/
+	
+	Map<String, String> taskColorMapping = new HashMap<String, String>();
+	ArrayList<String> colors = new ArrayList<String>();
+		
+	//both must be between 0 and 16
+	int minBright = 9;
+	int maxBright = 15;
+	int step = 2;
+		
+	int totalColors = 0;
+	int counter = 0;
+
+	//generates 120 different colors
+	for(int R = minBright; R < maxBright; R=R+step){
+		for(int G = minBright; G < maxBright; G=G+step){
+			for(int B = minBright; B < maxBright; B=B+step){
+				//skips greys shades
+				if(R == G && R == B) continue;
+					
+				String color =  Integer.toHexString(R) +
+								Integer.toHexString(R) +
+								Integer.toHexString(G) +
+								Integer.toHexString(G) +
+								Integer.toHexString(B) +
+								Integer.toHexString(B);
+
+				colors.add(color);
+			}
+		}
+	}
+
+	//makes random order for colors
+	Collections.shuffle(colors);
+		
+	totalColors = colors.size();
+		
+	for(String s: schedule.getTasksNames()){
+		//if there are tasks more than generated colors
+		if(counter == totalColors){
+			counter = 0;
+		}
+		
+		taskColorMapping.put(s, colors.get(counter));
+		
+		counter++;
+	}
+	
+	request.setAttribute("taskColor", taskColorMapping);
+	//System.out.println("total colors: " + colors.size());
+		
+	//request.setAttribute("colors", colors);
 	
 	//System.out.println();
-	Schedule sch = (Schedule)request.getAttribute("schedule");
+	//Schedule sch = (Schedule)request.getAttribute("schedule");
 	
-	System.out.println(sch);
-	System.out.println(sch.getTasksNames());
+	//System.out.println(sch);
+	/*System.out.println("task name size: " + sch.getTasksNames().size());
+	for(String s: sch.getTasksNames()){
+		System.out.println(s);
+	}*/
 
 	
 %>
@@ -159,60 +257,92 @@
 							</c:choose>
 						</c:forEach>
 					</div><!--end column with time -->
+				
+				
+					<!-- this div keeps in scroll bar div with all months -->
+					<div style="max-width: 60%; float: left; overflow: auto">
+				
+						<!-- div for months wit their natural sizes -->
+						<div style="min-width: ${totalDays * (sqSize + 2 * space) + totalMonths * 8}px; float: left">
 					
-					<!-- MAIN MOTHS LOOP -->
-					<c:forEach var="monthsMapElement" items="${daysInMonthes}">				
-					
-						<!-- ternary if -->
-						<c:set var="containerWidth" value="${ counter == 1 ? 
-								((monthsMapElement.value-firstMonthStartDay + 1) * 	sqSize + 
-									(monthsMapElement.value-firstMonthStartDay + 1) * 2 * space + 1)
-							:	
-									(monthsMapElement.value * sqSize + monthsMapElement.value * 2 * space + 1)}"/>
-						
-						<c:set var="labelWidth" value = "${containerWidth - 
-								2 * space}"/> 
-						 
-						<!-- FROM THIS POINT GO MONTHS WITH LABELS -->
-						<div style="width: ${containerWidth}px; float: left; margin-right: 5px">
+							<!-- MAIN MOTHS LOOP -->
+							<c:forEach var="monthsMapElement" items="${daysInMonthes}">				
 							
-							
-							<!-- months name -->
-							<div style="width: ${labelWidth}px; text-align: center; background-color: #ADD8E6;
-									 margin: ${space}px; border-radius: 7px">
-								${monthsMapElement.key}
-							</div>
-							
-							<!-- month's schedule representation div -->
-							<div style="width: ${containerWidth}px">
+								<!-- ternary if -->
+								<c:set var="containerWidth" value="${ counter == 1 ? 
+										((monthsMapElement.value-firstMonthStartDay + 1) * 	sqSize + 
+											(monthsMapElement.value-firstMonthStartDay + 1) * 2 * space + 1)
+									:	
+											(monthsMapElement.value * sqSize + monthsMapElement.value * 2 * space + 1)}"/>
 								
-								<!-- days string -->
-								<c:forEach var="i" begin="${counter == 1 ? firstMonthStartDay : 1}" 
-										end="${monthsMapElement.value}">
-									<div class="DVP_number_square">
-										${i}
-									</div>
-								</c:forEach>
-								
-								<!-- for every 24 hours in day -->
-								<c:forEach var="i" begin="1" end="24">
+								<c:set var="labelWidth" value = "${containerWidth - 
+										2 * space}"/> 
+								 
+								<!-- FROM THIS POINT GO MONTHS WITH LABELS -->
+								<div style="width: ${containerWidth}px; float: left; margin-right: 5px">
 									
-									<!-- for every hour in day sequence -->
-									<c:forEach var="i" begin="${counter == 1 ? firstMonthStartDay : 1}" 
-											end="${monthsMapElement.value}">
-										<div class="DVP_square" title="some text">
-											<!-- temporary just unsigned square 
-												here must be code which retrieves
-												data for every code and changes 
-												style for this div-->
-										</div>
-									</c:forEach>
-								</c:forEach><!-- end for every 24 hours in day -->
-							</div><!-- end month's schedule representation div -->
-						</div><!--END FROM THIS POINT GO MONTHS WITH LABELS -->
-						
-						<c:set var="counter" value="${counter + 1}"/>
-					</c:forEach><!-- END MAIN MOTHS LOOP -->
+									
+									<!-- months name -->
+									<div style="width: ${labelWidth}px; text-align: center; background-color: #ADD8E6;
+											 margin: ${space}px; border-radius: 7px">
+										${monthsMapElement.key}
+									</div>
+									
+									<!-- month's schedule representation div -->
+									<div style="width: ${containerWidth}px">
+										
+										<!-- days string (top row under months name) -->
+										<c:forEach var="i" begin="${counter == 1 ? firstMonthStartDay : 1}" 
+												end="${monthsMapElement.value + day}">
+											<div class="DVP_number_square">
+												${i}
+											</div>
+										</c:forEach>
+										
+										<!-- for every 24 hours in day -->
+										<c:forEach var="hour" begin="1" end="24">
+											
+											<!-- for every hour in day sequence -->
+											<c:forEach var="day" begin="${counter == 1 ? firstMonthStartDay : 1}" 
+													end="${monthsMapElement.value}">
+												
+												<!-- prepares key for map -->
+												<c:set var="fullDate" value="${monthsMapElement.key} ${day} ${hour-1}"/>
+												
+												<!-- point parameters -->
+												<c:set var="pointTitle" value="${points[fullDate].title}"/>
+												<!-- c:set var="pointStartDate" value="${points[fullDate].startDay}"/-->
+												<!-- c:set var="pointEndtDate" value="${points[fullDate].endDay}"/-->
+												<!-- c:set var="pointDescription" value="${points[fullDate].description}"/-->
+												
+												<div class="DVP_square" title="title: ${pointTitle}"
+														
+														style="background-color: #${taskColor[pointTitle]}">
+													<!-- temporary just unsigned square 
+														here must be code which retrieves
+														data for every code and changes 
+														style for this div-->
+												</div>
+											</c:forEach>
+										</c:forEach><!-- end for every 24 hours in day -->
+									</div><!-- end month's schedule representation div -->
+								</div><!--END FROM THIS POINT GO MONTHS WITH LABELS -->
+								
+								<c:set var="counter" value="${counter + 1}"/>
+							</c:forEach><!-- END MAIN MOTHS LOOP -->
+						</div><!-- end div for months wit their natural sizes -->
+					</div><!-- end this div keeps in scroll bar div with all months -->
+					
+					<!-- legend container div -->
+					<div class="DVP_legend_container">
+						<div class="DVP_legend_header">Legend</div>
+						<c:forEach var="taskName" items="${schedule.tasksNames}">
+							<div class="DVP_legend_items" style="background-color: #${taskColor[taskName]}">${taskName}</div>
+						</c:forEach>
+					</div>
+					
+					
+					
 				</div><!--END CONTAINER FOR ALL MONTHS -->
 			
 				<!-- buttons panel -->
@@ -238,13 +368,7 @@
 						<input type="submit" value="show" name="show">
 					</div>
 				</div><!-- buttons panel -->
-			</div><!-- end general div for month and buttons -->
-			
-			<!-- legend container div -->
-			<div class="DVP_legend_container">
-				Legend
-			</div>
-			
+			</div><!-- end general div for month and buttons -->		
 		</div><!-- end general div of this jsp page --> 
 	</body>
 </html>

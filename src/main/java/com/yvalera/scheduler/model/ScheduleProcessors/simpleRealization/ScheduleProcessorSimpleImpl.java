@@ -13,7 +13,6 @@ import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.TypeOfTask;
 
-import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
@@ -104,6 +103,9 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		//counts free time for requested period
 		fillFreeTime();
 		//System.out.println("Model: OK" + "\n");
+		
+		//fills names of tasks in requested interval
+		getTasksNames();
 		
 		return new ScheduleImpl(countedDays, absentDayErrors,
 				tasksErrors, totalFreeTime, 
@@ -449,7 +451,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			int freeTime = day.getFreeTime();
 			
 			if(freeTime > 0){
-				for(int i=0; i< freeTime; i++){
+				for(int i=0; i < freeTime; i++){
 					day.addPoint(p);
 					totalFreeTime++;
 				}
@@ -466,20 +468,27 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	}
 	
 	/*
-	 * returns all the tasks titles whuch will be on 
-	 * requested interval except routine tasks;
+	 * returns all the tasks titles which will be on 
+	 * requested interval.
 	 */
-	private ArrayList<String> getNonRoutineTasksNames(){
-
-		ArrayList<String> tasks = new ArrayList<String>();
+	private void getTasksNames(){
 		
-		for(Task task: user.getTasks()){
-			if(task.isActive() && requestedInterval.
-					contains(task.getInterval())){
-				tasks.add(task.getTitle());
+		Set<LocalDate> allDays = countedDays.keySet();
+		TreeSet<String> tasksNames = new TreeSet<String>();
+		
+		//puts all tasks name to set
+		for(LocalDate d: allDays){
+			CountedDay curDay = countedDays.get(d);
+			for(int i=0; i<24; i++){
+				
+				Point p = curDay.getPointAt(i);
+				
+				tasksNames.add(p.getTitle());
 			}
 		}
 		
-		return tasks;
+		for(String s: tasksNames){
+			tasksNamesInRequesteInterval.add(s);
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package main.java.com.yvalera.scheduler.model.OutInterfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -52,6 +51,6 @@ public interface Schedule {
 	 * Returns List<String> names of all tasks which are
 	 * in the interval
 	 */
-	public ArrayList<String> getTasksNames();
+	public List<String> getTasksNames();
 	
 }

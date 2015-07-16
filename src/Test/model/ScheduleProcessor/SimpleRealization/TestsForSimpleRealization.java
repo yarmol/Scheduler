@@ -49,22 +49,32 @@ public class TestsForSimpleRealization {
 		LocalDate flexibleTermPointStart = 
 				new LocalDate(2000, 1, 3);
 		
-		for(int i = 0; i < 5; i++){
+
 		
-			User user = UserFactory.getUser(
-					fillRoutineDaysInterval, 
-					speciaTaskInterval, specialDayDate, 
-					flexibleTermPointStart);
-			
+		User user = UserFactory.getUser(
+				fillRoutineDaysInterval, 
+				speciaTaskInterval, specialDayDate, 
+				flexibleTermPointStart);
+		
+		for(int i=0; i<5; i++){
+		
 			schedule = model.calculateSchedule(user,
 					requestedInterval);
-			
+		
 			//TextView view = new TextView();
 			//view.printView(schedule, requestedInterval);
-			
+		
 			assertEquals(schedule.getAbsentDayErrors().size(), 0);
 			assertEquals(schedule.getTasksErrors().size(), 0);
 			assertEquals(schedule.getTotalFreeTime(), 7);
+			
+			//for(String s: schedule.getTasksNames()){
+			//	System.out.println(s);
+			//}
+			
+			
+			//System.out.println("task names size: " + schedule.
+			//		getTasksNames().size());
 		}
 	}
 	
@@ -99,22 +109,21 @@ public class TestsForSimpleRealization {
 		LocalDate flexibleTermPointStart = 
 				new LocalDate(2000, 1, 3);
 		
-		for(int i = 0; i < 5; i++){
+		User user = UserFactory.getUser(
+				fillRoutineDaysInterval, 
+				limitedTaskInterval, specialDayDate, 
+				flexibleTermPointStart);
 		
-			User user = UserFactory.getUser(
-					fillRoutineDaysInterval, 
-					limitedTaskInterval, specialDayDate, 
-					flexibleTermPointStart);
-			
+		//for(int i=0; i<5; i++){
 			schedule = model.calculateSchedule(user,
-					requestedInterval);
+				requestedInterval);
 			
 			//TextView view = new TextView();
 			//view.printView(schedule, requestedInterval);
-			
+		
 			assertEquals(schedule.getAbsentDayErrors().size(), 0);
 			assertEquals(schedule.getTasksErrors().size(), 0);
 			//assertEquals(schedule.getTotalFreeTime(), 7);
-		}
+		//}
 	}
 }

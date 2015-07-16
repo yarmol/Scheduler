@@ -25,9 +25,9 @@ public class DaoStubImpl implements Dao{
 	private SessionFactory sessionFactory; 
 	
 	//temporary part for create user without DB request
-	private User user = new User();
+	private User user;
 	private LocalDate startDate = new LocalDate(2000, 1, 1);
-	private LocalDate endDate = new LocalDate(2000, 10, 7);
+	private LocalDate endDate = new LocalDate(2001, 10, 7);
 	
 	private LocalDate specialDay = new LocalDate(2000, 1, 3);
 	
@@ -45,6 +45,10 @@ public class DaoStubImpl implements Dao{
 	private void go(){
 		
 		//for(int i=0; i<10; i++){
+			//otherwise in every callg of this method a
+			//new FlexibleTermTask will be added
+			user = new User();
+		
 			fillTemplateDays();
 			fillSpecialDays();
 			addLimitedTimePoint(/*i+*/1);//uncoment for "for loop"
@@ -88,7 +92,7 @@ public class DaoStubImpl implements Dao{
 	 */
 	private void fillTemplateDays(){
 		
-		int pointCounter = 1;
+		//int pointCounter = 1;
 		
 		//for each day
 		for(int i=1; i<8; i++){
@@ -100,12 +104,16 @@ public class DaoStubImpl implements Dao{
 			for(int j=0; j<20; j++){
 				//creates unique point
 				Task rTask = new Task();
-				rTask.setTitle("RoutinePoint_" + pointCounter);
+				rTask.setTitle("RoutinePoint_"/* + j/*pointCounter*/);
 				//System.out.println(rPoint.getTitle());
 				rTask.setDescription("");
 				rTask.setType(TypeOfTask.Routine);
 				tDay.getTasks()[j] = rTask;
-				pointCounter++;
+				
+				/*//to reduce quantity of tasks
+				if(j == 19){
+					pointCounter++;
+				}*/
 			}
 			
 			ArrayList<Day> days = new ArrayList<Day>();

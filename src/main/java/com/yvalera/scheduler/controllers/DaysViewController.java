@@ -26,7 +26,7 @@ public class DaysViewController {
 	
 	/*
 	 * Calls with request without parameters
-	 * Returns returns curent and next months view.
+	 * Returns returns current and next months view.
 	 */
     @RequestMapping(method = RequestMethod.GET)
     public String tempRedirect(ModelMap model) {
@@ -55,7 +55,7 @@ public class DaysViewController {
     	
     	//stub interval to test the page, the same interval in the
     	//DaoStubImpl
-    	LocalDate startDate = new LocalDate(2000, 1, 10);
+    	LocalDate startDate = new LocalDate(2000, 1, 1);
     	LocalDate endDate = new LocalDate(2000, 3, 22);
     	interval = new Interval(startDate.toDate().getTime(),
     			endDate.toDate().getTime());
