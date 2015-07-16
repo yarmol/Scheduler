@@ -2,6 +2,8 @@ package main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealizati
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
@@ -14,7 +16,6 @@ import main.java.com.yvalera.scheduler.model.persistentObjects.Task.TypeOfTask;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
-
 import org.springframework.stereotype.Component;
 
 /*
@@ -62,10 +63,12 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		this.user = user;
 		requestedInterval = interval;
 		
+		//System.out.println(interval);
+		
 		//resets this object state from prevision calculation
 		resetState();
 		
-		//Calculate necessary interval fo further calculations
+		//Calculate necessary interval to further calculations
 		calculateIntervalToCount();
 		//System.out.println("interval calculated");
 		
@@ -177,34 +180,43 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	
 	/*
 	 * Calculates interval to count considers limited
-	 * terms tasks. The interval with them must be
+	 * term tasks. The interval with them must be
 	 * calculated to understand is it real to do them
-	 * in limited period
+	 * in limited period.
+	 * 
+	 * In this implementation start date will be selected from
+	 * two dates: the earliest requested interval or the erliest
+	 * not routine task start date. The end day will be the
+	 * latest date from two: last requested day or the latest
+	 * end day in the LimitedTermTask from user
 	 */
 	private void calculateIntervalToCount(){
-		intervalToCount = requestedInterval;
 		
+		LocalDate startCountDate = requestedInterval.getStart().toLocalDate();
+		LocalDate endCountDate = requestedInterval.getEnd().toLocalDate();
+		
+		//for every task
 		for(Task task: user.getTasks()){
-			//if task active
 			if(task.isActive() && task.getType() == TypeOfTask.LimitedTerm){
-				if(task.getInterval().overlaps(requestedInterval)){
-					//merge intervals
-					
-					// Take the earliest of both starting date-times.
-				    DateTime start =  intervalToCount.getStart().isBefore(
-				    		task.getInterval().getStart() )  ? intervalToCount.
-				    				getStart() : task.getInterval().getStart();
-				    				
-				    // Take the latest of both ending date-times.
-				    DateTime end =  intervalToCount.getEnd().isAfter( 
-				    		task.getInterval().getEnd() )  ? intervalToCount
-				    				.getEnd() : task.getInterval().getEnd();
-				    
-				    // Instantiate a new Interval from start and end
-				    intervalToCount = new Interval( start, end );
+				LocalDate startTaskDate = task.getInterval().
+						getStart().toLocalDate();
+				LocalDate endTaskDate = task.getInterval().
+						getEnd().toLocalDate();
+				
+				//sets start date
+				if(startCountDate.isAfter(startTaskDate)){
+					startCountDate = startTaskDate;
+				}
+				
+				//sets end date
+				if(endCountDate.isBefore(endTaskDate)){
+					endCountDate = endTaskDate;
 				}
 			}
 		}
+		
+		intervalToCount = new Interval(startCountDate.toDate().getTime(),
+				endCountDate.toDate().getTime());
 	}
 	
 	/*
@@ -366,6 +378,16 @@ public class ScheduleProcessorSimpleImpl implements Model{
 					if(unallocatedTime == 0){
 						break;
 					}
+					
+					//System.out.println("current Point: " + p.getTitle());
+					//System.out.println("counted days: " + countedDays);
+					//System.out.println("pointer date: " + pointer);
+					
+					/*TreeSet<LocalDate> tempSet = new TreeSet<LocalDate>(countedDays.keySet());
+					for(LocalDate d: tempSet){
+						System.out.println("counted days: " + d);
+						//System.out.println(countedDays.get(d));
+					}*/
 					
 					int freeTimeOnDay = countedDays.get(pointer).getFreeTime();
 					

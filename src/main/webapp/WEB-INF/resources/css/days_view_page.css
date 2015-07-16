@@ -3,38 +3,60 @@
 	/*padding-left: 10px;*/
 	padding-top: 10px;
 	text-align: center;
-	float: top;
-	Clear: both;
+	/*float: top;*/
+	float: left;
+	clear: both;
 }
+
+.DVP_legend_container{
+	height: 200px;
+	min-width: 200px;
+	float: left;
+	margin: 2px;
+	background-color: #BBDDBB;
+	text-align: center;
+	float: left;
+	/*clear: both;*/
+	line-height: 40px;
+	border-radius: 10px;	
+}
+
 .DVP_inputContainer1{
     /*min-height: 100px;*/
 	/*min-width: 100px;*/
 	float: left;
 	padding-right: 5px;
 }
+
 .DVP_square{
 	height: 18px;
 	width: 18px;
 	float: left;
 	margin: 2px;
 	background-color: #33ffff;
+	border-radius: 4px;
 }
+
 .DVP_number_square{
 	height: 18px;
 	width: 18px;
 	float: left;
 	margin: 2px;
-	background-color: #AABBCC;
+	background-color: #ADD8E6;
 	text-align: center;
+	border-radius: 4px;
 }
+
 .DVP_hour_label{
 	height: 18px;
 	width: 90px;
 	float: left;
 	margin: 2px;
-	background-color: #EEEEEE;
+	background-color: #FFF8DC;
 	text-align: center;
+	border-radius: 7px
 }
+
 .DVP_hour_empty_label{
 	height: 18px;
 	width: 90px;

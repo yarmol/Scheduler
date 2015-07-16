@@ -28,13 +28,13 @@ class ScheduleImpl implements Schedule{
 				ArrayList<String> absentDayErrors, 
 				ArrayList<String> tasksErrors,
 				int totalFreeTime, 
-				ArrayList<String> nonRoutineTasksNames){
+				ArrayList<String> tasksNames){
 		//this.interval = interval;
 		this.days = days;
 		this.absentDayErrors = absentDayErrors;
 		this.tasksErrors = tasksErrors;
 		this.totalFreeTime = totalFreeTime;
-		this.tasksNames = nonRoutineTasksNames;
+		this.tasksNames = tasksNames;
 	}
 
 	@Override

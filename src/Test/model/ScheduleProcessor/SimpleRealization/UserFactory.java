@@ -1,17 +1,7 @@
-package Test.Server.ScheduleProcessor.SimpleRealization;
+package Test.model.ScheduleProcessor.SimpleRealization;
 
 import java.util.ArrayList;
 
-
-
-
-
-
-
-
-import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
-import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealization.ScheduleProcessorSimpleImpl;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Day;
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
@@ -19,75 +9,70 @@ import main.java.com.yvalera.scheduler.model.persistentObjects.Task.TypeOfTask;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
-import org.springframework.stereotype.Component;
 
-//@Component
-public class EntryPoint {
+public class UserFactory {
 	
-	//to avoid making more than one limited task with web testing
-	//private boolean first = true;
-	private int times = 0;
+	private static UserFactory instance;
 	
-	private User user = new User();
-	private LocalDate startDate = new LocalDate(2000, 1, 1);
-	private LocalDate endDate = new LocalDate(2000, 1, 7);
+	private User user;
+	private Interval fillRoutineDaysInterval;
+	private Interval limitedTaskInterval;
+	private LocalDate specialDayDate;
+	private LocalDate flexibleTermPointStart;
 	
-	private LocalDate specialDay = new LocalDate(2000, 1, 3);
+	//returns Users from one instance of UserFactory
+	public static synchronized User getUser(Interval fillRoutineDaysInterval, 
+			Interval limitedTaskInterval, LocalDate specialDayDate,
+			LocalDate limitTermPointStart){
+		
+		if(instance == null){
+			instance = new UserFactory();
+		}
+		
+		return instance.createUser(fillRoutineDaysInterval, 
+				limitedTaskInterval, specialDayDate,
+				limitTermPointStart);
+	}
 	
-	Interval interval = new Interval(startDate.toDate().getTime(),
-			endDate.toDate().getTime());
+	//hidden constructor by default
+	private UserFactory(){
+	}
 	
-	public synchronized Schedule getSchedule(){
+	private User createUser(Interval fillRoutineDaysInterval, 
+			Interval limitedTaskInterval, LocalDate specialDayDate,
+			LocalDate flexibleTermPointStart){
+		
+		user = new User();
+		
+		this.fillRoutineDaysInterval = fillRoutineDaysInterval;
+		this.limitedTaskInterval = limitedTaskInterval;
+		this.specialDayDate = specialDayDate;
+		this.flexibleTermPointStart = flexibleTermPointStart;
+		
+		
 		fillTemplateDays();
 		fillSpecialDays();
-		
-		//if(first){
-			addLimitedTimePoint(++times);
-			//first = false;
-		//}
-		
+		addLimitedTimePoint(1);//number of taks
 		addFlexiblePoint();
 		makeDaysAndTasksActive();
 		
-		Model pr = new ScheduleProcessorSimpleImpl();
-		
-		return pr.calculateSchedule(user, interval);
-	}
-	
-	private void go(){
-		
-		for(int i=0; i<10; i++){
-			fillTemplateDays();
-			fillSpecialDays();
-			addLimitedTimePoint(i+1);
-			addFlexiblePoint();
-			makeDaysAndTasksActive();
-			
-			Model pr = new ScheduleProcessorSimpleImpl();
-			Schedule sch = pr.calculateSchedule(user, interval);
-			
-			View_1 view = new View_1();
-			view.printView(sch, interval);
-		}
+		return user;
 	}
 	
 	private void addFlexiblePoint(){
-		LocalDate startPoint = new LocalDate(2000, 1, 3);
+
 		Task task = new Task();
 		task.setTitle("Flexible point");
 		task.setNecessaryTime(18);
-		task.setStartDate(startPoint);
+		task.setStartDate(flexibleTermPointStart);
 		task.setType(TypeOfTask.FlexibleTerm);
 		user.getTasks().add(task);
 	}
 	
 	private void addLimitedTimePoint(int i){
-		LocalDate startPoint = new LocalDate(2000, 1, 2);
-		LocalDate endPoint = new LocalDate(2000, 1, 5);
 		
 		Task task = new Task();
-		task.setInterval(new Interval(startPoint.toDate().getTime(),
-				endPoint.toDate().getTime()));
+		task.setInterval(limitedTaskInterval);
 		
 		task.setTitle("Limited terms point_" + i);
 		task.setNecessaryTime(7);
@@ -102,12 +87,12 @@ public class EntryPoint {
 		
 		int pointCounter = 1;
 		
-		//for each day
+		//for each from monday to sunday a week
 		for(int i=1; i<8; i++){
 						
 			Day tDay = new Day();
 			tDay.setDayOfWeek(i);
-			tDay.setInterval(interval);
+			tDay.setInterval(fillRoutineDaysInterval);
 			
 			for(int j=0; j<20; j++){
 				//creates unique point
@@ -123,6 +108,7 @@ public class EntryPoint {
 			ArrayList<Day> days = new ArrayList<Day>();
 			days.add(tDay);
 			
+			//adds generated days to User
 			user.getDays().addAll(days);
 		}
 	}
@@ -132,7 +118,7 @@ public class EntryPoint {
 		int pointCounter = 1;
 						
 		Day sDay = new Day();
-		sDay.setSpecialDate(specialDay);
+		sDay.setSpecialDate(specialDayDate);
 		sDay.setSpecial(true);
 			
 		for(int j=12; j<24; j++){
@@ -158,14 +144,5 @@ public class EntryPoint {
 		for(Task t: user.getTasks()){
 			t.setActive(true);
 		}
-	}
-	
-	/*public static void main(String[] args) {
-		new EntryPoint().go();
-	}*/
-	
-	//for web testing
-	public Interval getInterval(){
-		return interval;
 	}
 }

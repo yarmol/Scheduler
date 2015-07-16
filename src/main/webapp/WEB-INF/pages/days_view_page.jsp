@@ -5,7 +5,9 @@
 			 org.joda.time.PeriodType,  org.joda.time.Interval,
 			 org.joda.time.Days,
 			java.util.Map, java.util.LinkedHashMap,
-			java.util.Locale" %>
+			java.util.Locale,
+			main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule"
+			 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
@@ -102,6 +104,15 @@
 	request.setAttribute("lastMonthName", lastMonthName);
 	request.setAttribute("daysInMonthes", daysInMonthes);
 	request.setAttribute("totalDays", totalDays);
+	
+	
+	//System.out.println();
+	Schedule sch = (Schedule)request.getAttribute("schedule");
+	
+	System.out.println(sch);
+	System.out.println(sch.getTasksNames());
+
+	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -112,13 +123,15 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/days_view_page.css">
 	</head>
 	<body>
-		<div>
-			<div class = "DaysView_5">
+		<!-- general div of this jsp page --> 
+		<div style="float: left">
+			<!-- general div for month and buttons -->
+			<div  style="float: left">
 				<!-- to make all month stay in one line -->
 				<!-- math: (day + both day spaces(margins)) * number of days + total months * months margin + 
 						+ column with time + constant (experementaly 20 px)>
 				<!-- CONTAINER FOR ALL MONTHS -->
-				<div style="min-width: ${totalDays * (sqSize + 2 * space) + totalMonths * 8 + 20 + sqSize * 5.3}px;">
+				<div style="min-width: ${totalDays * (sqSize + 2 * space) + totalMonths * 8 + 20 + sqSize * 5.3}px">
 					<c:set var="counter" value="1"/>
 					
 					<!-- column with time -->
@@ -165,7 +178,8 @@
 							
 							
 							<!-- months name -->
-							<div style="width: ${labelWidth}px; text-align: center; background-color: #AAAAFF; margin: ${space}px">
+							<div style="width: ${labelWidth}px; text-align: center; background-color: #ADD8E6;
+									 margin: ${space}px; border-radius: 7px">
 								${monthsMapElement.key}
 							</div>
 							
@@ -186,7 +200,7 @@
 									<!-- for every hour in day sequence -->
 									<c:forEach var="i" begin="${counter == 1 ? firstMonthStartDay : 1}" 
 											end="${monthsMapElement.value}">
-										<div class="DVP_square">
+										<div class="DVP_square" title="some text">
 											<!-- temporary just unsigned square 
 												here must be code which retrieves
 												data for every code and changes 
@@ -201,30 +215,37 @@
 					</c:forEach><!-- END MAIN MOTHS LOOP -->
 				</div><!--END CONTAINER FOR ALL MONTHS -->
 			
+				<!-- buttons panel -->
+				<div class= "DVP_dataSelect">
+				<!--TODO ADD FORM -->
+					<div class="DVP_inputContainer1">
+						from date<br>
+						<input type="date" name="calendar" size="10">
+					</div>
+					<div class="DVP_inputContainer1">
+						to date<br>
+						<input type="date" name="calendar" size="10">
+					</div>
+					<div class="DVP_inputContainer1">
+						mode<br>
+						<select>
+	   						<option disabled>days</option>
+	   						<option disabled>months</option>
+	  					</select>
+					</div>
+					<div class="DVP_inputContainer1">
+						<br>
+						<input type="submit" value="show" name="show">
+					</div>
+				</div><!-- buttons panel -->
+			</div><!-- end general div for month and buttons -->
 			
-			<div class= "DVP_dataSelect">
-			<!-- ADD FORM -->
-				<div class="DVP_inputContainer1">
-					from date<br>
-					<input type="date" name="calendar" size="10">
-				</div>
-				<div class="DVP_inputContainer1">
-					to date<br>
-					<input type="date" name="calendar" size="10">
-				</div>
-				<div class="DVP_inputContainer1">
-					mode<br>
-					<select>
-   						<option disabled>days</option>
-   						<option disabled>months</option>
-  					</select>
-				</div>
-				<div class="DVP_inputContainer1">
-					<br>
-					<input type="submit" value="show" name="show">
-				</div>
+			<!-- legend container div -->
+			<div class="DVP_legend_container">
+				Legend
 			</div>
-		</div>
+			
+		</div><!-- end general div of this jsp page --> 
 	</body>
 </html>
 				

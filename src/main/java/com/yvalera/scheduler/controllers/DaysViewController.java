@@ -3,17 +3,13 @@ package main.java.com.yvalera.scheduler.controllers;
 import java.util.LinkedHashMap;
 
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
-import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 import main.java.com.yvalera.scheduler.service.Service;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
-import org.joda.time.Months;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

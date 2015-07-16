@@ -2,9 +2,6 @@ package main.java.com.yvalera.scheduler.dao;
 
 import java.util.ArrayList;
 
-import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
-import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
-import main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealization.ScheduleProcessorSimpleImpl;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Day;
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
@@ -17,7 +14,6 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import Test.Server.ScheduleProcessor.SimpleRealization.View_1;
 
 /*
  * This is the stub which always returns the same object
@@ -31,7 +27,7 @@ public class DaoStubImpl implements Dao{
 	//temporary part for create user without DB request
 	private User user = new User();
 	private LocalDate startDate = new LocalDate(2000, 1, 1);
-	private LocalDate endDate = new LocalDate(2000, 1, 7);
+	private LocalDate endDate = new LocalDate(2000, 10, 7);
 	
 	private LocalDate specialDay = new LocalDate(2000, 1, 3);
 	
@@ -55,8 +51,8 @@ public class DaoStubImpl implements Dao{
 			addFlexiblePoint();
 			makeDaysAndTasksActive();
 			
-			Model pr = new ScheduleProcessorSimpleImpl();
-			Schedule sch = pr.calculateSchedule(user, interval);
+			//Model pr = new ScheduleProcessorSimpleImpl();
+			//Schedule sch = pr.calculateSchedule(user, interval);
 			
 			//View_1 view = new View_1();
 			//view.printView(sch, interval);

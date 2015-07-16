@@ -1,4 +1,4 @@
-package Test.Server.ScheduleProcessor.SimpleRealization;
+package Test.model.ScheduleProcessor.SimpleRealization;
 
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 
@@ -8,11 +8,15 @@ import org.joda.time.LocalDate;
 /*
  * This is the text view
  */
-public class View_1 {
+public class TextView {
 	
 	public void printView(Schedule sch, Interval interval){
 
 		LocalDate pointer = interval.getStart().toLocalDate();
+		
+		System.out.println("Summary errors: " + (
+				sch.getAbsentDayErrors().size() + 
+				sch.getTasksErrors().size()) + "\n");
 		
 		if(sch.getAbsentDayErrors().size() != 0){
 			System.out.println("absentDayErrors:");
@@ -35,14 +39,14 @@ public class View_1 {
 		
 		//through all day in interval
 		while(interval.contains(pointer.toInterval())){
-			//System.out.println("view pointer: " + pointer);
+			System.out.println("view pointer: " + pointer + "\n");
 			
 			for(int i=0; i<24; i++){
 				System.out.println(pointer + ":  for " + i + " to " + (i+1) + 
 						 ": " + sch.getPointAt(pointer, i).getTitle());
 			}
 			
-			System.out.println();
+			System.out.println("-------------------------------------\n");
 			
 			pointer = pointer.plusDays(1);
 			
