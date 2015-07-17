@@ -358,8 +358,8 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			}
 			
 			PointImpl p = new PointImpl(task.getTitle(), task.getDescription(),
-					task.getInterval().getStart().toString(),
-					task.getInterval().getEnd().toString());
+					task.getInterval().getStart().toLocalDate().toString(),
+					task.getInterval().getEnd().toLocalDate().toString());
 			
 			//counts counted days with free time
 			Interval pointInterval = task.getInterval();

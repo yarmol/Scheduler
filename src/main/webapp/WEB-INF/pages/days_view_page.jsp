@@ -1,6 +1,6 @@
-<%@page import="java.util.Locale"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+
 <%@ page import="org.joda.time.LocalDate, org.joda.time.Period,
 			 	org.joda.time.PeriodType,  org.joda.time.Interval,
 			 	org.joda.time.Days,
@@ -9,9 +9,11 @@
 				main.java.com.yvalera.scheduler.model.OutInterfaces.Point,
 				main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule,
 				java.util.ArrayList, java.util.Collections,
-				java.lang.String, java.lang.Integer"
+				java.lang.String, java.lang.Integer, java.util.Locale"
 %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
 
 <%
 	/*
@@ -150,67 +152,57 @@
 	* This code generates different colors for different task
 	*/
 	
-	Map<String, String> taskColorMapping = new HashMap<String, String>();
-	ArrayList<String> colors = new ArrayList<String>();
-		
-	//both must be between 0 and 16
-	int minBright = 9;
-	int maxBright = 15;
-	int step = 2;
-		
-	int totalColors = 0;
-	int counter = 0;
-
-	//generates 120 different colors
-	for(int R = minBright; R < maxBright; R=R+step){
-		for(int G = minBright; G < maxBright; G=G+step){
-			for(int B = minBright; B < maxBright; B=B+step){
-				//skips greys shades
-				if(R == G && R == B) continue;
-					
-				String color =  Integer.toHexString(R) +
-								Integer.toHexString(R) +
-								Integer.toHexString(G) +
-								Integer.toHexString(G) +
-								Integer.toHexString(B) +
-								Integer.toHexString(B);
-
-				colors.add(color);
+	if(session.getAttribute("taskColor") == null){
+	
+		Map<String, String> taskColorMapping = new HashMap<String, String>();
+		ArrayList<String> colors = new ArrayList<String>();
+			
+		//both must be between 0 and 16
+		int minBright = 9;
+		int maxBright = 15;
+		int step = 2;
+			
+		int totalColors = 0;
+		int counter = 0;
+	
+		//generates 120 different colors
+		for(int R = minBright; R < maxBright; R=R+step){
+			for(int G = minBright; G < maxBright; G=G+step){
+				for(int B = minBright; B < maxBright; B=B+step){
+					//skips greys shades
+					if(R == G && R == B) continue;
+						
+					String color =  Integer.toHexString(R) +
+									Integer.toHexString(R) +
+									Integer.toHexString(G) +
+									Integer.toHexString(G) +
+									Integer.toHexString(B) +
+									Integer.toHexString(B);
+	
+					colors.add(color);
+				}
 			}
 		}
-	}
-
-	//makes random order for colors
-	Collections.shuffle(colors);
-		
-	totalColors = colors.size();
-		
-	for(String s: schedule.getTasksNames()){
-		//if there are tasks more than generated colors
-		if(counter == totalColors){
-			counter = 0;
+	
+		//makes random order for colors
+		Collections.shuffle(colors);
+					
+		totalColors = colors.size();
+			
+		for(String s: schedule.getTasksNames()){
+			//if there are tasks more than generated colors
+			if(counter == totalColors){
+				counter = 0;
+			}
+			
+			taskColorMapping.put(s, colors.get(counter));
+			
+			counter++;
 		}
 		
-		taskColorMapping.put(s, colors.get(counter));
-		
-		counter++;
+		//generates color once in the session to avoid flashing every request
+		session.setAttribute("taskColor", taskColorMapping);
 	}
-	
-	request.setAttribute("taskColor", taskColorMapping);
-	//System.out.println("total colors: " + colors.size());
-		
-	//request.setAttribute("colors", colors);
-	
-	//System.out.println();
-	//Schedule sch = (Schedule)request.getAttribute("schedule");
-	
-	//System.out.println(sch);
-	/*System.out.println("task name size: " + sch.getTasksNames().size());
-	for(String s: sch.getTasksNames()){
-		System.out.println(s);
-	}*/
-
-	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -223,6 +215,8 @@
 	<body>
 		<!-- general div of this jsp page --> 
 		<div style="float: left">
+			<span class="DVP_page_header">Days review</span>
+			
 			<!-- general div for month and buttons -->
 			<div  style="float: left">
 				<!-- to make all month stay in one line -->
@@ -260,7 +254,7 @@
 				
 				
 					<!-- this div keeps in scroll bar div with all months -->
-					<div style="max-width: 60%; float: left; overflow: auto">
+					<div style="max-width: 1000px; float: left; overflow: auto">
 				
 						<!-- div for months wit their natural sizes -->
 						<div style="min-width: ${totalDays * (sqSize + 2 * space) + totalMonths * 8}px; float: left">
@@ -311,12 +305,15 @@
 												
 												<!-- point parameters -->
 												<c:set var="pointTitle" value="${points[fullDate].title}"/>
-												<!-- c:set var="pointStartDate" value="${points[fullDate].startDay}"/-->
-												<!-- c:set var="pointEndtDate" value="${points[fullDate].endDay}"/-->
-												<!-- c:set var="pointDescription" value="${points[fullDate].description}"/-->
+											
+												<c:set var="pointStartDate" value="${points[fullDate].startDay}"/>
+												<c:set var="pointEndtDate" value="${points[fullDate].endDay}"/>
+												<c:set var="pointDescription" value="${points[fullDate].description}"/>
 												
-												<div class="DVP_square" title="title: ${pointTitle}"
-														
+												<c:set var="toDivTitle" value=
+													"title: ${pointTitle},  start: ${pointStartDate},  end: ${pointEndtDate},  description: ${pointDescription}"/>
+												
+												<div class="DVP_square" title="${toDivTitle}"
 														style="background-color: #${taskColor[pointTitle]}">
 													<!-- temporary just unsigned square 
 														here must be code which retrieves
@@ -347,26 +344,38 @@
 			
 				<!-- buttons panel -->
 				<div class= "DVP_dataSelect">
-				<!--TODO ADD FORM -->
-					<div class="DVP_inputContainer1">
-						from date<br>
-						<input type="date" name="calendar" size="10">
-					</div>
-					<div class="DVP_inputContainer1">
-						to date<br>
-						<input type="date" name="calendar" size="10">
-					</div>
-					<div class="DVP_inputContainer1">
-						mode<br>
-						<select>
-	   						<option disabled>days</option>
-	   						<option disabled>months</option>
-	  					</select>
-					</div>
-					<div class="DVP_inputContainer1">
-						<br>
-						<input type="submit" value="show" name="show">
-					</div>
+					<!-- clear adress for form action tag -->
+					<sf:form method="post" commandName="message">
+						
+						<div class="DVP_dataSelect_header">
+							enter date like YYYY-MM-DD
+						</div>
+						<div class="DVP_input_errors">
+							<sf:errors path="startDay"/><br>
+							<sf:errors path="endDay"/>
+						</div>
+						<div class="DVP_inputContainer1">
+							from date<br>
+							<sf:input path="startDay" size="10" value=""/>
+						</div>
+						<div class="DVP_inputContainer1">
+							to date<br>
+							<sf:input path="endDay" size="10" value=""/>
+							
+						</div>
+						<div class="DVP_inputContainer1">
+							mode<br>
+							<select>
+		   						<option disabled>days</option>
+		   						<option disabled>months</option>
+		  					</select>
+						</div>
+						<div class="DVP_inputContainer1">
+							<br>
+							<input type="submit" value="show"/>
+							<!-- input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/-->
+						</div>
+					</sf:form>
 				</div><!-- buttons panel -->
 			</div><!-- end general div for month and buttons -->		
 		</div><!-- end general div of this jsp page --> 

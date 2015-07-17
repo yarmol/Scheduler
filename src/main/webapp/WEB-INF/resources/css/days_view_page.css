@@ -1,11 +1,35 @@
 .DVP_dataSelect{
 	/*width: 200px;*/
 	/*padding-left: 10px;*/
-	padding-top: 10px;
+	/*padding: 0px 10px 10px 10px;*/
 	text-align: center;
 	/*float: top;*/
 	float: left;
 	clear: both;
+	background-color: #AFDCAF;
+	margin: 5px;
+	border-radius: 7px;
+}
+
+.DVP_dataSelect_header{
+	background-color: #8FBC8F;
+	padding: 5px;
+	border-radius: 7px;
+}
+
+.DVP_inputContainer1{
+    /*min-height: 100px;*/
+	/*min-width: 100px;*/
+	float: left;
+	padding-right: 5px;
+	margin: 5px;
+}
+
+.DVP_input_errors{
+	/*margin: 0px 0px 6px 0px;*/
+	text-align: left;
+	color: red;
+	padding-left: 7px;
 }
 
 .DVP_legend_container{
@@ -19,7 +43,7 @@
 	/*clear: both;*/
 	/*line-height: 40px;*/
 	border-radius: 7px;
-	padding-bottom: 8px;
+	/*padding-bottom: 8px;*/
 	margin-left: 10px; 
 }
 
@@ -33,13 +57,6 @@
 	margin: 5px 15px 5px 15px;
 	background-color: #AFBFAF;
 	border-radius: 5px;
-}
-
-.DVP_inputContainer1{
-    /*min-height: 100px;*/
-	/*min-width: 100px;*/
-	float: left;
-	padding-right: 5px;
 }
 
 .DVP_square{
@@ -78,4 +95,11 @@
 	margin: 2px;
 	/*background-color: #EEEEEE;*/
 	/*text-align: center;*/
+}
+
+.DVP_page_header{
+	text-align: left;
+	/*font-style: italic;*/
+	font-size: 150%;
+	margin-left: 600px
 }

@@ -27,9 +27,9 @@ public class DaoStubImpl implements Dao{
 	//temporary part for create user without DB request
 	private User user;
 	private LocalDate startDate = new LocalDate(2000, 1, 1);
-	private LocalDate endDate = new LocalDate(2001, 10, 7);
+	private LocalDate endDate = new LocalDate(2030, 1, 1);
 	
-	private LocalDate specialDay = new LocalDate(2000, 1, 3);
+	private LocalDate specialDay = new LocalDate(2015, 7, 20);
 	
 	Interval interval = new Interval(startDate.toDate().getTime(),
 			endDate.toDate().getTime());
@@ -64,25 +64,25 @@ public class DaoStubImpl implements Dao{
 	}
 	
 	private void addFlexiblePoint(){
-		LocalDate startPoint = new LocalDate(2000, 1, 3);
+		LocalDate startPoint = new LocalDate(2015, 7, 5);
 		Task task = new Task();
 		task.setTitle("Flexible point");
-		task.setNecessaryTime(18);
+		task.setNecessaryTime(28);
 		task.setStartDate(startPoint);
 		task.setType(TypeOfTask.FlexibleTerm);
 		user.getTasks().add(task);
 	}
 	
 	private void addLimitedTimePoint(int i){
-		LocalDate startPoint = new LocalDate(2000, 1, 2);
-		LocalDate endPoint = new LocalDate(2000, 1, 5);
+		LocalDate startPoint = new LocalDate(2015, 7, 2);
+		LocalDate endPoint = new LocalDate(2015, 8, 5);
 		
 		Task task = new Task();
 		task.setInterval(new Interval(startPoint.toDate().getTime(),
 				endPoint.toDate().getTime()));
 		
-		task.setTitle("Limited terms point_" + i);
-		task.setNecessaryTime(7);
+		task.setTitle("Limited terms point" + i);
+		task.setNecessaryTime(17);
 		task.setType(TypeOfTask.LimitedTerm);
 		user.getTasks().add(task);
 	}
@@ -104,7 +104,7 @@ public class DaoStubImpl implements Dao{
 			for(int j=0; j<20; j++){
 				//creates unique point
 				Task rTask = new Task();
-				rTask.setTitle("RoutinePoint_"/* + j/*pointCounter*/);
+				rTask.setTitle("RoutinePoint"/* + j/*pointCounter*/);
 				//System.out.println(rPoint.getTitle());
 				rTask.setDescription("");
 				rTask.setType(TypeOfTask.Routine);

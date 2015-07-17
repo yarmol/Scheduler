@@ -1,17 +1,18 @@
 package main.java.com.yvalera.scheduler.controllers;
 
-import java.util.LinkedHashMap;
+import javax.validation.Valid;
 
+import main.java.com.yvalera.scheduler.controllers.objects_page_messages.DVPageMessage;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 import main.java.com.yvalera.scheduler.service.Service;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -25,12 +26,61 @@ public class DaysViewController {
 	private Service service;
 	
 	/*
+	 * Calls with request with parameters
+	 * Returns requested interval view.
+	 */
+    @RequestMapping(method = RequestMethod.POST)
+    public String requestedDatePage(@ModelAttribute("message")
+    		@Valid DVPageMessage message,
+    		Errors errors, ModelMap model) {
+    	
+    	Schedule schedule = null;//schedule
+    	Interval interval = null;//interval to count schedule
+    	LocalDate startInterval = null;//start of schedule interval
+    	LocalDate endInterval = null;//end of schedule interval
+    	
+    	
+    	/*
+    	 * if there are no errors (without deep verification) in
+    	 * entered dates make new interval, otherwise use old
+    	 * and @Validate will show message "invalid start or 
+    	 * end date (see DVPMessage class)" 
+    	 */
+    	if(!errors.hasErrors()){
+	    	//set up 2 months interval
+	    	startInterval = new LocalDate(message.getStartDay());
+	    	endInterval = new LocalDate(message.getEndDay());
+	    	
+	    	//because Interval excludes last day
+	    	endInterval = endInterval.plusDays(1);
+	    	
+	    	interval = new Interval(startInterval.toDate().getTime(),
+	    			endInterval.toDate().getTime());
+	    	
+	    	//puts interval for jsp rendering
+	    	model.put("interval", interval);
+	    	
+	    	schedule = service.getSchedule(interval, 0);
+	    	model.put("schedule", schedule);
+    	}
+    	
+    	//TODO make it work
+    	//retrieve userId from Spring Security
+        /*Authentication auth = SecurityContextHolder.getContext().
+        		getAuthentication();
+        User user = (User)auth.getPrincipal();*/ 	
+    	
+	
+        return "days_view_page";
+    }
+	
+	
+	/*
 	 * Calls with request without parameters
-	 * Returns returns current and next months view.
+	 * Returns current and next months view.
 	 */
     @RequestMapping(method = RequestMethod.GET)
-    public String tempRedirect(ModelMap model) {
-    	
+    public String defaultDatePage(ModelMap model) {
     	
     	LocalDate today = new LocalDate();
     	Interval interval = null;
@@ -52,22 +102,11 @@ public class DaysViewController {
         /*Authentication auth = SecurityContextHolder.getContext().
         		getAuthentication();
         User user = (User)auth.getPrincipal();*/
-    	
-    	//stub interval to test the page, the same interval in the
-    	//DaoStubImpl
-    	LocalDate startDate = new LocalDate(2000, 1, 1);
-    	LocalDate endDate = new LocalDate(2000, 3, 22);
-    	interval = new Interval(startDate.toDate().getTime(),
-    			endDate.toDate().getTime());
-    	
-    	
+    	    	
     	//TODO make it work
     	Schedule schedule = service.getSchedule(interval, 0);
     	
     	model.put("schedule", schedule);
-    	
-    	//type of the review
-    	//model.put("reviewType", "moths");
     	
     	//puts interval for jsp rendering
     	model.put("interval", interval);
@@ -75,58 +114,13 @@ public class DaysViewController {
         return "days_view_page";
     }
     
-    private void cssGenerator(Schedule schedule, Interval interval){
-    	
-    	int sqSize = 15;//size of every square element
-    	int space = 2;//space between
-    	//days in certain months in interval
-    	//keeps insertion order
-    	LinkedHashMap<String, Integer> daysInMonthes = null;
-    	
-    	//how months in period
-    	Period p = new Period(interval.getStartMillis(),
-    			interval.getEndMillis(), PeriodType.months().
-    				withDaysRemoved());
-    	int totalMonths = p.getMonths() + 1;
-    	
-    	/*
-    	 * parsed start position for pointer (pointer increase 
-    	 * on 1 month in loop)
-    	 */
-    	daysInMonthes = new LinkedHashMap<String, Integer>();
-    	int startYear = new LocalDate(interval.getStartMillis()).
-    			getYear();
-    	int startMonths = new LocalDate(interval.getStartMillis()).
-    			getMonthOfYear();
-    	
-    	//days in first months
-    	int firstMonthStartDay = new LocalDate(interval.getStartMillis()).
-    			getDayOfMonth();
-    	int daysInFirstMonth = new LocalDate(interval.getStartMillis()).
-    			dayOfMonth().getMaximumValue();
-    	String firstMonthName = new LocalDate(interval.getStartMillis()).
-    			monthOfYear().getAsText();
-    	daysInMonthes.put(firstMonthName, daysInFirstMonth);
-    	
-    	//days in other months except last
-    	for(int i = 0; i < totalMonths - 2; i++){
-    		//begining of the start months
-    		LocalDate date = new LocalDate(startYear, startMonths, 1);
-    		//retrieving necessary months
-    		date = date.plusMonths(i+1);
-    		//retrieving last day in months
-    		int daysQuantity = date.dayOfMonth().getMaximumValue();
-    		//retrieving months name
-    		String monthName = date.monthOfYear().getAsText();
-    		//saves data in the Map
-    		daysInMonthes.put(monthName, daysQuantity);
-    	}
-    	
-    	//necessary days in last months
-    	int lastDayOfLastMonth = new LocalDate(interval.getEndMillis()).
-    			getDayOfMonth();
-    	String lastMonthName = new LocalDate(interval.getEndMillis()).
-    			monthOfYear().getAsText();
-    	daysInMonthes.put(lastMonthName, lastDayOfLastMonth);  		
+    /*
+     * adds DVPageMessage objects to JSP page (model). Not 
+     * required, DVPageMessage can be put to model
+     * clearly.
+     */
+    @ModelAttribute("message")
+    public DVPageMessage getLoginForm() {
+	        return new DVPageMessage();
     }
 }
