@@ -8,7 +8,6 @@ import java.util.TreeSet;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
-import main.java.com.yvalera.scheduler.model.persistentObjects.Day;
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.TypeOfTask;
@@ -27,9 +26,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	//injects by calculateScheduleMethod
 	private Interval requestedInterval;
 	private User user;
-	
-	//calculating in class
-	private ArrayList<String> absentDayErrors = new ArrayList<String>();
+
 	private ArrayList<String> tasksErrors = new ArrayList<String>();
 	private int totalFreeTime;//total free time in requested interval
 	
@@ -39,10 +36,6 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	
 	//result of calculations
 	private HashMap<LocalDate, CountedDay> countedDays;
-	
-	//days from user, which will be used for calculations
-	//resets by methods
-	private HashMap<LocalDate, Day> necessaryRealDays;
 	
 	//considering limited terms tasks
 	private Interval intervalToCount;//resets by method
@@ -62,7 +55,12 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		this.user = user;
 		requestedInterval = interval;
 		
-		//System.out.println(interval);
+		/*System.out.println("requested interval: " + interval);
+		for(Task t: user.getTasks()){
+			System.out.println("\nis task active: " + t.isActive());
+			System.out.println("is active at 1day and 1hour: " + 
+					(t.isActiveDayAt(1)&t.isActiveHourAt(1)));
+		}*/
 		
 		//resets this object state from prevision calculation
 		resetState();
@@ -71,29 +69,20 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		calculateIntervalToCount();
 		//System.out.println("interval calculated");
 		
-		//finds all necessary days from user
-		findNecessaryDays();
-		//System.out.println("necessary days found");
-		
-		//if there is not all days, it's no reson to continue calculating
-		if(absentDayErrors.size() != 0){
-			return new ScheduleImpl(null, absentDayErrors, null, 0, null);
-		}
-		
 		//makes empty days for calculating schedule
 		makeEmptyCountedDays();
 		//System.out.println("empty counted days made");
 		
+		//fills with limited terms tasks
+		fillAllFreeTimeWithTasks(true);
+		//System.out.println("days filled with limited tasks");
+		
 		//fills counted days with tasks
 		fillsCountedDaysWithRoutine();
 		//System.out.println("days filled with routine");
-		
-		//fills with limited terms tasks
-		fillWithLimitedTasks();
-		//System.out.println("days filled with limited tasks");
 
 		//fills with flexible term points
-		fillWithFlexibleTasks();
+		fillAllFreeTimeWithTasks(false);
 		//System.out.println("days filled with limited tasks");
 		
 		//reduces counted interval to requested
@@ -107,78 +96,10 @@ public class ScheduleProcessorSimpleImpl implements Model{
 		//fills names of tasks in requested interval
 		getTasksNames();
 		
-		return new ScheduleImpl(countedDays, absentDayErrors,
-				tasksErrors, totalFreeTime, 
-				tasksNamesInRequesteInterval);
+		return new ScheduleImpl(countedDays,tasksErrors,
+				totalFreeTime, tasksNamesInRequesteInterval);
 	}
 	
-	/*
-	 * Finds all necessary days from user days templates.
-	 * If there isn't at least one day for calculations
-	 * it writes it in to errors.
-	 */
-	//TODO Remake it effective
-	private void findNecessaryDays(){
-		necessaryRealDays = new HashMap<LocalDate, Day>();
-		
-		LocalDate pointer = intervalToCount.getStart().toLocalDate();
-		
-		//firstly finds special days
-		//while in interval
-		while(intervalToCount.contains(pointer.toInterval())){
-			for(Day day: user.getDays()){//for all days in array
-				if(day.isActive() && day.isSpecial()){
-					if(day.getSpecialDate().equals(pointer)){
-						necessaryRealDays.put(pointer, day);
-						break;
-					}
-				}
-			}
-			
-			pointer = pointer.plusDays(1);
-		}
-		
-		//finds suitable template days
-		
-		pointer = intervalToCount.getStart().toLocalDate();
-		
-		//finds not special days
-		//while in interval
-		while(intervalToCount.contains(pointer.toInterval())){
-			//if this day already filled by special day
-			if(necessaryRealDays.get(pointer) == null){
-				for(Day day: user.getDays()){//for all days in array
-					if(day.isActive() && !day.isSpecial() && 
-							day.getInterval().contains(pointer.toInterval())){
-						//if it is necessary day of week
-						if(day.getDayOfWeek() == pointer.getDayOfWeek()){
-							necessaryRealDays.put(pointer, day);
-							break;
-						}
-					}
-				}
-			}
-					
-			pointer = pointer.plusDays(1);
-
-		}
-				
-		//finds absent day templates
-		pointer = intervalToCount.getStart().toLocalDate();
-		
-		//while in interval
-		while(intervalToCount.contains(pointer.toInterval())){
-			if(necessaryRealDays.get(pointer) == null){
-				String error = "Day on date " + pointer.toString() + 
-						" is absent. Create this day for calculating "
-						+ "schedule.";
-				
-				absentDayErrors.add(error);
-			}
-			
-			pointer = pointer.plusDays(1);
-		}
-	}
 	
 	/*
 	 * Calculates interval to count considers limited
@@ -226,22 +147,54 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	 * found days
 	 */
 	private void fillsCountedDaysWithRoutine(){
+		
+		//for every Routine point
+		ArrayList<Task> routineTasks = new ArrayList<Task>();
+				
+		//adds all active Routine in intervalToCount to proceccing
+		for(Task task: user.getTasks()){
+			if(task.isActive() && task.getType() == TypeOfTask.Routine &&
+					task.getInterval().overlaps(intervalToCount)){
+				routineTasks.add(task);
+			}
+		}
+		
+		//System.out.println("routine tasks size:" + routineTasks.size());
+		
 		LocalDate pointer = intervalToCount.getStart().toLocalDate();
 		
 		//while in interval
 		while(intervalToCount.contains(pointer.toInterval())){
 			CountedDay toFill = countedDays.get(pointer);
-			Day template = necessaryRealDays.get(pointer);
 			
-			//!!!all unactive tusk must be deleted from here before!!!
-			for(int i=0; i<24; i++){
-				if(template.getTasks()[i] != null){
-					Point point = new PointImpl(template.getTasks()[i].
-							getTitle(), template.getTasks()[i].
-							getDescription(), "routine", "");
-					
-					toFill.setPointAt(point, i);
+			ArrayList<Task> activeThisDayTasks = new ArrayList<Task>();
+			
+			//if task is active end schedulled on this day
+			for(Task t: routineTasks){
+				if(t.getInterval().overlaps(pointer.toInterval()) 
+						&& t.isActiveDayAt(pointer.getDayOfWeek())){
+					activeThisDayTasks.add(t);
 				}
+			}
+			
+			
+			for(int i=0; i<24; i++){//for all hours in this day
+				if(toFill.isHourFree(i)){//if hour free
+					for(Task t: activeThisDayTasks){//for every task
+						if(t.isActiveHourAt(i)){//if task active this time
+									
+							PointImpl p = new PointImpl(t.getTitle(),
+									t.getDescription(), t.getInterval().
+									getStart().toLocalDate().toString(),
+									t.getInterval().getEnd().toLocalDate().
+									toString());
+							
+							//adds task to schedule
+							toFill.addPoint(p, i);
+						}
+					}
+				}
+				
 			}
 			
 			pointer = pointer.plusDays(1);
@@ -264,132 +217,85 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			pointer = pointer.plusDays(1);
 		}
 	}
-		
-	/*
-	 * Fills CountedDays with points with flexible terms
-	 */
-	//TODO add counts copleted hours/necessary hours in description
-	private void fillWithFlexibleTasks(){
-		//int totalUnalocatedTime = 0;
-		
-		//for every Flexible point
-		ArrayList<Task> flexibleTasks = new ArrayList<Task>();
-		
-		//adds all active Flexible tasks to proceccing
-		for(Task task: user.getTasks()){
-			if(task.isActive() && task.getType() == TypeOfTask.FlexibleTerm){
-				flexibleTasks.add(task);
-			}
-		}
-		
-		//for every task
-		for(Task task: flexibleTasks){
-			//if there is no task
-			if(task == null){
-				continue;
-			}
-			
-			//TODO add setter to Point impl and add stop date after
-			//time filling if the end of task reached in requested period
-			PointImpl p = new PointImpl(task.getTitle(), task.getDescription(),
-					task.getStartDate().toString(), "");
-			
-			//Interval in which task must be complete
-			Interval desiredInterval = new Interval(
-					task.getStartDate().toDate().getTime(),
-						requestedInterval.getEndMillis());
-					//IntervalToCount.overlap(
-					//point.getStartDate().toInterval());
-			
-			LocalDate pointer = desiredInterval.getStart().toLocalDate();
-			
-			int unallocatedTime = task.getNecessaryTime();
-			
-			//while pointer in desired interval
-			while(desiredInterval.contains(pointer.toInterval())){
-				if(unallocatedTime == 0){//Task located
-					break;
-				}
-				
-				CountedDay cDay = countedDays.get(pointer);
-				int freeTime = cDay.getFreeTime();
-								
-				
-				if(freeTime == 0){
-					//just go to pointer.plusDays(1);
-				}else if(unallocatedTime > freeTime){
-					for(int i=0; i<freeTime; i++){
-						cDay.addPoint(p);
-						unallocatedTime--;
-					}
-				}else{
-					while(unallocatedTime > 0){
-						cDay.addPoint(p);
-						unallocatedTime--;
-					}
-				}
-				
-				pointer = pointer.plusDays(1);
-			}
-			
-			//totalUnalocatedTime += unallocatedTime;
-		}
-	}
 	
 	/*
 	 * Fills CountedDays with points with limited terms
 	 */
-	//TODO make algoritm filling like flexiblePoints to use time more correctly
-	private void fillWithLimitedTasks(){
+	private void fillAllFreeTimeWithTasks(boolean isLimited){
 		
 		//for every limited point
-		ArrayList<Task> limitedTasks = new ArrayList<Task>();
+		ArrayList<Task> tasksToFill = new ArrayList<Task>();
 		
+		//for LimitedTerm or Flexible term task
+		TypeOfTask type = isLimited ? TypeOfTask.LimitedTerm :
+				TypeOfTask.FlexibleTerm;
+		
+		//retrieves limited term tasks
 		for(Task task: user.getTasks()){
-			if(task.isActive() && task.getType() == TypeOfTask.LimitedTerm){
-				limitedTasks.add(task);
+			if(task.isActive() && task.getType() == type){
+				tasksToFill.add(task);
+				//System.out.println("type of task: " + task.getType());
 			}
 		}
+	
 		
-		for(Task task: limitedTasks){//for every task
-			//if there is no point
+		for(Task task: tasksToFill){//for every task
+			//if there is null instead task
 			if(task == null){
 				continue;
 			}
 			
-			PointImpl p = new PointImpl(task.getTitle(), task.getDescription(),
-					task.getInterval().getStart().toLocalDate().toString(),
-					task.getInterval().getEnd().toLocalDate().toString());
+			PointImpl p = null;
 			
-			//counts counted days with free time
-			Interval pointInterval = task.getInterval();
+			if(isLimited){//makes Point with interval
+				p = new PointImpl(task.getTitle(), task.getDescription(),
+						task.getInterval().getStart().toLocalDate().toString(),
+						task.getInterval().getEnd().toLocalDate().toString());
+			}else{//makes point with start date
+				p = new PointImpl(task.getTitle(), task.getDescription(),
+						task.getStartDate().toString(),
+						"");
+			}
+			
+			/*
+			 * real interval for LimitedTerm task and artificial for 
+			 * FlexibleTerm tasks
+			 */
+			Interval taskInterval = isLimited ? task.getInterval() :
+				new Interval(task.getStartDate().toDate().getTime(),
+						intervalToCount.getEndMillis());
+			
 			LocalDate pointer = null;
 
-			int unallocatedTime = task.getNecessaryTime();
+			int unallocatedTaskTime = task.getNecessaryTime();
 			
 			//fills free time
-			while(unallocatedTime != 0){//while all the point time isn't located
+			while(unallocatedTaskTime != 0){//while all the point time isn't located
 				
 				boolean change = false;
-				pointer = pointInterval.getStart().toLocalDate();
+				
+				//System.out.println("here 1");
+				
+				//start date for LimitedTerm or Flexible term task
+				pointer = isLimited ? taskInterval.getStart().toLocalDate() :
+					task.getStartDate();
 				
 				//trying to fill time evenly for all period of task
-				while(pointInterval.contains(pointer.toInterval())){
+				while(taskInterval.contains(pointer.toInterval())){
 					
-					//break the loop if point is located
-					if(unallocatedTime == 0){
-						break;
+					//System.out.println("here 2");
+					
+					//if task inactive this day (day of week)
+					int currentDayOfWeek = pointer.getDayOfWeek();
+					if(!task.isActiveDayAt(currentDayOfWeek)){
+						pointer = pointer.plusDays(1);
+						continue;
 					}
 					
-					//System.out.println("current Point: " + p.getTitle());
-					//System.out.println("counted days: " + countedDays);
-					//System.out.println("pointer date: " + pointer);
-					
-					/*TreeSet<LocalDate> tempSet = new TreeSet<LocalDate>(countedDays.keySet());
-					for(LocalDate d: tempSet){
-						System.out.println("counted days: " + d);
-						//System.out.println(countedDays.get(d));
-					}*/
+					//break the loop if point is located
+					if(unallocatedTaskTime == 0){
+						break;
+					}
 					
 					int freeTimeOnDay = countedDays.get(pointer).getFreeTime();
 					
@@ -398,24 +304,42 @@ public class ScheduleProcessorSimpleImpl implements Model{
 						continue;//skips busy day 
 					}
 					
-					countedDays.get(pointer).addPoint(p);
-					unallocatedTime--;
+					//fills all free time in this day
+					breakPoint: for(int i=0; i < freeTimeOnDay; i++){
+						for(int j = 0; j < 24; j++){
+							if(countedDays.get(pointer).isHourFree(j) &&
+									task.isActiveHourAt(j)){
+								countedDays.get(pointer).addPoint(p, j);
+								unallocatedTaskTime--;
+								
+								//task was pasted at least in one hour
+								change = true;
+								
+								if(unallocatedTaskTime == 0){
+									break breakPoint;
+								}
+							}
+						}
+					}
+										
 					
-					//task was pasted at least in one day
-					change = true;
 					pointer = pointer.plusDays(1);
 				}
 				
+				//there is no free time in days in task interval
 				//that means that it's impossible locate point to exist time
 				if(!change){
-					String error = "There isn't enought time to complete " + 
-						task.getTitle() +
-						". It's necessary " + unallocatedTime  + 
-						" hour(s) to complete it.";
+					if(isLimited){//adds error meaasge if it is limited ter point task
+						String error = "There isn't enought time to complete " + 
+							task.getTitle() +
+							". It's necessary " + unallocatedTaskTime  + 
+							" hour(s) to complete it.";
+						
+							tasksErrors.add(error);
+					}
 					
-						tasksErrors.add(error);
-					
-					//if there isn't any places - method must be break
+					//if there isn't any places - method must be break or 
+					//it will be endless loop
 					break;
 				}
 			}
@@ -451,9 +375,11 @@ public class ScheduleProcessorSimpleImpl implements Model{
 			int freeTime = day.getFreeTime();
 			
 			if(freeTime > 0){
-				for(int i=0; i < freeTime; i++){
-					day.addPoint(p);
-					totalFreeTime++;
+				for(int i = 0; i < 24; i++){
+					if(day.isHourFree(i)){
+						day.addPoint(p, i);
+						totalFreeTime++;
+					}
 				}
 			}
 		}
@@ -462,7 +388,6 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	//clears state of object from prevision invokation
 	private void resetState(){
 		//clears ArrayLists with errors and tasks
-		absentDayErrors.clear();
 		tasksErrors.clear();
 		tasksNamesInRequesteInterval.clear();	
 	}

@@ -28,12 +28,6 @@ public interface Schedule {
 	 * TODO Think how to should be Schedule if it
 	 * will be having errors. Displayed or no?
 	 */
-
-	/**
-	 * If user doesn't have all days in requested interval
-	 * returned List must keep absent days
-	 */
-	public List<String> getAbsentDayErrors();
 	
 	/**
 	 * If it's impossible to locate task in specifies

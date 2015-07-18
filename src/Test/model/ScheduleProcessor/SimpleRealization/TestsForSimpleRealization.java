@@ -5,10 +5,12 @@ import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 import main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealization.ScheduleProcessorSimpleImpl;
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
+import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
+import main.java.com.yvalera.scheduler.model.persistentObjects.Task.TypeOfTask;
+import main.java.com.yvalera.scheduler.service.auxiliary_objects.UserFactory;
 
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /*
@@ -27,103 +29,70 @@ public class TestsForSimpleRealization {
 	public void test_1(){
 		
 		Interval requestedInterval = new 
-				Interval(new LocalDate(2000, 1, 1).toDate()
+				Interval(new LocalDate(2015, 6, 18).toDate()
 						.getTime(), 
-						new LocalDate(2000, 1, 7).toDate()
+						new LocalDate(2015, 6, 23).toDate()
 						.getTime());
 		
-		Interval fillRoutineDaysInterval = new 
-				Interval(new LocalDate(2000, 1, 1).toDate()
+		Interval LimitedTaskInterval = new 
+				Interval(new LocalDate(2015, 6, 17).toDate()
 						.getTime(), 
-						new LocalDate(2000, 1, 7).toDate()
+						new LocalDate(2015, 6, 21).toDate()
 						.getTime());
 		
-		Interval speciaTaskInterval = new 
-				Interval(new LocalDate(2000, 1, 2).toDate()
-						.getTime(), 
-						new LocalDate(2000, 1, 5).toDate()
-						.getTime());
+		LocalDate flexibleTermstartDate = new LocalDate(2015, 06, 20);
 		
-		LocalDate specialDayDate = new LocalDate(2000, 1, 3);
+		User user = UserFactory.createStandartNewUser("");
 		
-		LocalDate flexibleTermPointStart = 
-				new LocalDate(2000, 1, 3);
+		//adds task to created user
+		Task flexibleTerms = new Task();
+		Task limitedTerms = new Task();
 		
-
+		flexibleTerms.setTitle("flexible");
+		flexibleTerms.setStartDate(flexibleTermstartDate);
+		flexibleTerms.setType(TypeOfTask.FlexibleTerm);
+		flexibleTerms.setNecessaryTime(18);
 		
-		User user = UserFactory.getUser(
-				fillRoutineDaysInterval, 
-				speciaTaskInterval, specialDayDate, 
-				flexibleTermPointStart);
+		limitedTerms.setTitle("limited");
+		limitedTerms.setInterval(LimitedTaskInterval);
+		limitedTerms.setType(TypeOfTask.LimitedTerm);
+		limitedTerms.setNecessaryTime(10);
 		
-		for(int i=0; i<5; i++){
+		flexibleTerms.setActive(true);
+		limitedTerms.setActive(true);
+		
+		flexibleTerms.setId(1000);
+		limitedTerms.setId(2000);
+		
+		user.getTasks().add(flexibleTerms);
+		user.getTasks().add(limitedTerms);
+				
+		for(int i = 1; i < 8; i++){
+			if(i != 4){//makes one day unactive
+				flexibleTerms.setActiveDayAt(i, true);
+			}
+			limitedTerms.setActiveDayAt(i, true);
+		}
+		
+		for(int j = 0; j < 24; j++){
+			if(j > 10 && j < 20){
+				limitedTerms.setActiveHourAt(j, true);
+			}
+			if(j > 14){
+				flexibleTerms.setActiveHourAt(j, true);
+			}
+		}
+		
+		//for(int i=0; i<5; i++){
 		
 			schedule = model.calculateSchedule(user,
 					requestedInterval);
 		
-			//TextView view = new TextView();
-			//view.printView(schedule, requestedInterval);
+			TextView view = new TextView();
+			view.printView(schedule, requestedInterval);
 		
-			assertEquals(schedule.getAbsentDayErrors().size(), 0);
 			assertEquals(schedule.getTasksErrors().size(), 0);
-			assertEquals(schedule.getTotalFreeTime(), 7);
-			
-			//for(String s: schedule.getTasksNames()){
-			//	System.out.println(s);
-			//}
-			
-			
-			//System.out.println("task names size: " + schedule.
-			//		getTasksNames().size());
-		}
-	}
-	
-	/*
-	 * tests few passes. Requested interval shorter than
-	 * filled days and Limited term task starts before
-	 * requested interval starts
-	 */
-	@Test
-	public void test_2(){
-		
-		Interval requestedInterval = new 
-				Interval(new LocalDate(2000, 1, 10).toDate()
-						.getTime(), 
-						new LocalDate(2000, 3, 22).toDate()
-						.getTime());
-		
-		Interval fillRoutineDaysInterval = new 
-				Interval(new LocalDate(2000, 1, 1).toDate()
-						.getTime(), 
-						new LocalDate(2000, 10, 7).toDate()
-						.getTime());
-		
-		Interval limitedTaskInterval = new 
-				Interval(new LocalDate(2000, 1, 2).toDate()
-						.getTime(), 
-						new LocalDate(2000, 1, 5).toDate()
-						.getTime());
-		
-		LocalDate specialDayDate = new LocalDate(2000, 1, 3);
-		
-		LocalDate flexibleTermPointStart = 
-				new LocalDate(2000, 1, 3);
-		
-		User user = UserFactory.getUser(
-				fillRoutineDaysInterval, 
-				limitedTaskInterval, specialDayDate, 
-				flexibleTermPointStart);
-		
-		//for(int i=0; i<5; i++){
-			schedule = model.calculateSchedule(user,
-				requestedInterval);
-			
-			//TextView view = new TextView();
-			//view.printView(schedule, requestedInterval);
-		
-			assertEquals(schedule.getAbsentDayErrors().size(), 0);
-			assertEquals(schedule.getTasksErrors().size(), 0);
-			//assertEquals(schedule.getTotalFreeTime(), 7);
+			assertEquals(schedule.getTotalFreeTime(), 61);
 		//}
 	}
 }

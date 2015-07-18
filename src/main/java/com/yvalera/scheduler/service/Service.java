@@ -14,5 +14,12 @@ public interface Service {
 	 * Retrieves calculated schedule uses requested interval
 	 * of dates and certain user
 	 */
-	public Schedule getSchedule(Interval interval, long userId);
+	public Schedule getSchedule(Interval interval, String userName);
+	
+	/**
+     * Adds new user to application, creates necessary days
+     * and save all to Dao 
+     */
+	public boolean addNewUser(String username, 
+			String password);
 }

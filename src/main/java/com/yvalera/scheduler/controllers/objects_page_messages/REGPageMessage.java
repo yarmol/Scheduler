@@ -8,10 +8,10 @@ import javax.validation.constraints.Size;
  */
 public class REGPageMessage {
 	
-	@Size(min=6, max=20, message="incorrect username")
+	@Size(min=4, max=20, message="incorrect username")
 	private String username;
 	
-	@Size(min=6, max=20, message="incorrect password")
+	@Size(min=4, max=20, message="incorrect password")
 	private String password;
 	
 	

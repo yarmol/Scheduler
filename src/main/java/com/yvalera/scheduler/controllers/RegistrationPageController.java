@@ -3,7 +3,7 @@ package main.java.com.yvalera.scheduler.controllers;
 import javax.validation.Valid;
 
 import main.java.com.yvalera.scheduler.controllers.objects_page_messages.REGPageMessage;
-import main.java.com.yvalera.scheduler.dao.Dao;
+import main.java.com.yvalera.scheduler.service.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RegistrationPageController {
 
 	@Autowired
-	private Dao dao;
+	private Service service;
 	
 	//show registration page
     @RequestMapping(method = RequestMethod.GET)
@@ -29,9 +29,9 @@ public class RegistrationPageController {
     }
     
 	/*
-	 * Calls with request with parameters
+	 * Calls with request with parameters.
 	 * Shows login page if registration done
-	 * or errors if inputed data were wrong
+	 * or errors if inputed data were wrong.
 	 */
     @RequestMapping(method = RequestMethod.POST)
     public String verifyRegistrationData(@ModelAttribute("message")
@@ -43,13 +43,11 @@ public class RegistrationPageController {
         	return "registration_page";
         }else{//if no errors
         	
-        	
-        	
         	//if Dao saved new user
-        	if(dao.saveNewUserToDB(message.getUsername(),
+        	if(service.addNewUser(message.getUsername(),
         			message.getPassword())){
         		
-        		return "login";
+        		return "redirect:login";
         	}else{//if Dao didn't save new user
         		
         		//message to display on register page

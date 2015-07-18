@@ -70,13 +70,13 @@ public class DaysViewController {
     				getAttribute("interval");
     	}
     	
-    	//TODO make it work
+    	
     	//retrieve userId from Spring Security
         Authentication auth = SecurityContextHolder.getContext().
         		getAuthentication();
         User user = (User)auth.getPrincipal();
     	
-    	schedule = service.getSchedule(interval, 0);
+    	schedule = service.getSchedule(interval, user.getUsername());
     	
     	//makes them avaible for jsp
     	model.put("interval", interval);
@@ -106,14 +106,15 @@ public class DaysViewController {
     	interval = new Interval(startInterval.toDate().getTime(),
     			endInterval.toDate().getTime());
     	
-    	//TODO make it work
+    	
     	//retrieve userId from Spring Security
-        /*Authentication auth = SecurityContextHolder.getContext().
+        Authentication auth = SecurityContextHolder.getContext().
         		getAuthentication();
-        User user = (User)auth.getPrincipal();*/
+        User user = (User)auth.getPrincipal();
     	    	
     	//TODO make it work
-    	Schedule schedule = service.getSchedule(interval, 0);
+    	Schedule schedule = service.getSchedule(interval, user
+    			.getUsername());
     	
     	model.put("schedule", schedule);
     	

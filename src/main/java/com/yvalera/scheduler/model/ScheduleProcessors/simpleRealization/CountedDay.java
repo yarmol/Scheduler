@@ -26,6 +26,9 @@ class CountedDay{
 		return  points[timeInterval];
 	}
 
+	/**
+	 * @return int free time in day
+	 */
 	public int getFreeTime() {
 		int freeTime = 0;
 		
@@ -38,17 +41,23 @@ class CountedDay{
 		return freeTime;
 	}
 
-	//adds Task on specific hour
-	public void addPoint(PointImpl point) {
-		for(int i=0; i < points.length; i++){
-			if(points[i] == null){
-				points[i] = point;
-				break;
-			}
+	/**
+	 * @Return boolean if is there free time in 
+	 * specified hour
+	 */
+	public boolean isHourFree(int hourOfDay){
+		
+		if(hourOfDay >= 0 && hourOfDay <= 23){
+			return points[hourOfDay] == null;
 		}
+		
+		return true;
 	}
-
-	public void setPointAt(Point point, int timeInterval) {
-		points[timeInterval] = point;
+	
+	//adds Task on specific hour
+	public void addPoint(Point point, int hourOfDay) {
+		if(points[hourOfDay] == null){
+			points[hourOfDay] = point;
+		}
 	}
 }

@@ -14,7 +14,7 @@ public interface Dao{
 	/**
 	 * @return User object by user name parameter
 	 */
-	public User getUserByUserName(String username, Session session);
+	public User getUserByUserName(String userName, Session session);
 	
 	//public void saveUser(User user, Session session);
 	
@@ -31,6 +31,6 @@ public interface Dao{
      * Saves new user to database. Returns true if new user was
      * saved and false if new user wasn't saved 
      */
-	public boolean saveNewUserToDB(String username, 
-			String password);
+	public boolean saveNewUser(User user, 
+			String password, Session session);
 }

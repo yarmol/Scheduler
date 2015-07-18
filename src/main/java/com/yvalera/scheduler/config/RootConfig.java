@@ -42,6 +42,13 @@ public class RootConfig {
 			   {"main.java.com.yvalera.scheduler.model.persistentObjects"});
 
 	   props.setProperty("dialect", "org.hibernate.dialect.MYSQLDialect");
+	   
+	   /*
+	    * !!! Tells Hibernate to AUTOMATIC create or alter 
+	    * application tables in the database.
+	    */
+	   props.setProperty("hibernate.hbm2ddl.auto", "update");
+	   
 	   sfb.setHibernateProperties(props);
 
 	   return sfb;

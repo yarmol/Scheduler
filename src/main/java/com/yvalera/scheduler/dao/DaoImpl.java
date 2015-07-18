@@ -7,8 +7,14 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
+import main.java.com.yvalera.scheduler.service.auxiliary_objects.UserFactory;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
@@ -19,18 +25,35 @@ public class DaoImpl implements Dao{
 
 	//for saveNewUserToDB method
 	@Autowired
-	DataSource dataSource;
+	private DataSource dataSource;
 	
+	@Autowired
+	private SessionFactory sessionFactory; 
+	
+	/**
+	 * @return User object by username
+	 */
 	@Override
-	public User getUserById(long id, Session session) {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUserByUserName(String username, Session session) {
+		
+		Transaction tx = session.beginTransaction();
+		
+		Criteria crit = session.createCriteria(User.class);
+		Criterion nameOfUser = Restrictions.eq("name", username);
+		crit.setMaxResults(1);
+		User user = (User) crit.uniqueResult();
+		
+		tx.commit();
+		
+		return user;
 	}
-
+	
+	/**
+	 * @return opened session
+	 */
 	@Override
 	public Session getSession() {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionFactory.openSession();
 	}
 
 	/**
@@ -38,7 +61,8 @@ public class DaoImpl implements Dao{
 	 * @return true if new user was saved and false in not
 	 */
 	@Override
-	public boolean saveNewUserToDB(String username, String password){
+	public boolean saveNewUser(User user, String password,
+			Session session){
     	
     	Connection conn = null;
     	PreparedStatement statement = null;
@@ -62,7 +86,7 @@ public class DaoImpl implements Dao{
 					"insert into security (username, password, " +
 					"ROLE_USER) values (?, ?, 'USER');");
 			
-			statement.setString(1, username);
+			statement.setString(1, user.getName());
 			statement.setString(2, encoder.encode(password));
 		
     	} catch (SQLException e) {
@@ -76,6 +100,13 @@ public class DaoImpl implements Dao{
 			//e.printStackTrace();
 			return false;
 		}
+    	
+
+		Transaction tx = session.beginTransaction();
+		
+		session.persist(user);
+		
+		tx.commit();    	
     	
     	return true;
     }

@@ -15,19 +15,7 @@ public class TextView {
 		LocalDate pointer = interval.getStart().toLocalDate();
 		
 		System.out.println("Summary errors: " + (
-				sch.getAbsentDayErrors().size() + 
 				sch.getTasksErrors().size()) + "\n");
-		
-		if(sch.getAbsentDayErrors().size() != 0){
-			System.out.println("absentDayErrors:");
-			
-			for(String s: sch.getAbsentDayErrors()){
-				System.out.println("ads: " + s);
-			}
-			
-			System.out.println("Exit");
-			return;
-		}
 		
 		if(sch.getTasksErrors().size() != 0){
 			System.out.println("TasksErrors:");
@@ -36,6 +24,7 @@ public class TextView {
 				System.out.println("tsk: " + s);
 			}
 		}
+		
 		
 		//through all day in interval
 		while(interval.contains(pointer.toInterval())){

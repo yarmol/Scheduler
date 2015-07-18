@@ -16,47 +16,25 @@ import org.joda.time.LocalDate;
 class ScheduleImpl implements Schedule{
 
 	private HashMap<LocalDate, CountedDay> days;
-	private ArrayList<String> absentDayErrors;
 	private ArrayList<String> tasksErrors;
 	private ArrayList<String> tasksNames;
 	private int totalFreeTime;
-	//private Interval interval;
-	//for test only
-	//private int times = 0;
 	
-	ScheduleImpl(HashMap<LocalDate,	CountedDay> days, 
-				ArrayList<String> absentDayErrors, 
+	ScheduleImpl(HashMap<LocalDate,	CountedDay> days,  
 				ArrayList<String> tasksErrors,
 				int totalFreeTime, 
 				ArrayList<String> tasksNames){
 		//this.interval = interval;
 		this.days = days;
-		this.absentDayErrors = absentDayErrors;
 		this.tasksErrors = tasksErrors;
 		this.totalFreeTime = totalFreeTime;
 		this.tasksNames = tasksNames;
 	}
 
 	@Override
-	//???add verification to before / after days???
 	public Point getPointAt(LocalDate date, int timeInterval){
-		//for test only
-		//System.out.println("times: " + times);
-		/*if(times == 0){
-			
-			System.out.println("storage point: " + date);
-			System.out.println("stored day date: " + days.get(date).getDate());
-		}else if(times == 23){
-			times = -1;
-		}
-		
-		times ++;*/
-		return days.get(date).getPointAt(timeInterval);
-	}
 
-	@Override
-	public List<String> getAbsentDayErrors() {
-		return absentDayErrors;
+		return days.get(date).getPointAt(timeInterval);
 	}
 
 	@Override
@@ -74,9 +52,4 @@ class ScheduleImpl implements Schedule{
 		// TODO Auto-generated method stub
 		return tasksNames;
 	}
-	
-	/*@Override
-	public Interval getInterval() {
-		return interval;
-	}*/
 }

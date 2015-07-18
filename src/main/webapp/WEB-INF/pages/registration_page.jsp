@@ -26,7 +26,7 @@
 							<sf:input path="username" size="15"/>
 						</div>
 						<div class="RG_labels__2">
-							must be 6-20 characters
+							must be 4-20 characters
 						</div>
 						<div class="RG_labels_1">
 							password:
@@ -35,7 +35,7 @@
 								<sf:password path="password" size="15"/>
 						</div>
 						<div class="RG_labels__2">
-							must be 6-20 characters
+							must be 4-20 characters
 						</div>
 					</div>
 					<div class="RG_button">

@@ -18,6 +18,14 @@
 			<version>2.7</version>
 		</dependency>
 		
+		<!-- Hibernate Joda Time support library -->
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+			<version>4.0.0.GA</version>
+		</dependency>
+
+		
 		<!-- Spring dependencies-->
 		<dependency>
         	<groupId>org.springframework</groupId>

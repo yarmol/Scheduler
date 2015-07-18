@@ -25,6 +25,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				withUser("user").password("user").roles("USER");
 	}*/
 
+	/*
+	 * "#sch$" it's just random char sequence, must match with
+	 * another one in password encrypting method
+	 */
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) 
 			throws Exception{
