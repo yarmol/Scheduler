@@ -339,7 +339,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 	/*
 	 * Fills CountedDays with points with limited terms
 	 */
-	//TODO make quicker algorithm
+	//TODO make algoritm filling like flexiblePoints to use time more correctly
 	private void fillWithLimitedTasks(){
 		
 		//for every limited point
@@ -399,7 +399,7 @@ public class ScheduleProcessorSimpleImpl implements Model{
 					}
 					
 					countedDays.get(pointer).addPoint(p);
-					unallocatedTime--;;
+					unallocatedTime--;
 					
 					//task was pasted at least in one day
 					change = true;

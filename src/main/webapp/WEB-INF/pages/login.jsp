@@ -13,16 +13,17 @@
 			</div>
 			<div class="centerElement">
 				<div class="labels">
-					name:<br>
+					user:<br>
 					password:
 				</div>
 				<div class="inputs">
 					<form name ="f" action ="login" method="POST">
-						<input type="text" size="15" name="username" value=""/><br>
-						<input type="password" size="15" name="password"/>
+						<input type="text" size="19" name="username" value=""/><br>
+						<input type="password" size="19" name="password"/>
 						<div class="button">
 							<input type="submit" value="Login" name="submit">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<a href="${pageContext.request.contextPath}/registration">registration</a>
 						</div>
 					</form>
 				</div>

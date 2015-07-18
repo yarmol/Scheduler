@@ -1,0 +1,68 @@
+package main.java.com.yvalera.scheduler.controllers;
+
+import javax.validation.Valid;
+
+import main.java.com.yvalera.scheduler.controllers.objects_page_messages.REGPageMessage;
+import main.java.com.yvalera.scheduler.dao.Dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+//Controller of the registration page
+@Controller
+@RequestMapping({"/registration"})
+public class RegistrationPageController {
+
+	@Autowired
+	private Dao dao;
+	
+	//show registration page
+    @RequestMapping(method = RequestMethod.GET)
+    public String register() {
+    	
+        return "registration_page";
+    }
+    
+	/*
+	 * Calls with request with parameters
+	 * Shows login page if registration done
+	 * or errors if inputed data were wrong
+	 */
+    @RequestMapping(method = RequestMethod.POST)
+    public String verifyRegistrationData(@ModelAttribute("message")
+    		@Valid REGPageMessage message, Errors errors,
+    				ModelMap model) {
+
+    	//if there are errors in password or username restrictions
+        if(errors.hasErrors()){
+        	return "registration_page";
+        }else{//if no errors
+        	
+        	
+        	
+        	//if Dao saved new user
+        	if(dao.saveNewUserToDB(message.getUsername(),
+        			message.getPassword())){
+        		
+        		return "login";
+        	}else{//if Dao didn't save new user
+        		
+        		//message to display on register page
+        		model.put("error_string", "this name is busy");
+        		
+        		return "registration_page";
+        	}
+        }
+    }
+    
+    //adds "message" object to model
+    @ModelAttribute("message")
+    public REGPageMessage getLoginForm() {
+	        return new REGPageMessage();
+    }
+}

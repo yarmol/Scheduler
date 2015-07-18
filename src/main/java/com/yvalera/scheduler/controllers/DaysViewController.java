@@ -1,5 +1,6 @@
 package main.java.com.yvalera.scheduler.controllers;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import main.java.com.yvalera.scheduler.controllers.objects_page_messages.DVPageMessage;
@@ -9,6 +10,9 @@ import main.java.com.yvalera.scheduler.service.Service;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
@@ -30,19 +34,20 @@ public class DaysViewController {
 	 * Returns requested interval view.
 	 */
     @RequestMapping(method = RequestMethod.POST)
-    public String requestedDatePage(@ModelAttribute("message")
+    public String requestDatePage(@ModelAttribute("message")
     		@Valid DVPageMessage message,
-    		Errors errors, ModelMap model) {
+    		Errors errors, ModelMap model, 
+    		HttpServletRequest request) {
     	
     	Schedule schedule = null;//schedule
-    	Interval interval = null;//interval to count schedule
+    	Interval interval = null;//old value of interval to count schedule
+    	
     	LocalDate startInterval = null;//start of schedule interval
     	LocalDate endInterval = null;//end of schedule interval
     	
-    	
     	/*
     	 * if there are no errors (without deep verification) in
-    	 * entered dates make new interval, otherwise use old
+    	 * entered dates, it makes new interval, otherwise use old
     	 * and @Validate will show message "invalid start or 
     	 * end date (see DVPMessage class)" 
     	 */
@@ -57,20 +62,26 @@ public class DaysViewController {
 	    	interval = new Interval(startInterval.toDate().getTime(),
 	    			endInterval.toDate().getTime());
 	    	
-	    	//puts interval for jsp rendering
-	    	model.put("interval", interval);
+	    	//stores last interval
+	    	request.getSession().setAttribute("interval", interval);
 	    	
-	    	schedule = service.getSchedule(interval, 0);
-	    	model.put("schedule", schedule);
+    	}else{
+    		interval = (Interval) request.getSession().
+    				getAttribute("interval");
     	}
     	
     	//TODO make it work
     	//retrieve userId from Spring Security
-        /*Authentication auth = SecurityContextHolder.getContext().
+        Authentication auth = SecurityContextHolder.getContext().
         		getAuthentication();
-        User user = (User)auth.getPrincipal();*/ 	
+        User user = (User)auth.getPrincipal();
     	
-	
+    	schedule = service.getSchedule(interval, 0);
+    	
+    	//makes them avaible for jsp
+    	model.put("interval", interval);
+    	model.put("schedule", schedule);
+    	
         return "days_view_page";
     }
 	
@@ -80,19 +91,17 @@ public class DaysViewController {
 	 * Returns current and next months view.
 	 */
     @RequestMapping(method = RequestMethod.GET)
-    public String defaultDatePage(ModelMap model) {
+    public String defaultDatePage(ModelMap model, 
+    		HttpServletRequest request) {
     	
     	LocalDate today = new LocalDate();
     	Interval interval = null;
     	LocalDate startInterval = null;
     	LocalDate endInterval = null;
     	
-    	int curMonths = today.getMonthOfYear();
-    	int curYear = today.getYear();
-    	
     	//set up 2 months interval
-    	startInterval = new LocalDate(curYear, curMonths, 1);
-    	endInterval = startInterval.plusMonths(2);
+    	startInterval = today.minusMonths(1);
+    	endInterval = today.plusMonths(1);
     	
     	interval = new Interval(startInterval.toDate().getTime(),
     			endInterval.toDate().getTime());
@@ -110,6 +119,9 @@ public class DaysViewController {
     	
     	//puts interval for jsp rendering
     	model.put("interval", interval);
+    	
+    	//store last interval
+    	request.getSession().setAttribute("interval", interval);
     	
         return "days_view_page";
     }

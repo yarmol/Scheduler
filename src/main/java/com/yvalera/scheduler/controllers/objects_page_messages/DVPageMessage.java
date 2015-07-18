@@ -2,6 +2,10 @@ package main.java.com.yvalera.scheduler.controllers.objects_page_messages;
 
 import javax.validation.constraints.Pattern;
 
+/*
+ * This is a object, which jsp page passes to
+ * controller wit filled fields
+ */
 public class DVPageMessage {
 	
 	@Pattern(regexp="[2][0][0-9]{2}-[0-1][0-9]-[0-3][0-9]",

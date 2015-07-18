@@ -1,6 +1,7 @@
 package main.java.com.yvalera.scheduler.dao;
 
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
+
 import org.hibernate.Session;
 
 /**
@@ -10,7 +11,10 @@ import org.hibernate.Session;
  */
 public interface Dao{
 	
-	public User getUserById(long id, Session session);
+	/**
+	 * @return User object by user name parameter
+	 */
+	public User getUserByUserName(String username, Session session);
 	
 	//public void saveUser(User user, Session session);
 	
@@ -18,7 +22,15 @@ public interface Dao{
 	
 	/**
 	 * returns Session object to make possible User 
-	 * object's lazy initialization 
+	 * object's lazy initialization. Warning, Session must be
+	 * closed in Service layer!
 	 */
 	public Session getSession();
+	
+	/**
+     * Saves new user to database. Returns true if new user was
+     * saved and false if new user wasn't saved 
+     */
+	public boolean saveNewUserToDB(String username, 
+			String password);
 }
