@@ -17,7 +17,7 @@
 		
 		If you entered a data, please verify is it correct.<br><br>
 		
-		<a href="${pageContext.request.contextPath}/app/days">return to application</a>
+		<a href="${pageContext.request.contextPath}">return to application</a>
 	
 	</body>
 </html>

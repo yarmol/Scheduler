@@ -16,8 +16,6 @@ public interface Dao{
 	 */
 	public User getUserByUserName(String userName, Session session);
 	
-	//public void saveUser(User user, Session session);
-	
 	//public void deleteUser(User user);
 	
 	/**

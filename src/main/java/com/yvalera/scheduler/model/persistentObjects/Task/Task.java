@@ -16,6 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+
+import main.java.com.yvalera.scheduler.service.Interfaces.TaskRepresentation;
 
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
@@ -72,22 +75,24 @@ public class Task{
 	 * Task active days, from 1 = Monday to 7 = Sunday
 	 */
 	@ElementCollection
-	@CollectionTable(name="Task_auxiliary",
+	@OrderColumn//enables order in db
+	@CollectionTable(name="Task_active_days",
 		joinColumns=@JoinColumn(name="TASK_ID"))
 	@Column(name="activeDays")
-	private List<Boolean> activeDays;;
+	private List<Boolean> activeDays;
 	
 	/*
 	 * Task active hours, 0-23
 	 */
 	@ElementCollection
-	@CollectionTable(name="Task_auxiliary",
+	@OrderColumn//enables order in db
+	@CollectionTable(name="Task_active_hours",
 		joinColumns=@JoinColumn(name="TASK_ID"))
 	@Column(name="activeHours")
 	private List<Boolean> activeHours;
 
 	
-	public Task() {
+	public Task(){
 
 		activeDays = new ArrayList<Boolean>(7);
 		activeHours = new ArrayList<Boolean>(24);
@@ -99,6 +104,33 @@ public class Task{
 		
 		for(int i = 0; i < 24; i++){
 			activeHours.add(false);
+		}
+	}
+	
+	//makes task with TaskRepresentation
+	public Task(TaskRepresentation task){
+		id = task.getId();
+		title = task.getTitle();
+		description = task.getDescription();
+		type = task.getType();
+		isActive = task.isActive();
+		necessaryTime = task.getNecessaryTime();
+		
+		//it's safety because a LocalData is immutable
+		startDate = task.getStartDate();
+		
+		//it's safety because an Interval is immutable
+		interval = task.getInterval();
+		
+		activeDays = new ArrayList<Boolean>(7);
+		activeHours = new ArrayList<Boolean>(24);
+		
+		for(int i = 0; i < 7; i++){
+			activeDays.add(task.isActiveDayAt(i + 1));
+		}
+		
+		for(int i = 0; i < 24; i++){
+			activeHours.add(task.isActiveHourAt(i + 1));
 		}
 	}
 	

@@ -33,6 +33,7 @@ public class DaysViewController {
 	 * Calls with request with parameters
 	 * Returns requested interval view.
 	 */
+	//TODO verify to put message from method instead from session
     @RequestMapping(method = RequestMethod.POST)
     public String requestDatePage(@ModelAttribute("message")
     		@Valid DVPageMessage message,
@@ -71,7 +72,7 @@ public class DaysViewController {
     	}
     	
     	
-    	//retrieve userId from Spring Security
+    	//retrieve username from Spring Security
         Authentication auth = SecurityContextHolder.getContext().
         		getAuthentication();
         User user = (User)auth.getPrincipal();

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import main.java.com.yvalera.scheduler.model.persistentObjects.User;
+import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 import main.java.com.yvalera.scheduler.service.auxiliary_objects.UserFactory;
 
 import org.hibernate.Criteria;
@@ -36,14 +37,19 @@ public class DaoImpl implements Dao{
 	@Override
 	public User getUserByUserName(String username, Session session) {
 		
-		Transaction tx = session.beginTransaction();
+		//Transaction tx = session.beginTransaction();
 		
 		Criteria crit = session.createCriteria(User.class);
 		Criterion nameOfUser = Restrictions.eq("name", username);
 		crit.setMaxResults(1);
 		User user = (User) crit.uniqueResult();
 		
-		tx.commit();
+		//tx.commit();
+		
+		for(Task t: user.getTasks()){
+			System.out.println("dao get user task: " 
+					+ t.getTitle());
+		}
 		
 		return user;
 	}
@@ -102,11 +108,11 @@ public class DaoImpl implements Dao{
 		}
     	
 
-		Transaction tx = session.beginTransaction();
+		//Transaction tx = session.beginTransaction();
 		
 		session.persist(user);
 		
-		tx.commit();    	
+		//tx.commit();    	
     	
     	return true;
     }

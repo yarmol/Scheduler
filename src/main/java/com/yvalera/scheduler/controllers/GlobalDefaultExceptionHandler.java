@@ -14,7 +14,9 @@ public class GlobalDefaultExceptionHandler {
 	 * will be intercept
 	 */
 	@ExceptionHandler(value = Exception.class)
-	public String processException(){
+	public String processException(Exception e){
+		
+		e.printStackTrace();
 		
 		return "exception_page";
 	}
