@@ -1,44 +1,39 @@
-.main{
-    min-height: 100px;
-	min-width: 200px;
+.TR_main{
+	width: 1140px;
 	float: left;
-	clear: both;
+	background-color: #87CEFA;
+	border-radius: 10px;
+	padding: 10px;
 }
-.label1{
-    /*min-height: 100px;*/
-	min-width: 400px;
-	float: top;
+.TR_main_label{
+	width: 1120px;
+	float: left;
 	text-align: center;
-	font: bold italic 150% serif; 
+	font: bold italic 150% serif;
+	padding: 10px;
 }
-.bigContainer{
-	min-width: 200px;
+.TR_big_Container{
 	float: left;
+	width: 1120px;
 }
-.label2{
-    /*min-height: 100px;*/
-	min-width: 100px;
-	float: top;
-	text-align: left;
-	padding: 15px 0px 10px 8px;
+.TR_label_1{
+	float: left;
+	text-align: center;
+	margin: 10px;
+	width: 1120px;
 }
-.label3{
-    /*min-height: 100px;*/
-	min-width: 100px;
-	float: top;
-	text-align: left;
-	padding: 15px 0px 10px 8px;
+.TR_input_container{
+	width: 1120px;
+	float: left;
+	padding: 10px;
 }
-.tables{
+.TR_table_container{
+	width: 1120px;
+	padding: 5px;
+	float: left;
 	overflow: auto;
-	/*min-height: 100px;*/
-	min-width: 100px;
-	max-height: 200px;
-	max-width: 300px;
-	padding: 15px 0px 10px 8px;
 }
 .buttons{
-	min-height: 20px;
-	min-width: 50px;
-	padding: 15px 0px 10px 8px;
+	padding: 5px;
+	float: left;
 }

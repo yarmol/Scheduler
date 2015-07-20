@@ -5,54 +5,50 @@
 		<link rel="stylesheet" href="day_task_review.css">
 	</head>
 	<body>
-		<div class="main">
-			<div class="label1">
-				!days/tasks review!
+		<div class="TR_main">
+			<div class="TR_main_label">
+				tasks review
 			</div>
-			<div class = bigContainer>
-				<div class = "label2">!elements with terms!</div>
-				<div class = "label3">
-					sort by:<br>
-					<select name="by1"></select>
+			<div class="TR_big_Container">
+				<div class="TR_label_1">
+					list of existing tasks
 				</div>
-				<div class = "tables">
-					<table border="0" cellspacing="1" bgcolor="#000000">
+				<div class="TR_input_container">
+					sort by: <select name="by1"></select>
+				</div>
+				<div class="TR_table_container">
+					<table border="0" cellspacing="1" bgcolor="#000000" cellpadding="2">
 						<tr bgcolor="#FFFFFF">
-							<th width = "100px">name</th>
+							<th width="130px">title</th>
+							<th width="100px">description</th>
+							<th width="50px">type</th>
+							<th width="20px">active</th>
+							<th width="12px">necessary time</th>
+							<th width="80px">start date</th>
+							<th width="80px">end date</th>
+							<th width="175px">active days</th>
+							<th width="260px">active hours</th>
 							<th>edit</th>
 							<th>delete</th>
 						</tr>
 						<tr bgcolor="#FFFFFF">
-							<td>!some text!</td>
-							<td>!edit!</td>
-							<td>!delete</td>
+							<td>some long title</td>
+							<td>start of desc...</td>
+							<td>flexible</td>
+							<td>yes</td>
+							<td>999</td>
+							<td>9999-99-99</td>
+							<td>9999-99-99</td>
+							<td>Mo, Tu, We, Th, Fr, St, Su</td>
+							<td>0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23</td>
+							<td>edit</td>
+							<td>delete</td>
 						</tr>
 					</table>
-				</div>
-			</div>
-			<div class = "bigContainer">
-				<div class = "label2">!elements without terms!</div>
-				<div class = "label3">
-					sort by:<br>
-					<select name="by1"></select>
-				</div>
-				<div class = "tables">
-					<table border="0" cellspacing="1" bgcolor="#000000">
-						<tr bgcolor="#FFFFFF">
-							<th width = "100px">name</th>
-							<th>edit</th>
-							<th>delete</th>
-						</tr>
-						<tr bgcolor="#FFFFFF">
-							<td>!some text!</td>
-							<td>!edit!</td>
-							<td>!delete</td>
-						</tr>
-					</table>
-				</div>
-			</div>
+				</div><!-- div table -->
+			</div><!-- big container -->
 			<div class = "buttons">
-				<input type="submit" value="!add new day/task!">
+				<input type="submit" value="add new task">
 			</div>
 		</div>	
 	</body>
