@@ -113,7 +113,7 @@ public class Task{
 		title = task.getTitle();
 		description = task.getDescription();
 		type = task.getType();
-		isActive = task.isActive();
+		isActive = task.getIsActive();
 		necessaryTime = task.getNecessaryTime();
 		
 		//it's safety because a LocalData is immutable
@@ -126,11 +126,11 @@ public class Task{
 		activeHours = new ArrayList<Boolean>(24);
 		
 		for(int i = 0; i < 7; i++){
-			activeDays.add(task.isActiveDayAt(i + 1));
+			activeDays.add(task.getActiveDayAt(i + 1));
 		}
 		
 		for(int i = 0; i < 24; i++){
-			activeHours.add(task.isActiveHourAt(i + 1));
+			activeHours.add(task.getActiveHourAt(i + 1));
 		}
 	}
 	

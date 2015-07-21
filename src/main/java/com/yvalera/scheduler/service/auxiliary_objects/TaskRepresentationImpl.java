@@ -86,7 +86,7 @@ public class TaskRepresentationImpl implements TaskRepresentation{
 	}
 	
 	@Override
-	public boolean isActive() {
+	public boolean getIsActive() {
 		return isActive;
 	}
 	
@@ -113,7 +113,7 @@ public class TaskRepresentationImpl implements TaskRepresentation{
 	 * @return boolean is day active at specified day
 	 */
 	@Override
-	public boolean isActiveDayAt(int dayOfWeek) {
+	public boolean getActiveDayAt(int dayOfWeek) {
 		if(dayOfWeek < 8 && dayOfWeek > 0){
 			return activeDays.get(dayOfWeek - 1);
 		}else{
@@ -126,7 +126,7 @@ public class TaskRepresentationImpl implements TaskRepresentation{
 	 * @return boolean is task active this time
 	 */
 	@Override
-	public boolean isActiveHourAt(int hour) {
+	public boolean getActiveHourAt(int hour) {
 		if(hour < 24 && hour >= 0){
 			return activeHours.get(hour);
 		}else{

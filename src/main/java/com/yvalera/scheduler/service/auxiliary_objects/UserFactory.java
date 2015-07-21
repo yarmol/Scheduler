@@ -57,6 +57,7 @@ public class UserFactory {
 		sleep.setTitle("sleeping");
 		sleep.setInterval(interval);
 		sleep.setType(TypeOfTask.Routine);
+		sleep.setNecessaryTime(1);
 		
 		for(int i = 1; i < 8; i++){
 			sleep.setActiveDayAt(i, true);

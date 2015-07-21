@@ -1,5 +1,8 @@
 package main.java.com.yvalera.scheduler.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import main.java.com.yvalera.scheduler.dao.Dao;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Model;
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
@@ -140,10 +143,10 @@ public class ServiceImpl implements Service{
 		//adds new or updated task
 		user.getTasks().add(task);
 		
-		for(Task t: user.getTasks()){
+		/*for(Task t: user.getTasks()){
 			System.out.println("before closing session user has task: " 
 					+ t.getTitle());
-		}
+		}*/
 	
 		//closes retrieved sesssion after all work with persisted
     	//User object done
@@ -157,11 +160,15 @@ public class ServiceImpl implements Service{
 	 * @param task parameter for task to add
 	 */
 	@Override
-	public void deleteTask(String username, TaskRepresentation taskRepr) {
+	public void deleteTask(String username, long taskId) {
 		Session session = dao.getSession();//DB session
 		Transaction tx = session.beginTransaction();
 		
-		Task task = new Task(taskRepr);
+		//creates new empty task
+		Task task = new Task();
+		
+		//makes this task equal to task in User object
+		task.setId(taskId);
 		
 		User user = dao.getUserByUserName(username, session);
 	
@@ -172,5 +179,35 @@ public class ServiceImpl implements Service{
     	//User object done
 		tx.commit();
     	session.close();
+	}
+
+	/**
+	 * @return List<TaskRepresentation> of all tasks which has specified
+	 * user in TaskRepresentation format
+	 * @param username - username for necessary user
+	 */
+	@Override
+	public List<TaskRepresentation> getTaskRepresentations(String username) {
+
+		Session session = dao.getSession();//DB session
+		Transaction tx = session.beginTransaction();
+		
+		List<TaskRepresentation> reprList = new 
+				ArrayList<TaskRepresentation>();
+		
+		/*
+		 * converts all task from user to taskRepresentation and adds
+		 * them to list
+		 */
+		for(Task t: dao.getUserByUserName(username, session).getTasks()){
+			reprList.add(new TaskRepresentationImpl(t));
+		}
+		
+		//closes retrieved sesssion after all work with persisted
+    	//User object done
+		tx.commit();
+    	session.close();
+    	
+    	return reprList;
 	}
 }

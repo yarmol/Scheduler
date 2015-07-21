@@ -1,5 +1,7 @@
 package main.java.com.yvalera.scheduler.service;
 
+import java.util.List;
+
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Schedule;
 import main.java.com.yvalera.scheduler.service.Interfaces.TaskRepresentation;
 
@@ -35,16 +37,23 @@ public interface Service {
 			String username, long taskId);
 	
 	/**
+	 * @return List<TaskRepresentation> of all tasks which has specified
+	 * user in TaskRepresentation format
+	 * @param username - username for necessary user
+	 */
+	public List<TaskRepresentation> getTaskRepresentations(String username);
+	
+	/**
 	 * Adds or updates task for specified user
 	 * @param username name of user which task will be added or updated
-	 * @param task parameter for task to add
+	 * @param taskRepe parameter for task to add or update
 	 */
-	public void updateUserTasks(String username, TaskRepresentation taskRepr);
+	public void updateUserTasks(String username, TaskRepresentation taskId);
 	
 	/**
 	 * Deletes task from specified
 	 * @param username name of user which task will be added
-	 * @param task parameter for task to add
+	 * @param id of task to delete
 	 */
-	public void deleteTask(String username, TaskRepresentation task);
+	public void deleteTask(String username, long taskId);
 }

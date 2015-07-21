@@ -14,7 +14,7 @@ public interface TaskRepresentation {
 	public String getTitle();
 	public String getDescription();
 	public TypeOfTask getType();
-	public boolean isActive();
+	public boolean getIsActive();
 	public int getNecessaryTime();
 	public LocalDate getStartDate();
 	public Interval getInterval();
@@ -48,11 +48,11 @@ public interface TaskRepresentation {
 	 * 
 	 * @return boolean is day active at specified day
 	 */
-	public boolean isActiveDayAt(int dayOfWeek);
+	public boolean getActiveDayAt(int dayOfWeek);
 
 	/**
 	 * @param hour int represents requested hour from 0 to 23
 	 * @return boolean is task active this time
 	 */
-	public boolean isActiveHourAt(int hour);
+	public boolean getActiveHourAt(int hour);
 }

@@ -25,20 +25,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/*
+ * This controller processes request on edit/create tasks page
+ */
 @Controller
 @RequestMapping("/app/task/edit")
-public class TaskManageController {
+public class TaskEditCreateController {
 	
 	@Autowired
 	private Service service;
 	
 	/*
-	 * Passes changes in TaskRepresantation object to Service layer
+	 * Processes information in incoming new/edited task.
+	 * Passes changes in TaskRepresantation object to Service
+	 * layer
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-    public String getTaskParameters(@ModelAttribute("tSPageMessage")  
+    public String getTaskParameters(@ModelAttribute("tSPageMessage")
     		@Valid  TSPageMessage tSPageMessage,
-    		Errors errors, ModelMap model, HttpServletRequest request) {
+    		Errors errors, ModelMap model) {
     	
 		Authentication auth = null;
 		User user = null;//SpringSecurity user
@@ -65,7 +70,7 @@ public class TaskManageController {
 			service.updateUserTasks(user.getUsername(), 
 					convertToTaskRepresentation(tSPageMessage));
 			
-			return "redirect:review";
+			return "redirect:/app/task/review";
 		}       
     }
 	
@@ -74,18 +79,15 @@ public class TaskManageController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
     public String showTask(@RequestParam(value="task_id",
-    	defaultValue="0") long taskId, ModelMap model,
-    	HttpServletRequest request) {
+    	defaultValue="0") long taskId, ModelMap model) {
     	
 		TaskRepresentation representation = null;
 		Authentication auth = null;
 		User user = null;
 		TSPageMessage tSPageMessage = null;
-	
-		
-		tSPageMessage = new TSPageMessage();
 		
 		if(taskId == 0){
+			tSPageMessage = new TSPageMessage();
 			model.put("TS_page_header", "create new task");
 		}else{
 			
@@ -98,7 +100,7 @@ public class TaskManageController {
 			representation = service.getTaskReprByUsernameAndTaskId(
 					user.getUsername(), taskId);
 			
-			//TODO add conversion
+			tSPageMessage = convertToTSPageMessage(representation);
 
 			//header for page
 			model.put("TS_page_header", "edit task");
@@ -111,12 +113,87 @@ public class TaskManageController {
 		//adds type of tasks radio buttons
 		model.put("typeOftaskArary", getRadioButtons());
 		
-		
         return "task_edit_create_page";
     }
 	
 	/*
-	 * Converts TSSPageMessage to TaskRepresentation
+	 * Converts TaskRepresentation to TSPageMessage
+	 */
+	private TSPageMessage convertToTSPageMessage(
+			TaskRepresentation toConvert){
+		
+		TSPageMessage message = new TSPageMessage();
+		LocalDate startDate = null;
+		LocalDate endDate = null;
+		
+		//fills all fielsd;
+		
+		message.setId(toConvert.getId());
+		message.setTaskName(toConvert.getTitle());
+		message.setDescription(toConvert.getDescription());
+		
+		if(toConvert.getType().equals(TypeOfTask.Routine)){
+			message.setTypeOfTask("routine");
+		}else if(toConvert.getType().equals(TypeOfTask.FlexibleTerm)){
+			message.setTypeOfTask("flexible term");
+		}else{
+			message.setTypeOfTask("limited term");
+		}
+		
+		message.setIsActive(toConvert.getIsActive());
+		message.setNecessaryHours(toConvert.getNecessaryTime());
+		
+		//if it is necessary start date field
+		if(toConvert.getType().equals(TypeOfTask.FlexibleTerm)){
+			startDate = new LocalDate(toConvert.getStartDate());
+		}else{//if necessary interval
+			startDate = new LocalDate(toConvert.getInterval().
+					getStartMillis());
+		}
+		
+		endDate = new LocalDate(toConvert.getInterval().
+				getEndMillis());
+		
+		message.setStartDay(startDate.toString());
+		message.setEndDay(endDate.toString());
+		
+		message.setMonday(toConvert.getActiveDayAt(1));
+		message.setTuesday(toConvert.getActiveDayAt(2));
+		message.setWednesday(toConvert.getActiveDayAt(3));
+		message.setThursday(toConvert.getActiveDayAt(4));
+		message.setFriday(toConvert.getActiveDayAt(5));
+		message.setSaturday(toConvert.getActiveDayAt(6));
+		message.setSunday(toConvert.getActiveDayAt(7));
+		
+		message.setHour_0(toConvert.getActiveHourAt(0));
+		message.setHour_1(toConvert.getActiveHourAt(1));
+		message.setHour_2(toConvert.getActiveHourAt(2));
+		message.setHour_3(toConvert.getActiveHourAt(3));
+		message.setHour_4(toConvert.getActiveHourAt(4));
+		message.setHour_5(toConvert.getActiveHourAt(5));
+		message.setHour_6(toConvert.getActiveHourAt(6));
+		message.setHour_7(toConvert.getActiveHourAt(7));
+		message.setHour_8(toConvert.getActiveHourAt(8));
+		message.setHour_9(toConvert.getActiveHourAt(9));
+		message.setHour_11(toConvert.getActiveHourAt(11));
+		message.setHour_12(toConvert.getActiveHourAt(12));
+		message.setHour_13(toConvert.getActiveHourAt(13));
+		message.setHour_14(toConvert.getActiveHourAt(14));
+		message.setHour_15(toConvert.getActiveHourAt(15));
+		message.setHour_16(toConvert.getActiveHourAt(16));
+		message.setHour_17(toConvert.getActiveHourAt(17));
+		message.setHour_18(toConvert.getActiveHourAt(18));
+		message.setHour_19(toConvert.getActiveHourAt(19));
+		message.setHour_20(toConvert.getActiveHourAt(20));
+		message.setHour_21(toConvert.getActiveHourAt(21));
+		message.setHour_22(toConvert.getActiveHourAt(22));
+		message.setHour_23(toConvert.getActiveHourAt(23));
+		
+		return message;
+	}
+	
+	/*
+	 * Converts TSPageMessage to TaskRepresentation
 	 */
 	private TaskRepresentation convertToTaskRepresentation(
 			TSPageMessage message){
@@ -200,10 +277,4 @@ public class TaskManageController {
 		
 		return typeOftaskArary;
 	}
-	
-    /*//adds "message" object to model
-    @ModelAttribute("tSPageMessage")
-    public TSPageMessage getLoginForm() {
-	        return new TSPageMessage();
-    }*/
 }

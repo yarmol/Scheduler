@@ -1,3 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<<%@ page import="org.joda.time.LocalDate" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -31,19 +35,27 @@
 							<th>edit</th>
 							<th>delete</th>
 						</tr>
-						<tr bgcolor="#FFFFFF">
-							<td>some long title</td>
-							<td>start of desc...</td>
-							<td>flexible</td>
-							<td>yes</td>
-							<td>999</td>
-							<td>9999-99-99</td>
-							<td>9999-99-99</td>
-							<td>Mo, Tu, We, Th, Fr, St, Su</td>
-							<td>0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23</td>
-							<td>edit</td>
-							<td>delete</td>
-						</tr>
+						<c:forEach var="repr" items="${taskRepr}">
+							<tr bgcolor="#FFFFFF">
+								<td>${repr.title}</td>
+								<td title="${repr.description}">${fn:substring(repr.description, 1, 14)}...</td>
+								<td>${repr.type}</td>
+								<td>${repr.isActive}</td>
+								<td>${repr.necessaryTime}</td>
+								<td>${type == 'FlexibleTerm' ? repr.startDate : LocalDate(repr.interval.startMillis)}</td>
+								<td>${LocalDate(repr.interval.endMillis)}</td>
+								<td>${repr.getActiveDayAt(1) == true ? "Mo, " : ""}
+									 ${repr.getActiveDayAt(2) == true ? "Tu, " : ""}
+									 ${repr.getActiveDayAt(3) == true ? "We, " : ""}
+									 ${repr.getActiveDayAt(4) == true ? "Th, " : ""}
+									 ${repr.getActiveDayAt(5) == true ? "Fr, " : ""}
+									 ${repr.getActiveDayAt(6) == true ? "Sa, " : ""}
+									 ${repr.getActiveDayAt(7) == true ? "Su" : ""}</td>
+								<td>0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23</td>
+								<td><a href="${pageContext.request.contextPath}/app/task/edit/?task_id=${repr.id}">edit</a></td>
+								<td><a href="${pageContext.request.contextPath}/app/task/delete/?task_id=${repr.id}">delete</a></td>
+							</tr>
+						</c:forEach>
 					</table>
 				</div><!-- div table -->
 			</div><!-- big container -->
