@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="resources/css/login.css">
+		<link rel="stylesheet" href="resources/css/login_page.css">
 		<title>Scheduler login page</title>
 	</head>
 	<body class="body">

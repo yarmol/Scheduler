@@ -46,11 +46,6 @@ public class DaoImpl implements Dao{
 		
 		//tx.commit();
 		
-		for(Task t: user.getTasks()){
-			System.out.println("dao get user task: " 
-					+ t.getTitle());
-		}
-		
 		return user;
 	}
 	
@@ -107,7 +102,7 @@ public class DaoImpl implements Dao{
 			return false;
 		}
     	
-
+    	
 		//Transaction tx = session.beginTransaction();
 		
 		session.persist(user);

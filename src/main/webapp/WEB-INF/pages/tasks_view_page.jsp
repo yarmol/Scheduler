@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="day_task_review.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tasks_view_page.css">
 	</head>
 	<body>
 		<div class="TR_main">
@@ -10,11 +10,11 @@
 				tasks review
 			</div>
 			<div class="TR_big_Container">
-				<div class="TR_label_1">
-					list of existing tasks
-				</div>
 				<div class="TR_input_container">
 					sort by: <select name="by1"></select>
+				</div>
+				<div class="TR_label_1">
+					list of existing tasks
 				</div>
 				<div class="TR_table_container">
 					<table border="0" cellspacing="1" bgcolor="#000000" cellpadding="2">
@@ -23,7 +23,7 @@
 							<th width="100px">description</th>
 							<th width="50px">type</th>
 							<th width="20px">active</th>
-							<th width="12px">necessary time</th>
+							<th width="12px">necessary hour(s)</th>
 							<th width="80px">start date</th>
 							<th width="80px">end date</th>
 							<th width="175px">active days</th>

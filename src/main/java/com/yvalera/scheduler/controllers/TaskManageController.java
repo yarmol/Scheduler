@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/app/task")
+@RequestMapping("/app/task/edit")
 public class TaskManageController {
 	
 	@Autowired
@@ -38,13 +38,12 @@ public class TaskManageController {
 	@RequestMapping(method = RequestMethod.POST)
     public String getTaskParameters(@ModelAttribute("tSPageMessage")  
     		@Valid  TSPageMessage tSPageMessage,
-    		Errors errors, ModelMap model) {
+    		Errors errors, ModelMap model, HttpServletRequest request) {
     	
 		Authentication auth = null;
 		User user = null;//SpringSecurity user
 		
-		
-		if(errors.hasErrors()){
+		if(errors.hasErrors()){//shows this page again
 			
 			//header of page
 			model.put("TS_page_header", "edit task");
@@ -55,7 +54,7 @@ public class TaskManageController {
 			//adds last message object
 			model.put("tSPageMessage", tSPageMessage);
 			return "task_edit_create_page";
-		}else{
+		}else{//redirects to another page
 			
 			//retrieve username from Spring Security
 			auth = SecurityContextHolder.getContext().
@@ -66,7 +65,7 @@ public class TaskManageController {
 			service.updateUserTasks(user.getUsername(), 
 					convertToTaskRepresentation(tSPageMessage));
 			
-			return "redirect:days";
+			return "redirect:review";
 		}       
     }
 	
