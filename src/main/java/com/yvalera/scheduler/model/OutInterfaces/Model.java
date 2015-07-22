@@ -6,9 +6,11 @@ import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 import org.joda.time.Interval;
 
 
-/*
+/**
  * This interface for classes which will be 
  * calculate schedules.
+ * 
+ * @author Yakubovich Valeriy
  */
 
 public interface Model{

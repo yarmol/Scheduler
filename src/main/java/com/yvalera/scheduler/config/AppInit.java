@@ -2,6 +2,11 @@ package main.java.com.yvalera.scheduler.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/*
+ * This is an application context and servlet context configuration class
+ * 
+ * @author Yakubovich Valeriy
+ */
 public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 	
 	//Application context configuration

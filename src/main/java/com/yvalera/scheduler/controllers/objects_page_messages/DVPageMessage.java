@@ -5,6 +5,8 @@ import javax.validation.constraints.Pattern;
 /*
  * This is a object, which jsp page passes to
  * controller wit filled fields
+ * 
+ * @author Yakubovich Valeriy
  */
 public class DVPageMessage {
 	

@@ -4,11 +4,13 @@ import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
 
 import org.joda.time.LocalDate;
 
-/*
+/**
  * Objects of this class keeps schedule on 
  * concrete day. They are hidden in the Schedule
  * object and returns Points on requested time
- * interval
+ * interval.
+ * 
+ * @author Yakubovich Valeriy
  */
 class CountedDay{
 	private Point[] points = new PointImpl[24];

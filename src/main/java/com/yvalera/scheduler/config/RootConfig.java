@@ -10,6 +10,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
+/*
+ * This is a root application config class
+ * 
+ * @author Yakubovich Valeriy
+ */
 //Empty class, without it({SecurityConfig.class}) application doesn't start
 @Configuration
 @Import({SecurityConfig.class})

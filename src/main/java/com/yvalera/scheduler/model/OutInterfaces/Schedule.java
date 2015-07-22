@@ -11,7 +11,9 @@ import org.joda.time.LocalDate;
  * 
  * If in the calculation were not all days
  * any invoke getPointAt() returns null and
- * getTasksErrors() returns null too;
+ * getTasksErrors() returns null too.
+ * 
+ * @author Yakubovich Valeriy
  */
 public interface Schedule {
 	

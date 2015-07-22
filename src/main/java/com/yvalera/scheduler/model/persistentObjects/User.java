@@ -1,8 +1,6 @@
 package main.java.com.yvalera.scheduler.model.persistentObjects;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,9 +15,11 @@ import javax.persistence.OneToMany;
 
 import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 
-/*
+/**
  * It represents users with their schedulled days and
  * tasks. Keeps in database.
+ * 
+ * @author Yakubovich Valeriy
  */
 @Entity
 public class User {

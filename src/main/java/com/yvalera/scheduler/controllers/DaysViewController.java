@@ -20,7 +20,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-//Controller of the login page
+/*
+ * This is a controller for Days view page
+ * 
+ * @author Yakubovich Valeriy
+ */
 @Controller
 //@RequestMapping(value = "/user**", method = RequestMethod.POST)
 @RequestMapping("/app/days")

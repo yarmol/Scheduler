@@ -21,6 +21,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+/**
+ * This is an implementation of Dao interface
+ * 
+ * @author Yakubovich Valeriy
+ */
 @Repository
 public class DaoImpl implements Dao{
 
@@ -111,5 +116,4 @@ public class DaoImpl implements Dao{
     	
     	return true;
     }
-
 }

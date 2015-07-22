@@ -10,6 +10,8 @@ import org.joda.time.Interval;
 /**
  * Service layer of application. Keeps all logic of application
  * except "buisness logic" which are in the Model implementation.
+ * 
+ * @author Yakubovich Valeriy
  */
 public interface Service {
 	

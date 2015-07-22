@@ -24,6 +24,8 @@ public class TestsForSimpleRealization {
 	/*
 	 * tests few passes with small period. All tasks are
 	 * within requested period
+	 * 
+	 * @author Yakubovich Valeriy
 	 */
 	@Test
 	public void test_1(){

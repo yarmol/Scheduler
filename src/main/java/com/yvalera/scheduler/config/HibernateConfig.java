@@ -10,7 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
-
+/*
+ * This is a Hibernate configuration class
+ * 
+ * @author Yakubovich Valeriy
+ */
 @Configuration
 @ComponentScan("main.java.com.yvalera.scheduler.model.persistentObjects")//turn on auto component determination
 class HibernateConfig{

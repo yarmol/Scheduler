@@ -4,6 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/*
+ * This is the login page controller
+ * 
+ * @author Yakubovich Valeriy
+ */
 //Controller of the login page
 @Controller
 @RequestMapping({"/", "/login"})

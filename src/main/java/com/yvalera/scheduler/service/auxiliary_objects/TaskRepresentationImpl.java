@@ -10,9 +10,11 @@ import main.java.com.yvalera.scheduler.service.Interfaces.TaskRepresentation;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
-/*
+/**
  * This class represents Task object, to avoid
  * changes in original Task object
+ * 
+ * @author Yakubovich Valeriy
  */
 public class TaskRepresentationImpl implements TaskRepresentation{
 	

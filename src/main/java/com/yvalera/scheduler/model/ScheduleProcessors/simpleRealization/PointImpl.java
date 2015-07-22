@@ -2,7 +2,8 @@ package main.java.com.yvalera.scheduler.model.ScheduleProcessors.simpleRealizati
 
 import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
 
-/*
+/**
+ * This is implementation of Point interface.
  * Point means one indivisible cell on
  * schedule, but it keeps start and end date
  * for whole Task.
@@ -13,6 +14,8 @@ import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
  * Object which counts schedule fills all the
  * fields of this class while it counting schedule.
  * It takes data from task objects.
+ * 
+ * @author Yakubovich Valeriy
  */
 class PointImpl implements Point{
 	private String title;

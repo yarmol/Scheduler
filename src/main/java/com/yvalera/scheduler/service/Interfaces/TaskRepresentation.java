@@ -5,8 +5,10 @@ import main.java.com.yvalera.scheduler.model.persistentObjects.Task.TypeOfTask;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
-/*
- * This Interface represents Task for View layer
+/**
+ * This Interface represents Task for View layer.
+ * 
+ * @author Yakubovich Valeriy
  */
 public interface TaskRepresentation {
 	

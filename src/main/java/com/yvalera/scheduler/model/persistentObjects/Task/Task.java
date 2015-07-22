@@ -36,7 +36,7 @@ import org.joda.time.LocalDate;
  * exam date, complete project on work and etc. Flexible task
  * means task, which mustn't be finished to certain date.
  * 
- * The values in the 
+ * @author Yakubovich Valeriy 
  */
 
 @Entity

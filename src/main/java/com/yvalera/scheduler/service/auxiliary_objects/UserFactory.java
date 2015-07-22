@@ -9,6 +9,8 @@ import org.joda.time.LocalDate;
 
 /**
  * It generates new user with given parameters.
+ * 
+ * @author Yakubovich Valeriy
  */
 public class UserFactory {
 	

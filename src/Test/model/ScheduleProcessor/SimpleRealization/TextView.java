@@ -6,7 +6,9 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
 /*
- * This is the text view
+ * This is the text view for Schedule objects
+ * 
+ * @author Yakubovich Valeriy
  */
 public class TextView {
 	

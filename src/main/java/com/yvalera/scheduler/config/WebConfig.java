@@ -9,6 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+/*
+ * This is a niew resolver and recource handler configiration
+ * 
+ * @author Yakubovich Valeriy
+ */
 @Configuration//makes this class configurations
 @EnableWebMvc//it used to enable Spring MVC
 @ComponentScan("main.java.com.yvalera.scheduler")

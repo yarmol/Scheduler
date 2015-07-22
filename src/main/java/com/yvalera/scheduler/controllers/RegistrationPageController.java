@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/*
+ * This is a registration page Controller
+ * 
+ * @author Yakubovich Valeriy
+ */
 //Controller of the registration page
 @Controller
 @RequestMapping({"/registration"})

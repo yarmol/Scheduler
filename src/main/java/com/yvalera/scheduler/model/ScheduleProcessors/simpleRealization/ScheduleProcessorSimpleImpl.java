@@ -16,8 +16,11 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
-/*
- * Object of this class calculates and returns schedule. 
+/**
+ * This is an implementation of model interface.
+ * Object of this class calculates and returns schedule.
+ * 
+ *  @author Yakubovich Valeriy
  */
 
 @Component
