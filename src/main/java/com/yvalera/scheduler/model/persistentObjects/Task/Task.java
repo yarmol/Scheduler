@@ -109,7 +109,9 @@ public class Task{
 	
 	//makes task with TaskRepresentation
 	public Task(TaskRepresentation task){
-		id = task.getId();
+		//it calls NonUniqueObjectException org.hibernate.
+		//id = task.getId();
+		
 		title = task.getTitle();
 		description = task.getDescription();
 		type = task.getType();

@@ -124,32 +124,17 @@ public class ServiceImpl implements Service{
 		Session session = dao.getSession();//DB session
 		Transaction tx = session.beginTransaction();
 		
-		boolean isUserHasThisTask = false;
+		Task task = new Task();
 		
-		Task task = new Task(taskRepr);
+		task.setId(taskRepr.getId());
 		
 		User user = dao.getUserByUserName(username, session);
 		
-		//if user has this task
-		for(Task t: user.getTasks()){
-			if(t.getId() == taskRepr.getId()){
-				isUserHasThisTask = true;
-				break;
-			}
-		}
-		
-		//removes old copy of this task wit the same id
-		if(isUserHasThisTask){
-			user.getTasks().remove(task);
-		}
-		
+		//deletes element from collection
+		user.getTasks().remove(task);
+			
 		//adds new or updated task
 		user.getTasks().add(task);
-		
-		/*for(Task t: user.getTasks()){
-			System.out.println("before closing session user has task: " 
-					+ t.getTitle());
-		}*/
 	
 		//closes retrieved sesssion after all work with persisted
     	//User object done

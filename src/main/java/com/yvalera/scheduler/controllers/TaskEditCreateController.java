@@ -45,10 +45,17 @@ public class TaskEditCreateController {
 	@RequestMapping(method = RequestMethod.POST)
     public String getTaskParameters(@ModelAttribute("tSPageMessage")
     		@Valid  TSPageMessage tSPageMessage,
-    		Errors errors, ModelMap model) {
+    		Errors errors, ModelMap model,
+    		HttpServletRequest request) {
     	
 		Authentication auth = null;
 		User user = null;//SpringSecurity user
+		
+		//sets Task id. see comments is showTask()
+		tSPageMessage.setId((long)request.getSession()
+				.getAttribute("#taskId$:"));
+		
+		//System.out.println("gotten id: " + tSPageMessage.getId());
 		
 		if(errors.hasErrors()){//shows this page again
 			
@@ -77,11 +84,13 @@ public class TaskEditCreateController {
     }
 	
 	/*
-	 * Processes a tasks requests
+	 * Processes task edit requests, if requested task id = 0 or
+	 * id wasn't requested it creates new task
 	 */
 	@RequestMapping(method = RequestMethod.GET)
     public String showTask(@RequestParam(value="task_id",
-    	defaultValue="0") long taskId, ModelMap model) {
+    		defaultValue="0") long taskId, ModelMap model,
+    		HttpServletRequest request){
     	
 		TaskRepresentation representation = null;
 		Authentication auth = null;
@@ -106,8 +115,16 @@ public class TaskEditCreateController {
 
 			//header for page
 			model.put("TS_page_header", "edit task");
-			
 		}
+		
+		/*
+		 * saves taskId because this parameter is absent in
+		 * <sf:form> and consequently in given anser it will be
+		 * equals to value by default (in this case = 0).
+		 */
+		request.getSession().setAttribute("#taskId$:", taskId);
+		
+		//System.out.println("task id in begining: " + tSPageMessage.getId());
 		
 		//adds object to read/fill
 		model.put("tSPageMessage", tSPageMessage);

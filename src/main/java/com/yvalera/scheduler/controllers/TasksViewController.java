@@ -41,7 +41,7 @@ public class TasksViewController {
     }
 	
 	/*
-	 * Processes get requests
+	 * Processes delete requests
 	 */
 	@RequestMapping(value="/delete", method = RequestMethod.GET)
 	public String deleteTask(@RequestParam(value="task_id") 

@@ -9,10 +9,10 @@ can be finished with a given time budget.
 I wrote this application in self-educational purpose. The main purpose
 of this application is to demonstrate basic understanding Java-based and
 related technologies like: HTML, JSP, Servlet, Spring MVC,
-Spring Secure(for Spring MVC only), JPA, Hibernate, SQL, Maven and Git.
-Not to consider this project like finished, not all functionality is
-finished and application has some bugs for now. I will be grateful to
-get any warnings, criticism or advices about this studying application
+Spring Secure(for Spring MVC only), JPA, Hibernate, SQL, Maven, Git and
+JUnit. Not to consider this project like finished, not all functionality
+is finished and application has some bugs for now. I will be grateful to
+get any warnings, criticism or advices about this educational application
 on my email yvalera85@gmail.com
 
 The application requires servlet container (tested on Tomcat 8.0) and
