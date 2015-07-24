@@ -48,12 +48,13 @@ public class TaskRepresentationImpl implements TaskRepresentation{
 		activeDays = new ArrayList<Boolean>(7);
 		activeHours = new ArrayList<Boolean>(24);
 		
+		// + 1 because in Task day begins from 1
 		for(int i = 0; i < 7; i++){
 			activeDays.add(task.isActiveDayAt(i + 1));
 		}
 		
 		for(int i = 0; i < 24; i++){
-			activeHours.add(task.isActiveHourAt(i + 1));
+			activeHours.add(task.isActiveHourAt(i));
 		}
 	}
 	

@@ -57,6 +57,4 @@ public class TasksViewController {
 
         return "redirect:/app/task/review";
     }
-	
-	
 }

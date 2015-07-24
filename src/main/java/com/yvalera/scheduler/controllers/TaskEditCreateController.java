@@ -56,6 +56,11 @@ public class TaskEditCreateController {
 				.getAttribute("#taskId$:"));
 		
 		//System.out.println("gotten id: " + tSPageMessage.getId());
+		//System.out.println("post controller task name: " 
+		//		+ tSPageMessage.getTaskName());
+		
+		//System.out.println("post controller wednesday: " + 
+		//		tSPageMessage.getWednesday());
 		
 		if(errors.hasErrors()){//shows this page again
 			
@@ -67,6 +72,7 @@ public class TaskEditCreateController {
 			
 			//adds last message object
 			model.put("tSPageMessage", tSPageMessage);
+			
 			return "task_edit_create_page";
 		}else{//redirects to another page
 			
@@ -194,6 +200,7 @@ public class TaskEditCreateController {
 		message.setHour_7(toConvert.getActiveHourAt(7));
 		message.setHour_8(toConvert.getActiveHourAt(8));
 		message.setHour_9(toConvert.getActiveHourAt(9));
+		message.setHour_10(toConvert.getActiveHourAt(11));
 		message.setHour_11(toConvert.getActiveHourAt(11));
 		message.setHour_12(toConvert.getActiveHourAt(12));
 		message.setHour_13(toConvert.getActiveHourAt(13));
@@ -276,9 +283,9 @@ public class TaskEditCreateController {
 		task.setActiveHourAt(18, message.getHour_18());
 		task.setActiveHourAt(19, message.getHour_19());
 		task.setActiveHourAt(20, message.getHour_20());
-		task.setActiveHourAt(20, message.getHour_21());
-		task.setActiveHourAt(20, message.getHour_22());
-		task.setActiveHourAt(20, message.getHour_23());
+		task.setActiveHourAt(21, message.getHour_21());
+		task.setActiveHourAt(22, message.getHour_22());
+		task.setActiveHourAt(23, message.getHour_23());
 		
 		return task;
 	}
