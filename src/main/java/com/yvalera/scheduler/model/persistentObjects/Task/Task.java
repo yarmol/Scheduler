@@ -107,35 +107,6 @@ public class Task{
 		}
 	}
 	
-	//makes task with TaskRepresentation
-	public Task(TaskRepresentation task){
-		//it calls NonUniqueObjectException org.hibernate.
-		//id = task.getId();
-		
-		title = task.getTitle();
-		description = task.getDescription();
-		type = task.getType();
-		isActive = task.getIsActive();
-		necessaryTime = task.getNecessaryTime();
-		
-		//it's safety because a LocalData is immutable
-		startDate = task.getStartDate();
-		
-		//it's safety because an Interval is immutable
-		interval = task.getInterval();
-		
-		activeDays = new ArrayList<Boolean>(7);
-		activeHours = new ArrayList<Boolean>(24);
-		
-		for(int i = 0; i < 7; i++){
-			activeDays.add(task.getActiveDayAt(i + 1));
-		}
-		
-		for(int i = 0; i < 24; i++){
-			activeHours.add(task.getActiveHourAt(i + 1));
-		}
-	}
-	
 	
 	//getters end setters
 	public String getTitle() {

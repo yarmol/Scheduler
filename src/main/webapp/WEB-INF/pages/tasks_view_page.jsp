@@ -60,7 +60,10 @@
 				</div><!-- div table -->
 			</div><!-- big container -->
 			<div class = "buttons">
-				<input type="submit" value="add new task">
+				<form action="${pageContext.request.contextPath}/app/task/edit" method="GET">
+					<input type="submit" value="add new task">
+					<!-- input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/-->
+				</form>
 			</div>
 		</div>	
 	</body>

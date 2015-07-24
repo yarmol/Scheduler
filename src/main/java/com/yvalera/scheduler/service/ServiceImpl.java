@@ -117,6 +117,9 @@ public class ServiceImpl implements Service{
 	 * Adds or updates task for specified user
 	 * @param username name of user which task will be added or updated
 	 * @param task parameter for task to add
+	 * 
+	 * TODO to change algorithm to get Task by request from DB instead 
+	 * iteration Task collection
 	 */
 	@Override
 	public void updateUserTasks(String username, TaskRepresentation taskRepr) {
@@ -124,18 +127,29 @@ public class ServiceImpl implements Service{
 		Session session = dao.getSession();//DB session
 		Transaction tx = session.beginTransaction();
 		
-		Task task = new Task();
-		
-		task.setId(taskRepr.getId());
+		Task toUpdate = null;
 		
 		User user = dao.getUserByUserName(username, session);
 		
-		//deletes element from collection
-		user.getTasks().remove(task);
-			
-		//adds new or updated task
-		user.getTasks().add(task);
-	
+		//for new task creates new Task object
+		if(taskRepr.getId() == 0){
+			//System.out.println("new");
+			toUpdate = new Task();
+			//session.persist(toUpdate);
+			user.getTasks().add(toUpdate);
+		}else{//for existing task from user retrieves Task from user
+			//System.out.println("old");
+			for(Task t: user.getTasks()){
+				if(t.getId() == taskRepr.getId()){
+					toUpdate = t;
+					break;
+				}
+			}
+		}
+		
+		//updates fields
+		fillTaskWithTaskRepr(toUpdate, taskRepr);
+		
 		//closes retrieved sesssion after all work with persisted
     	//User object done
 		tx.commit();
@@ -146,22 +160,29 @@ public class ServiceImpl implements Service{
 	 * Deletes task from specified
 	 * @param username name of user which task will be added
 	 * @param task parameter for task to add
+	 *
+	 * TODO to change algorithm to get Task by request from DB instead 
+	 * iteration Task collection
 	 */
 	@Override
 	public void deleteTask(String username, long taskId) {
 		Session session = dao.getSession();//DB session
 		Transaction tx = session.beginTransaction();
 		
-		//creates new empty task
-		Task task = new Task();
-		
-		//makes this task equal to task in User object
-		task.setId(taskId);
+		Task toDelete = null;
 		
 		User user = dao.getUserByUserName(username, session);
 	
-		//removes task
-		user.getTasks().remove(task);
+		for(Task t: user.getTasks()){
+			if(t.getId() == taskId){
+				toDelete = t;
+				break;
+			}
+		}
+		
+		user.getTasks().remove(toDelete);
+		
+		//session.delete(toDelete);
 	
 		//closes retrieved sesssion after all work with persisted
     	//User object done
@@ -197,5 +218,35 @@ public class ServiceImpl implements Service{
     	session.close();
     	
     	return reprList;
+	}
+	
+	/*
+	 * Fills Task field with values from TaskRepresentation
+	 */
+	private Task fillTaskWithTaskRepr(Task task, TaskRepresentation 
+			taskRepr){
+		
+		//Updates all fields
+				task.setTitle(taskRepr.getTitle());
+				task.setDescription(taskRepr.getDescription());
+				task.setType(taskRepr.getType());
+				task.setActive(taskRepr.getIsActive());
+				task.setNecessaryTime(taskRepr.getNecessaryTime());
+				
+				//it's safety because a LocalData is immutable
+				task.setStartDate(taskRepr.getStartDate());
+				
+				//it's safety because an Interval is immutable
+				task.setInterval(taskRepr.getInterval());
+				
+				for(int i = 0; i < 7; i++){
+					task.setActiveDayAt(i, taskRepr.getActiveDayAt(1));
+				}
+				
+				for(int i = 0; i < 24; i++){
+					task.setActiveHourAt(i, taskRepr.getActiveHourAt(i + 1));
+				}
+		
+		return task;
 	}
 }
