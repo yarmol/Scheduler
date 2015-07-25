@@ -188,7 +188,8 @@ public class ServiceImpl implements Service{
 		
 		user.getTasks().remove(toDelete);
 		
-		//session.delete(toDelete);
+		//without it record will be in database
+		session.delete(toDelete);
 	
 		//closes retrieved sesssion after all work with persisted
     	//User object done

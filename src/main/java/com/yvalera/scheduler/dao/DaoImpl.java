@@ -6,20 +6,17 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import main.java.com.yvalera.scheduler.model.persistentObjects.User;
-import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
-import main.java.com.yvalera.scheduler.service.auxiliary_objects.UserFactory;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Repository;
+
+import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 
 /**
  * This is an implementation of Dao interface
