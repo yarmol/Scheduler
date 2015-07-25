@@ -1,9 +1,17 @@
-.panel{
-	/*width: 100%*/;
+.SP_panel{
 	width: 100px;
-	height: 100vh;
-	position: fixed left;
-	background-color: #C8C8C8;
+	height: 687px;
+	/*height: 80%;*/
+	/*position: fixed left;*/
+	background-color: #87CEFA;
 	text-align: center;
 	padding: 20px 5px;
+	margin-right: 10px;
+	float: left;
+	/*border-radius: 10px;*/
+}
+
+.SP_header{
+	font-size: 120%;
+	padding: 0px 0px 20px 0px;
 }

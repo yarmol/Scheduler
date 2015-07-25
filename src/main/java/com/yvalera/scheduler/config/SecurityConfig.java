@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/app/**").access("hasRole('USER')").and()
 			.formLogin().defaultSuccessUrl("/app/days", false).and()
 			//link on logout
-			.logout().logoutUrl("/j_spring_security_logout")
+			.logout().logoutUrl("/logout")
 			.logoutSuccessUrl("/login").and()
 			.formLogin().loginPage("/login").and()
 			;

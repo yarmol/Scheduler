@@ -343,7 +343,10 @@ public class ScheduleProcessorSimpleImpl implements Model{
 					
 					//if there isn't any places - method must be break or 
 					//it will be endless loop
-					break;
+					//break;
+					
+					//to show schedule
+					unallocatedTaskTime = 0;
 				}
 			}
 		}

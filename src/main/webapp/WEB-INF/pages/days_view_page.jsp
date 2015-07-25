@@ -14,6 +14,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%
 	/*
@@ -157,13 +158,13 @@
 		Map<String, String> taskColorMapping = new HashMap<String, String>();
 		ArrayList<String> colors = new ArrayList<String>();
 			
-		//both must be between 0 and 16
+		/*//both must be between 0 and 16
 		int minBright = 9;
 		int maxBright = 15;
-		int step = 2;
+		int step = 2;*/
 			
 		int totalColors = 0;
-		int counter = 0;
+		int counter = 0;/*
 	
 		//generates 120 different colors
 		for(int R = minBright; R < maxBright; R=R+step){
@@ -184,9 +185,28 @@
 			}
 		}
 	
+		*/
+			
+		
+		//adds collors to map
+		colors.add("C0C0C0");
+		colors.add("800080");
+		//colors.add("00FF00");
+		colors.add("F08080");
+		colors.add("BD7F34");
+		colors.add("BDB76B");
+		colors.add("FFE4C4");
+		colors.add("F4A460");
+		colors.add("DAA520");
+		//colors.add("A52A2A");
+		colors.add("0000FF");
+		colors.add("1E90FF");
+		colors.add("008B8B");
+		colors.add("228B22");
+		
 		//makes random order for colors
 		Collections.shuffle(colors);
-					
+				
 		totalColors = colors.size();
 			
 		for(String s: schedule.getTasksNames()){
@@ -195,7 +215,12 @@
 				counter = 0;
 			}
 			
-			taskColorMapping.put(s, colors.get(counter));
+			//assigns green color for free time
+			if(s.equals("Free time ")){
+				taskColorMapping.put(s, "6BB247");
+			}else{
+				taskColorMapping.put(s, colors.get(counter));
+			}
 			
 			counter++;
 		}
@@ -209,13 +234,29 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<!-- ${pageContext.request.contextPath} returns "/Scheduller" -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/days_view_page.css">
+		
+		<!-- css for both panels ebd body -->
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/upper_panel.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/side_panel.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/body_common.css">
 	</head>
-	<body>
+	<body class="Body_body">
+		<%@ include file="upper_panel.jsp" %>
+		<%@ include file="side_panel.jsp" %>
 		<!-- general div of this jsp page --> 
-		<div style="float: left">
+		<div style="float: left; max-width: 1000px">
 			<span class="DVP_page_header">Days review</span>
+			
+			<!-- schedule counting errors div -->
+			<div class="DVP_input_errors">
+				<c:if test="${fn:length(schedule.tasksErrors) gt 0}">
+   					<c:forEach var="err" items="${schedule.tasksErrors}">
+   						${err}
+   					</c:forEach>
+   						<br>May be some other tasks can't be completed too.
+				</c:if>
+			</div>
 			
 			<!-- general div for month and buttons -->
 			<div  style="float: left">

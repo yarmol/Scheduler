@@ -7,8 +7,16 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tasks_view_page.css">
+		
+		<!-- css for both panels ebd body -->
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/upper_panel.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/side_panel.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/body_common.css">
 	</head>
-	<body>
+	<body class="Body_body">
+		<%@ include file="upper_panel.jsp" %>
+		<%@ include file="side_panel.jsp" %>
+	
 		<div class="TR_main">
 			<div class="TR_main_label">
 				tasks review
