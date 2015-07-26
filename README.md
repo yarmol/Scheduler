@@ -11,9 +11,9 @@ application is to demonstrate basic understanding OOP, Java-based and
 related technologies like: HTML, JSP, Servlet, Spring MVC,
 Spring Secure(for Spring MVC only), JPA, Hibernate, SQL, Maven, Git and
 JUnit. Not to consider this project like finished, not all functionality
-is developed and application has some bugs for now. I will be grateful to
+is developed and application has some [bugs](https://github.com/yvalera/Scheduler/issues) for now. I will be grateful to
 get any warnings, criticism or advices about this educational application
-on my email yvalera85@gmail.com
+on my email yvalera85@gmail.com or on project's [bug tracker](https://github.com/yvalera/Scheduler/issues).
 
 The application requires servlet container (tested on Tomcat 8.0) and
 relation database to launch. Now it configured to work with MySql at

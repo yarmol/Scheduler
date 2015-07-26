@@ -55,13 +55,6 @@ public class TaskEditCreateController {
 		tSPageMessage.setId((long)request.getSession()
 				.getAttribute("#taskId$:"));
 		
-		//System.out.println("gotten id: " + tSPageMessage.getId());
-		//System.out.println("post controller task name: " 
-		//		+ tSPageMessage.getTaskName());
-		
-		//System.out.println("post controller wednesday: " + 
-		//		tSPageMessage.getWednesday());
-		
 		if(errors.hasErrors()){//shows this page again
 			
 			//header of page
@@ -118,7 +111,7 @@ public class TaskEditCreateController {
 					user.getUsername(), taskId);
 			
 			tSPageMessage = convertToTSPageMessage(representation);
-
+			
 			//header for page
 			model.put("TS_page_header", "edit task");
 		}
@@ -130,7 +123,6 @@ public class TaskEditCreateController {
 		 */
 		request.getSession().setAttribute("#taskId$:", taskId);
 		
-		//System.out.println("task id in begining: " + tSPageMessage.getId());
 		
 		//adds object to read/fill
 		model.put("tSPageMessage", tSPageMessage);
@@ -224,16 +216,16 @@ public class TaskEditCreateController {
 	private TaskRepresentation convertToTaskRepresentation(
 			TSPageMessage message){
 		
-		TaskRepresentation task = new TaskRepresentationImpl();
+		TaskRepresentation taskRepr = new TaskRepresentationImpl();
 		TypeOfTask type = null;
 		LocalDate startDate = null;
 		LocalDate endDate = null;
 		
 		//fills all fielsd;
 		
-		task.setId(message.getId());
-		task.setTitle(message.getTaskName());
-		task.setDescription(message.getDescription());
+		taskRepr.setId(message.getId());
+		taskRepr.setTitle(message.getTaskName());
+		taskRepr.setDescription(message.getDescription());
 		
 		if(message.getTypeOfTask().equals("routine")){
 			type = TypeOfTask.Routine;
@@ -243,51 +235,51 @@ public class TaskEditCreateController {
 			type = TypeOfTask.LimitedTerm;
 		}
 		
-		task.setType(type);
-		task.setActive(message.getIsActive());
-		task.setNecessaryTime(message.getNecessaryHours());
+		taskRepr.setType(type);
+		taskRepr.setActive(message.getIsActive());
+		taskRepr.setNecessaryTime(message.getNecessaryHours());
 		
 		startDate = new LocalDate(message.getStartDay());
 		endDate = new LocalDate(message.getEndDay());
 		
-		task.setStartDate(startDate);
-		task.setInterval(new Interval(startDate.toDate().getTime(),
+		taskRepr.setStartDate(startDate);
+		taskRepr.setInterval(new Interval(startDate.toDate().getTime(),
 				endDate.toDate().getTime()));
 		
-		task.setActiveDayAt(1, message.getMonday());
-		task.setActiveDayAt(2, message.getTuesday());
-		task.setActiveDayAt(3, message.getWednesday());
-		task.setActiveDayAt(4, message.getThursday());
-		task.setActiveDayAt(5, message.getFriday());
-		task.setActiveDayAt(6, message.getSaturday());
-		task.setActiveDayAt(7, message.getSunday());
+		taskRepr.setActiveDayAt(1, message.getMonday());
+		taskRepr.setActiveDayAt(2, message.getTuesday());
+		taskRepr.setActiveDayAt(3, message.getWednesday());
+		taskRepr.setActiveDayAt(4, message.getThursday());
+		taskRepr.setActiveDayAt(5, message.getFriday());
+		taskRepr.setActiveDayAt(6, message.getSaturday());
+		taskRepr.setActiveDayAt(7, message.getSunday());
 		
-		task.setActiveHourAt(0, message.getHour_0());
-		task.setActiveHourAt(1, message.getHour_1());
-		task.setActiveHourAt(2, message.getHour_2());
-		task.setActiveHourAt(3, message.getHour_3());
-		task.setActiveHourAt(4, message.getHour_4());
-		task.setActiveHourAt(5, message.getHour_5());
-		task.setActiveHourAt(6, message.getHour_6());
-		task.setActiveHourAt(7, message.getHour_7());
-		task.setActiveHourAt(8, message.getHour_8());
-		task.setActiveHourAt(9, message.getHour_9());
-		task.setActiveHourAt(10, message.getHour_10());
-		task.setActiveHourAt(11, message.getHour_11());
-		task.setActiveHourAt(12, message.getHour_12());
-		task.setActiveHourAt(13, message.getHour_13());
-		task.setActiveHourAt(14, message.getHour_14());
-		task.setActiveHourAt(15, message.getHour_15());
-		task.setActiveHourAt(16, message.getHour_16());
-		task.setActiveHourAt(17, message.getHour_17());
-		task.setActiveHourAt(18, message.getHour_18());
-		task.setActiveHourAt(19, message.getHour_19());
-		task.setActiveHourAt(20, message.getHour_20());
-		task.setActiveHourAt(21, message.getHour_21());
-		task.setActiveHourAt(22, message.getHour_22());
-		task.setActiveHourAt(23, message.getHour_23());
+		taskRepr.setActiveHourAt(0, message.getHour_0());
+		taskRepr.setActiveHourAt(1, message.getHour_1());
+		taskRepr.setActiveHourAt(2, message.getHour_2());
+		taskRepr.setActiveHourAt(3, message.getHour_3());
+		taskRepr.setActiveHourAt(4, message.getHour_4());
+		taskRepr.setActiveHourAt(5, message.getHour_5());
+		taskRepr.setActiveHourAt(6, message.getHour_6());
+		taskRepr.setActiveHourAt(7, message.getHour_7());
+		taskRepr.setActiveHourAt(8, message.getHour_8());
+		taskRepr.setActiveHourAt(9, message.getHour_9());
+		taskRepr.setActiveHourAt(10, message.getHour_10());
+		taskRepr.setActiveHourAt(11, message.getHour_11());
+		taskRepr.setActiveHourAt(12, message.getHour_12());
+		taskRepr.setActiveHourAt(13, message.getHour_13());
+		taskRepr.setActiveHourAt(14, message.getHour_14());
+		taskRepr.setActiveHourAt(15, message.getHour_15());
+		taskRepr.setActiveHourAt(16, message.getHour_16());
+		taskRepr.setActiveHourAt(17, message.getHour_17());
+		taskRepr.setActiveHourAt(18, message.getHour_18());
+		taskRepr.setActiveHourAt(19, message.getHour_19());
+		taskRepr.setActiveHourAt(20, message.getHour_20());
+		taskRepr.setActiveHourAt(21, message.getHour_21());
+		taskRepr.setActiveHourAt(22, message.getHour_22());
+		taskRepr.setActiveHourAt(23, message.getHour_23());
 		
-		return task;
+		return taskRepr;
 	}
 	
 	/*

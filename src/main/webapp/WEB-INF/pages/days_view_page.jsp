@@ -152,82 +152,47 @@
    /*
 	* This code generates different colors for different task
 	*/
-	
-	if(session.getAttribute("taskColor") == null){
-	
-		Map<String, String> taskColorMapping = new HashMap<String, String>();
-		ArrayList<String> colors = new ArrayList<String>();
+	Map<String, String> taskColorMapping = new HashMap<String, String>();
+	ArrayList<String> colors = new ArrayList<String>();
 			
-		/*//both must be between 0 and 16
-		int minBright = 9;
-		int maxBright = 15;
-		int step = 2;*/
-			
-		int totalColors = 0;
-		int counter = 0;/*
-	
-		//generates 120 different colors
-		for(int R = minBright; R < maxBright; R=R+step){
-			for(int G = minBright; G < maxBright; G=G+step){
-				for(int B = minBright; B < maxBright; B=B+step){
-					//skips greys shades
-					if(R == G && R == B) continue;
-						
-					String color =  Integer.toHexString(R) +
-									Integer.toHexString(R) +
-									Integer.toHexString(G) +
-									Integer.toHexString(G) +
-									Integer.toHexString(B) +
-									Integer.toHexString(B);
-	
-					colors.add(color);
-				}
-			}
-		}
-	
-		*/
-			
+	int totalColors = 0;
+	int counter = 0;
 		
-		//adds collors to map
-		colors.add("C0C0C0");
-		colors.add("800080");
-		//colors.add("00FF00");
-		colors.add("F08080");
-		colors.add("BD7F34");
-		colors.add("BDB76B");
-		colors.add("FFE4C4");
-		colors.add("F4A460");
-		colors.add("DAA520");
-		//colors.add("A52A2A");
-		colors.add("0000FF");
-		colors.add("1E90FF");
-		colors.add("008B8B");
-		colors.add("228B22");
-		
-		//makes random order for colors
-		Collections.shuffle(colors);
+	//adds collors to map
+	colors.add("C0C0C0");
+	colors.add("800080");
+	//colors.add("00FF00");
+	colors.add("F08080");
+	colors.add("BD7F34");
+	colors.add("BDB76B");
+	colors.add("FFE4C4");
+	colors.add("F4A460");
+	colors.add("DAA520");
+	//colors.add("A52A2A");
+	colors.add("0000FF");
+	colors.add("1E90FF");
+	colors.add("008B8B");
+	colors.add("228B22");
 				
-		totalColors = colors.size();
+	totalColors = colors.size();
 			
-		for(String s: schedule.getTasksNames()){
-			//if there are tasks more than generated colors
-			if(counter == totalColors){
-				counter = 0;
-			}
-			
-			//assigns green color for free time
-			if(s.equals("Free time ")){
-				taskColorMapping.put(s, "6BB247");
-			}else{
-				taskColorMapping.put(s, colors.get(counter));
-			}
-			
-			counter++;
+	for(String s: schedule.getTasksNames()){
+		//if there are tasks more than generated colors
+		if(counter == totalColors){
+			counter = 0;
 		}
-		
-		//generates color once in the session to avoid flashing every request
-		session.setAttribute("taskColor", taskColorMapping);
+			
+		//assigns green color for free time
+		if(s.equals("Free time ")){
+			taskColorMapping.put(s, "6BB247");
+		}else{
+			taskColorMapping.put(s, colors.get(counter));
+		}
+			
+		counter++;
 	}
+		
+	session.setAttribute("taskColor", taskColorMapping);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

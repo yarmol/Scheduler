@@ -131,12 +131,6 @@ public class ServiceImpl implements Service{
 		
 		User user = dao.getUserByUserName(username, session);
 		
-		//System.out.println("update service task name: " 
-		//		+ taskRepr.getTitle());
-		
-		//System.out.println("update service wednesday: " + 
-		//		taskRepr.getActiveDayAt(3));
-		
 		//for new task creates new Task object
 		if(taskRepr.getId() == 0){
 			//System.out.println("new");
@@ -246,7 +240,7 @@ public class ServiceImpl implements Service{
 		//it's safety because an Interval is immutable
 		task.setInterval(taskRepr.getInterval());
 				
-		for(int i = 0; i < 7; i++){
+		for(int i = 1; i < 8; i++){
 			task.setActiveDayAt(i, taskRepr.getActiveDayAt(i));
 		}
 				

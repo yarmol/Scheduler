@@ -70,7 +70,7 @@ public class RootConfig {
 	@PostConstruct
 	public void createSecurityTable(){
 		
-		System.out.println("db verification");
+		//System.out.println("db verification");
 		
 	    DataSource source = dataSource();
 	    Connection conn = null;

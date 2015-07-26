@@ -53,49 +53,47 @@
 								<td>${type == 'FlexibleTerm' ? repr.startDate : LocalDate(repr.interval.startMillis)}</td>
 								<td>${LocalDate(repr.interval.endMillis)}</td>
 								<td>
-									<c:set var="days" value="${repr.getActiveDayAt(1) == true ? 'Mo, ' : ''}"/>
-									<c:set var="days" value="${days} ${repr.getActiveDayAt(2) == true ? 'Tu, ' : ''}"/>
-									<c:set var="days" value="${days} ${repr.getActiveDayAt(3) == true ? 'We, ' : ''}"/>
-									<c:set var="days" value="${days} ${repr.getActiveDayAt(4) == true ? 'Th, ' : ''}"/>
-									<c:set var="days" value="${days} ${repr.getActiveDayAt(5) == true ? 'Fr, ' : ''}"/>
-									<c:set var="days" value="${days} ${repr.getActiveDayAt(6) == true ? 'Sa, ' : ''}"/>
-									<c:set var="days" value="${days} ${repr.getActiveDayAt(7) == true ? 'Su' : ''}"/>						
+									<!-- If previous value == true, then it's necessary coma -->
+									<!-- unfortunately it's impossible to do it with jstl endsWith
+										because it has a bug -->
 								
-									<!-- removes last comma, so complicated construction because jstl has bug with endsWith -->
-									<c:if test="${fn:endsWith(fn:substring(days, fn:length(fn:trim(days)),
-											fn:length(fn:trim(days))+1), ',')}">
-										<c:set var="days" value="${fn:substring(days, 0, (fn:length(fn:trim(days))))}"/>
-									</c:if>
-									${days}
+									${repr.getActiveDayAt(1) == true ? 'Mo' : ''}<c:if test="${repr.getActiveDayAt(1)}">, </c:if>
+									${repr.getActiveDayAt(2) == true ? 'Tu' : ''}<c:if test="${repr.getActiveDayAt(2)}">, </c:if>
+									${repr.getActiveDayAt(3) == true ? 'We' : ''}<c:if test="${repr.getActiveDayAt(3)}">, </c:if>
+									${repr.getActiveDayAt(4) == true ? 'Th' : ''}<c:if test="${repr.getActiveDayAt(4)}">, </c:if>
+									${repr.getActiveDayAt(5) == true ? 'Fr' : ''}<c:if test="${repr.getActiveDayAt(5)}">, </c:if>
+									${repr.getActiveDayAt(6) == true ? 'Sa' : ''}<c:if test="${repr.getActiveDayAt(6)}">, </c:if>
+									${repr.getActiveDayAt(7) == true ? 'Su' : ''}						
 								</td>
 								<td>
-									<c:set var="hours" value="${repr.getActiveHourAt(0) == true ? '0, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(1) == true ? '1, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(2) == true ? '2, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(3) == true ? '3, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(4) == true ? '4, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(5) == true ? '5, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(6) == true ? '6, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(7) == true ? '7, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(8) == true ? '8, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(9) == true ? '9, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(10) == true ? '10, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(11) == true ? '11, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(12) == true ? '12, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(13) == true ? '13, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(14) == true ? '14, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(15) == true ? '15, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(16) == true ? '16, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(17) == true ? '17, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(18) == true ? '18, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(19) == true ? '19, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(20) == true ? '20, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(21) == true ? '21, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(22) == true ? '22, ' : ''}"/>
-									<c:set var="hours" value="${hours} ${repr.getActiveHourAt(23) == true ? '23, ' : ''}"/>
-									
-									<!-- always cutts the last symbol (comma) -->
-									${fn:substring(hours, 0, (fn:length(fn:trim(hours)))-1)}
+									<!-- If previous value == true, then it's necessary coma -->
+									<!-- unfortunately it's impossible to do it with jstl endsWith
+										because it has a bug -->
+										
+									${repr.getActiveHourAt(0) == true ? '0' : ''}<c:if test="${repr.getActiveHourAt(0)}">, </c:if>
+									${repr.getActiveHourAt(1) == true ? '1' : ''}<c:if test="${repr.getActiveHourAt(1)}">, </c:if>
+									${repr.getActiveHourAt(2) == true ? '2' : ''}<c:if test="${repr.getActiveHourAt(2)}">, </c:if>
+									${repr.getActiveHourAt(3) == true ? '3' : ''}<c:if test="${repr.getActiveHourAt(3)}">, </c:if>
+									${repr.getActiveHourAt(4) == true ? '4' : ''}<c:if test="${repr.getActiveHourAt(4)}">, </c:if>
+									${repr.getActiveHourAt(5) == true ? '5' : ''}<c:if test="${repr.getActiveHourAt(5)}">, </c:if>
+									${repr.getActiveHourAt(6) == true ? '6' : ''}<c:if test="${repr.getActiveHourAt(6)}">, </c:if>
+									${repr.getActiveHourAt(7) == true ? '7' : ''}<c:if test="${repr.getActiveHourAt(7)}">, </c:if>
+									${repr.getActiveHourAt(8) == true ? '8' : ''}<c:if test="${repr.getActiveHourAt(8)}">, </c:if>
+									${repr.getActiveHourAt(9) == true ? '9' : ''}<c:if test="${repr.getActiveHourAt(9)}">, </c:if>
+									${repr.getActiveHourAt(10) == true ? '10' : ''}<c:if test="${repr.getActiveHourAt(10)}">, </c:if>
+									${repr.getActiveHourAt(11) == true ? '11' : ''}<c:if test="${repr.getActiveHourAt(11)}">, </c:if>
+									${repr.getActiveHourAt(12) == true ? '12' : ''}<c:if test="${repr.getActiveHourAt(12)}">, </c:if>
+									${repr.getActiveHourAt(13) == true ? '13' : ''}<c:if test="${repr.getActiveHourAt(13)}">, </c:if>
+									${repr.getActiveHourAt(14) == true ? '14' : ''}<c:if test="${repr.getActiveHourAt(14)}">, </c:if>
+									${repr.getActiveHourAt(15) == true ? '15' : ''}<c:if test="${repr.getActiveHourAt(15)}">, </c:if>
+									${repr.getActiveHourAt(16) == true ? '16' : ''}<c:if test="${repr.getActiveHourAt(16)}">, </c:if>
+									${repr.getActiveHourAt(17) == true ? '17' : ''}<c:if test="${repr.getActiveHourAt(17)}">, </c:if>
+									${repr.getActiveHourAt(18) == true ? '18' : ''}<c:if test="${repr.getActiveHourAt(18)}">, </c:if>
+									${repr.getActiveHourAt(19) == true ? '19' : ''}<c:if test="${repr.getActiveHourAt(19)}">, </c:if>
+									${repr.getActiveHourAt(20) == true ? '20' : ''}<c:if test="${repr.getActiveHourAt(20)}">, </c:if>
+									${repr.getActiveHourAt(21) == true ? '21' : ''}<c:if test="${repr.getActiveHourAt(21)}">, </c:if>
+									${repr.getActiveHourAt(22) == true ? '22' : ''}<c:if test="${repr.getActiveHourAt(22)}">, </c:if>
+									${repr.getActiveHourAt(23) == true ? '23' : ''}
 								</td>
 								<td><a href="${pageContext.request.contextPath}/app/task/edit/?task_id=${repr.id}">edit</a></td>
 								<td><a href="${pageContext.request.contextPath}/app/task/delete/?task_id=${repr.id}">delete</a></td>
