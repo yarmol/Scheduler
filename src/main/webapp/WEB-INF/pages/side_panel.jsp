@@ -12,6 +12,9 @@
 			<a href="${pageContext.request.contextPath}/app/days">days view</a><br>
 			<a href="${pageContext.request.contextPath}/app/task/review">tasks view</a><br>
 			<a href="${pageContext.request.contextPath}/app/task/edit">create new task</a>
+			<br>
+			<br>
+			<a href="${pageContext.request.contextPath}/app/help"><span class="SP_help">help</span></a>
 		</div>
 	<!-- /body -->
 </html>

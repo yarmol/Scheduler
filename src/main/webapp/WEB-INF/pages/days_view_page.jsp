@@ -201,7 +201,7 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/days_view_page.css">
 		
-		<!-- css for both panels ebd body -->
+		<!-- css for both panels and body -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/upper_panel.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/side_panel.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/body_common.css">

@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="org.joda.time.LocalDate" %>
@@ -8,7 +10,7 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tasks_view_page.css">
 		
-		<!-- css for both panels ebd body -->
+		<!-- css for both panels and body -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/upper_panel.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/side_panel.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/body_common.css">

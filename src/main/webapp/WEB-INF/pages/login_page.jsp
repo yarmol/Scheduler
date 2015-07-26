@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="resources/css/login_page.css">
 		<title>Scheduler login page</title>
 	</head>
-	<body class="body">
+	<body class="body" title="You must sing up before using application. Please use link next to login button">
 			<div class="name">
 				Scheduler
 			</div>
@@ -23,7 +23,7 @@
 						<div class="button">
 							<input type="submit" value="Login" name="submit">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<a href="${pageContext.request.contextPath}/registration">registration</a>
+							<a href="${pageContext.request.contextPath}/sing up">registration</a>
 						</div>
 					</form>
 				</div>
