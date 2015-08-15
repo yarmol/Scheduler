@@ -4,8 +4,6 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 
 /*
  * This class makes Spring Security enabled 
- * 
- * @author Yakubovich Valeriy
  */
 public class SecurityInit extends AbstractSecurityWebApplicationInitializer {
 	

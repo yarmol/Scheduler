@@ -13,8 +13,6 @@ import org.joda.time.LocalDate;
 /**
  * This class represents Task object, to avoid
  * changes in original Task object
- * 
- * @author Yakubovich Valeriy
  */
 public class TaskRepresentationImpl implements TaskRepresentation{
 	

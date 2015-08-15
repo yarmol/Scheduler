@@ -8,8 +8,6 @@ import javax.validation.constraints.Size;
 /*
  * This is a object, which jsp page passes to
  * controller wit filled fields
- * 
- * @author Yakubovich Valeriy
  */
 public class TSPageMessage {
 	

@@ -22,8 +22,6 @@ import org.springframework.stereotype.Component;
  * This is an implementation of Service interface.
  * Service layer implementation. No to forget
  * close Session after all
- * 
- * @author Yakubovich Valeriy
  */
 @Component
 public class ServiceImpl implements Service{

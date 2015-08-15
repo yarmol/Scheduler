@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 /*
  * This controller shows page, which contains all the tasks
  * of authenticated user.
- * 
- * @author Yakubovich Valeriy
  */
 @Controller
 @RequestMapping("/app/task")

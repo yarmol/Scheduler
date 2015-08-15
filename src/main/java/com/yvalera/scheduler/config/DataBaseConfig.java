@@ -10,23 +10,16 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
 /*
- * This is a root application config class
- * 
- * @author Yakubovich Valeriy
+ * This is a Hibernate configuration class
  */
-//Empty class, without it({SecurityConfig.class}) application doesn't start
 @Configuration
-@Import({SecurityConfig.class})
-public class RootConfig {
+//turn on auto component determination
+class DataBaseConfig{
 	
-	//TODO make it with connection pool
-	//TODO remove settings to file
-	//connection with db
 	@Bean
 	public DataSource dataSource() {
 	    DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -41,32 +34,23 @@ public class RootConfig {
 	
 	@Bean//it work with Hibernate persistence objects
 	public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+	   
 		LocalSessionFactoryBean sfb = new LocalSessionFactoryBean();
-		Properties props = new Properties();
 	   
 		sfb.setDataSource(dataSource);
+		sfb.setPackagesToScan(new String[] {//persistence objects
+				"main.java.com.yvalera.scheduler.model.persistentObjects"});
 	   
-		//persistence objects
-		sfb.setPackagesToScan(new String[] 
-			   {"main.java.com.yvalera.scheduler.model.persistentObjects"});
+		Properties props = new Properties();
 
 		props.setProperty("dialect", "org.hibernate.dialect.MYSQLDialect");
-	   
-		/*
-		 * !!! Tells Hibernate to AUTOMATIC create or alter 
-		 * application tables in the database.
-		 */
 		props.setProperty("hibernate.hbm2ddl.auto", "update");
-	   
+		
 		sfb.setHibernateProperties(props);
 
 		return sfb;
 	}
 	
-	/*
-	 * Will be invoked after application started. If table security 
-	 * doesn't exists, it will create it
-	 */
 	@PostConstruct
 	public void createSecurityTable(){
 		

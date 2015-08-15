@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 /**
  * This is an implementation of model interface.
  * Object of this class calculates and returns schedule.
- * 
- *  @author Yakubovich Valeriy
  */
 
 @Component

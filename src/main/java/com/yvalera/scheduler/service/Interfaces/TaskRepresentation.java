@@ -7,8 +7,6 @@ import org.joda.time.LocalDate;
 
 /**
  * This Interface represents Task for View layer.
- * 
- * @author Yakubovich Valeriy
  */
 public interface TaskRepresentation {
 	

@@ -14,8 +14,6 @@ import main.java.com.yvalera.scheduler.model.OutInterfaces.Point;
  * Object which counts schedule fills all the
  * fields of this class while it counting schedule.
  * It takes data from task objects.
- * 
- * @author Yakubovich Valeriy
  */
 class PointImpl implements Point{
 	private String title;

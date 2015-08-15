@@ -10,9 +10,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 /*
- * This is a niew resolver and recource handler configiration
- * 
- * @author Yakubovich Valeriy
+ * This is a view resolver and recource handler configiration
  */
 @Configuration//makes this class configurations
 @EnableWebMvc//it used to enable Spring MVC

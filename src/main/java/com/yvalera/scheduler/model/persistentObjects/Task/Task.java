@@ -35,8 +35,6 @@ import org.joda.time.LocalDate;
  * completed until end date, so for examle to study subject to 
  * exam date, complete project on work and etc. Flexible task
  * means task, which mustn't be finished to certain date.
- * 
- * @author Yakubovich Valeriy 
  */
 
 @Entity

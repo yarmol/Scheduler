@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /*
  * This controller processes request on edit/create tasks page.
- * 
- * @author Yakubovich Valeriy
  */
 @Controller
 @RequestMapping("/app/task/edit")

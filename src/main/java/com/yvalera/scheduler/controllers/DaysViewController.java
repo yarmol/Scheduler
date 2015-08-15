@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /*
  * This is a controller for Days view page
- * 
- * @author Yakubovich Valeriy
  */
 @Controller
 //@RequestMapping(value = "/user**", method = RequestMethod.POST)

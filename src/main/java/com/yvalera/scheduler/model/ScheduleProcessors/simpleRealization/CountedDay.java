@@ -9,8 +9,6 @@ import org.joda.time.LocalDate;
  * concrete day. They are hidden in the Schedule
  * object and returns Points on requested time
  * interval.
- * 
- * @author Yakubovich Valeriy
  */
 class CountedDay{
 	private Point[] points = new PointImpl[24];

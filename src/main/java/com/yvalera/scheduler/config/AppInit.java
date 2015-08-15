@@ -4,8 +4,6 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 /*
  * This is an application context and servlet context configuration class
- * 
- * @author Yakubovich Valeriy
  */
 public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 	
@@ -13,8 +11,8 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     protected Class<?>[] getRootConfigClasses(){
         return new Class<?>[]{
-        		//Empty class, without it application doesn't start
-                RootConfig.class
+                DataBaseConfig.class,
+                SecurityConfig.class
         };
     }
 

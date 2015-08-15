@@ -23,7 +23,7 @@
 						<div class="button">
 							<input type="submit" value="Login" name="submit">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<a href="${pageContext.request.contextPath}/sing up">registration</a>
+							<a href="${pageContext.request.contextPath}/registration">registration</a>
 						</div>
 					</form>
 				</div>

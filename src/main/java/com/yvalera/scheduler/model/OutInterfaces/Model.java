@@ -9,8 +9,6 @@ import org.joda.time.Interval;
 /**
  * This interface for classes which will be 
  * calculate schedules.
- * 
- * @author Yakubovich Valeriy
  */
 
 public interface Model{

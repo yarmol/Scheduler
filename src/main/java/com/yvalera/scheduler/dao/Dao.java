@@ -8,8 +8,6 @@ import org.hibernate.Session;
  * This is the interface to the ORM DB. Transmitting
  * a Session object need to provide lazy initialization
  * of User objects.
- * 
- * @author Yakubovich Valeriy
  */
 public interface Dao{
 	

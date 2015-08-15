@@ -20,8 +20,6 @@ import main.java.com.yvalera.scheduler.model.persistentObjects.User;
 
 /**
  * This is an implementation of Dao interface
- * 
- * @author Yakubovich Valeriy
  */
 @Repository
 public class DaoImpl implements Dao{

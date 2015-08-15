@@ -13,8 +13,6 @@ import org.joda.time.LocalDate;
  * This is an implementation of Schedule interface.
  * This class represents schedule for passing
  * to View
- * 
- * @author Yakubovich Valeriy
  */
 class ScheduleImpl implements Schedule{
 

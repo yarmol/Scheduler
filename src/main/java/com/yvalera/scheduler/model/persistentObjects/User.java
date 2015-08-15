@@ -18,8 +18,6 @@ import main.java.com.yvalera.scheduler.model.persistentObjects.Task.Task;
 /**
  * It represents users with their schedulled days and
  * tasks. Keeps in database.
- * 
- * @author Yakubovich Valeriy
  */
 @Entity
 public class User {

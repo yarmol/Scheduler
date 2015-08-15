@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 /*
  * This is an exeption handler.
  * Handles all excrptions in applications.
- * 
- * @author Yakubovich Valeriy
  */
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler {

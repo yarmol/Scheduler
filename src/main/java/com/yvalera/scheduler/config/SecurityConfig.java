@@ -14,8 +14,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 /*
  * This is a Spring Security configuration class
- * 
- * @author Yakubovich Valeriy
  */
 @Configuration
 @EnableWebSecurity
@@ -25,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	DataSource dataSource;
 	
+	//was necessary in the beginning
 	/*@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) 
 			throws Exception {
@@ -33,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}*/
 
 	/*
+	 * Tells Spring Security to use table security.
 	 * "#sch$" it's just random char sequence, must match with
 	 * another one in password encrypting method
 	 */

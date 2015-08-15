@@ -5,8 +5,6 @@ package main.java.com.yvalera.scheduler.model.OutInterfaces;
  * Point means one indivisible cell on
  * schedule, but it keeps start and end date
  * for whole Task.
- * 
- * @author Yakubovich Valeriy
  */
 public interface Point {
 
